@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en" ng-app="randomNameApp">
+<head>
+  <meta charset="utf-8">
+  <title>Random Name Generator</title>
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
+  <script type="text/javascript" src="js/controllers.js"></script>
+  <style type="text/css">
+  	table {
+  		display: inline-block;
+  		border: thin black solid;
+  	}
+  </style>
+</head>
+<body ng-controller="NameListCtrl">
+
+	<table>
+		<tr>
+			<th>First Name</th>
+			<th>Gender</th>
+		</tr>
+		<tr ng-repeat="name in firstNames">
+			<td>{{name.name}}</td>
+			<td>{{name.gender}}</td>
+		</tr>
+	</table>
+ 
+ 	<table>
+ 		<tr>
+ 			<th>Surname</th>
+ 		</tr>
+ 		<tr ng-repeat="name in surnames">
+ 			<td>{{name.name}}</td>
+ 		</tr>
+ 	</table>
+
+</body>
+</html>
