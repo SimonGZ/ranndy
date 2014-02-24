@@ -1,23 +1,14 @@
 
-var randomNameApp = angular.module('randomNameApp', []);
+var randomNameControllers = angular.module('randomNameControllers', []);
  
-randomNameApp.controller('NameListCtrl', function ($scope) {
-  $scope.firstNames = [
-    {
-    	'name'   : 'Simon',
-     	'gender' : 'Male'
-    },
-    {
-		'name'   : 'Anna',
-	 	'gender' : 'Female'	
-    }
-  ];
-  $scope.surnames = [
-    {
-    	'name'   : 'Ganz'
-    },
-    {
-		'name'   : 'Almendrala'
-    }
-  ];
+randomNameControllers.controller('NameListCtrl', function ($scope, $http) {
+	$http.get('api/names').success(function(data) {
+		$scope.names = data;
+	});
+
+	$scope.generate = function() {
+		$http.get('api/names').success(function(data) {
+			$scope.names = data;
+		});
+	};
 });

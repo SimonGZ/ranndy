@@ -51,7 +51,11 @@ app.get('/api/names', function(req, res) {
 		},
 		function(err, results) {
 			done();
-			res.json(results);
+			var merged_names = [];
+			for (var i = results['surnames'].length - 1; i >= 0; i--) {
+				merged_names[i] = {firstname: results['firstnames'][i], surname: results['surnames'][i]};
+			};
+			res.json(merged_names);
 		}
 		);
 	});
