@@ -1,0 +1,36 @@
+<div id="generator">
+	<nav>
+		<form ng-submit="generate(query)">
+			<select ng-model="query.gender" ng-init="query.gender = 'male'">
+				<option value="male" selected>Male</option>
+				<option value="female">Female</option>
+				<option value="">Both</option>
+			</select>
+			<select ng-model="query.limit" ng-init="query.limit = 10">
+				<option value="10" selected>10</option>
+				<option value="20">20</option>
+			</select>
+			<input type="submit" value="Generate">
+		</form>
+	</nav>
+	<table>
+		<tr>
+			<th>First Name</th>
+			<th>Surname</th>
+			<th>% White</th>
+			<th>% Hispanic</th>
+			<th>% Black</th>
+			<th>% Asian</th>
+			<th>% Native</th>
+		</tr>
+		<tr ng-repeat="name in names" class="fade">
+			<td ng-click="lockFirst(name.firstname.name)"><div class="name">{{name.firstname.name}}</div></td>
+			<td ng-click="lockLast(name.surname.name)"><div class="name">{{name.surname.name}}</div></td>
+			<td><div class="percent">{{name.surname.pctwhite}}</div></td>
+			<td><div class="percent">{{name.surname.pcthispanic}}</div></td>
+			<td><div class="percent">{{name.surname.pctblack}}</div></td>
+			<td><div class="percent">{{name.surname.pctasian}}</div></td>
+			<td><div class="percent">{{name.surname.pctnative}}</div></td>
+		</tr>
+	</table>
+</div>	

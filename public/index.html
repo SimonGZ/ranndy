@@ -37,36 +37,14 @@
 	tr.fade.ng-enter-active {
 		opacity: 1;
 	}
+	tr.locked {
+		display: none;
+	}
   </style>
 </head>
-<body ng-controller="NameListCtrl">
-
-	<div id="generator">
-		<form ng-submit="generate()">
-			<input type="submit" value="Generate">
-		</form>
-
-		<table>
-			<tr>
-				<th>First Name</th>
-				<th>Surname</th>
-				<th>% White</th>
-				<th>% Hispanic</th>
-				<th>% Black</th>
-				<th>% Asian</th>
-				<th>% Native</th>
-			</tr>
-			<tr ng-repeat="name in names" class="fade">
-				<td><div class="name">{{name.firstname.name}}</div></td>
-				<td><div class="name">{{name.surname.name}}</div></td>
-				<td><div class="percent">{{name.surname.pctwhite}}</div></td>
-				<td><div class="percent">{{name.surname.pcthispanic}}</div></td>
-				<td><div class="percent">{{name.surname.pctblack}}</div></td>
-				<td><div class="percent">{{name.surname.pctasian}}</div></td>
-				<td><div class="percent">{{name.surname.pctnative}}</div></td>
-			</tr>
-		</table>
-	</div>	
+<body>
+	
+	<div ng-view></div>
 
 </body>
 </html>
