@@ -2,11 +2,15 @@
   "name": "random-name-generator",
   "description": "API to generate random names",
   "version": "0.2.0",
+  "author": "Simon Ganz",
   "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
   "dependencies": {
-    "express": "x",
-    "knex": "x",
-    "pg": "x",
-    "async": "x"
+    "express": "4.0.0",
+    "knex": "0.5.13",
+    "pg": "3.0.3",
+    "async": "0.7.0"
   }
 }
