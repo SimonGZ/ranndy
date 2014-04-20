@@ -10,6 +10,9 @@
 				<option value="10" selected>10</option>
 				<option value="20">20</option>
 			</select>
+			<select ng-model="query.race" ng-options="obj.value as obj.text for obj in races"></select>
+			<select ng-model="query.fRank" ng-options="obj.value as obj.text for obj in fRanks"></select>
+			<select ng-model="query.sRank" ng-options="obj.value as obj.text for obj in sRanks"></select>
 			<input type="submit" value="Generate">
 		</form>
 	</nav>

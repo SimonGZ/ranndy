@@ -111,14 +111,16 @@ function getFirstNames(client, params, callback) {
 	if (params['gender']) {
 		if (params['gender'].toLowerCase() == 'female' || params['gender'].toLowerCase() == 'male') {
 			position = querystring.indexOf("ORDER BY");
-			querystring = querystring.splice(position, 0, andOrWhere(querystring) + "gender = '" + capitalizeFirstLetter(params['gender']) +"'");
+			querystring = querystring.splice(position, 0, andOrWhere(querystring) + "gender = '" + capitalizeFirstLetter(params['gender']) +"' ");
 		}
 	}
 
-	if (params['fRank']) {
-		if (isNumber(params['fRank'])) {
+	if (params['fRank'] instanceof Array) {
+		
+		if (isNumber(params['fRank'][0]) && isNumber(params['fRank'][1])) {
 			position = querystring.indexOf("ORDER BY");
-			querystring = querystring.splice(position, 0, andOrWhere(querystring) + "rank < '" + params['fRank'] +"'");	
+			querystring = querystring.splice(position, 0, andOrWhere(querystring) + "rank > '" + params['fRank'][0] +"' AND rank < '" + params['fRank'][1] + "' ");	
+			console.log(querystring);
 		}
 	}
 
@@ -139,18 +141,19 @@ function getFirstNames(client, params, callback) {
 var getSurnames = function(client, params, callback) {
 	var querystring = 'SELECT name, rank, frequency, pctwhite, pctblack, pctasian, pctnative, pcthispanic from surnames ORDER BY random() LIMIT 10'
 
-	if (params['sRank']) {
-		if (isNumber(params['sRank'])) {
+	if (params['sRank'] instanceof Array) {
+		
+		if (isNumber(params['sRank'][0]) && isNumber(params['sRank'][1])) {
 			position = querystring.indexOf("ORDER BY");
-			querystring = querystring.splice(position, 0, andOrWhere(querystring) + "rank < '" + params['sRank'] +"'");	
+			querystring = querystring.splice(position, 0, andOrWhere(querystring) + "rank >'" + params['sRank'][0] + "' AND rank < '" + params['sRank'][1] + "'");	
 		}
 	}
 
-	if (params['race']) {
+	if (params['race'] instanceof Array) {
 		var percent, race;
-		if (containsRace(params['race']) && params['race'].indexOf(",") > -1) {
-			race = params['race'].split(",")[0];
-			percent = params['race'].split(",")[1];
+		if (containsRace(params['race'][0]) && isNumber(params['race'][1])) {
+			race = params['race'][0];
+			percent = params['race'][1];
 			if (isNumber(percent)) {
 				if (percent > 100 || percent < 0) {
 					percent = 0;

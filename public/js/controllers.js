@@ -7,6 +7,8 @@ randomNameControllers.controller('NameListCtrl', function ($scope, $http) {
 	});
 
 	$scope.generate = function(query) {
+		console.log(query.fRank);
+		console.log(query.sRank);
 		$http.get('api/names', {params: query}).success(function(data) {
 			if ($scope.selected_first) {
 				for (var i = data.length - 1; i >= 0; i--) {
@@ -61,4 +63,21 @@ randomNameControllers.controller('NameListCtrl', function ($scope, $http) {
 	$scope.genders = [];
 	$scope.covered_firsts = [];
 	$scope.covered_lasts = [];
+	$scope.races = [
+	  {"text": "White",    "value": ["pctwhite",50]},
+	  {"text": "Hispanic", "value": ["pcthispanic",50]},
+	  {"text": "Black",    "value": ["pctblack",50]},
+	  {"text": "Asian",    "value": ["pctasian",50]},
+	  {"text": "Native",   "value": ["pctnative",50]}
+	];
+	$scope.sRanks = [
+	  {"text": "All", "value": null},
+	  {"text": "Common", "value": [0, 10000]},
+	  {"text": "Rare", "value": [100000, 150000]}
+	];
+	$scope.fRanks = [
+	  {"text": "All", "value": null},
+	  {"text": "Common", "value": [0, 800]},
+	  {"text": "Rare", "value": [800, 4275]}
+	];
 });
