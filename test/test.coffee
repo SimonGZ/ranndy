@@ -38,8 +38,19 @@ describe "API", ->
           done()
 
     describe "the frequency query", ->
-      it "returns names with frequencies below 0.1 when sent low", (done) ->
+      it "low returns names with frequencies below 0.1", (done) ->
         request.get("localhost:3000/api/surnames?frequency=low").end (res) ->
           async.each res.body.surnames, (name) ->
             expect(name.frequency).to.be.lessThan 0.1
+          done()
+      it "medium returns names with frequencies >= 0.06 and < 1", (done) ->
+        request.get("localhost:3000/api/surnames?frequency=medium").end (res) ->
+          async.each res.body.surnames, (name) ->
+            expect(name.frequency).to.be.greaterThan(0.059)
+            expect(name.frequency).to.be.lessThan(1)
+          done()
+      it "high returns names with frequencies >=1", (done) ->
+        request.get("localhost:3000/api/surnames?frequency=high").end (res) ->
+          async.each res.body.surnames, (name) ->
+            expect(name.frequency).to.be.greaterThan(0.99)
           done()

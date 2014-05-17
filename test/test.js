@@ -52,7 +52,7 @@ describe("API", function() {
       });
     });
     return describe("the frequency query", function() {
-      return it("returns names with frequencies below 0.1 when sent low", function(done) {
+      it("low returns names with frequencies below 0.1", function(done) {
         return request.get("localhost:3000/api/surnames?frequency=low").end(function(res) {
           async.each(res.body.surnames, function(name) {
             return expect(name.frequency).to.be.lessThan(0.1);
@@ -60,8 +60,23 @@ describe("API", function() {
           return done();
         });
       });
+      it("medium returns names with frequencies >= 0.06 and < 1", function(done) {
+        return request.get("localhost:3000/api/surnames?frequency=medium").end(function(res) {
+          async.each(res.body.surnames, function(name) {
+            expect(name.frequency).to.be.greaterThan(0.059);
+            return expect(name.frequency).to.be.lessThan(1);
+          });
+          return done();
+        });
+      });
+      return it("high returns names with frequencies >=1", function(done) {
+        return request.get("localhost:3000/api/surnames?frequency=high").end(function(res) {
+          async.each(res.body.surnames, function(name) {
+            return expect(name.frequency).to.be.greaterThan(0.99);
+          });
+          return done();
+        });
+      });
     });
   });
 });
-
-//# sourceMappingURL=test.map
