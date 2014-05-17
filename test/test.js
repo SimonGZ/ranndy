@@ -111,11 +111,23 @@ describe("API", function() {
           return done();
         });
       });
-      return it("returns names with pcthispanic above 95 when sent pcthispanic, 95", function(done) {
+      it("returns names with pcthispanic above 95 when sent pcthispanic, 95", function(done) {
         return request.get("localhost:3000/api/surnames?race=pcthispanic&race=95").end(function(res) {
           async.each(res.body.surnames, function(name) {
             return expect(name.pcthispanic).to.be.greaterThan(95);
           });
+          return done();
+        });
+      });
+      it("returns results when sent a non-existent race", function(done) {
+        return request.get("localhost:3000/api/surnames?race=pctdog&race=95").end(function(res) {
+          expect(res.body).to.exist;
+          return done();
+        });
+      });
+      return it("returns results when sent a wrong race number", function(done) {
+        return request.get("localhost:3000/api/surnames?race=pctwhite&race=dog").end(function(res) {
+          expect(res.body).to.exist;
           return done();
         });
       });

@@ -81,3 +81,11 @@ describe "API", ->
           async.each res.body.surnames, (name) ->
             expect(name.pcthispanic).to.be.greaterThan(95)
           done()
+      it "returns results when sent a non-existent race", (done) ->
+        request.get("localhost:3000/api/surnames?race=pctdog&race=95").end (res) ->
+          expect(res.body).to.exist
+          done()
+      it "returns results when sent a wrong race number", (done) ->
+        request.get("localhost:3000/api/surnames?race=pctwhite&race=dog").end (res) ->
+          expect(res.body).to.exist
+          done()

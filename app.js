@@ -35,7 +35,7 @@ app.get("/api/surnames", function(req, res) {
       }
       if (req.query.race) {
         pass = pass.where(function() {
-          return this.where(req.query.race[0], ">", req.query.race[1]);
+          return queries.raceQuery(this, req.query.race);
         });
       }
       return pass;

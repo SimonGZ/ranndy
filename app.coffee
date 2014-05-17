@@ -27,7 +27,7 @@ app.get "/api/surnames", (req, res) ->
         )
       if req.query.race
         pass = pass.where(->
-          this.where(req.query.race[0], ">", req.query.race[1])
+          queries.raceQuery(this, req.query.race)
         )
       return pass
   )

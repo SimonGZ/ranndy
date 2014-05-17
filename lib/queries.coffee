@@ -5,13 +5,19 @@ fastSimpleQuery = (context) ->
 
 frequencyQuery = (context, freq) ->
   if freq is "low"
-        context.where("frequency", "<", 0.06)
-      else if freq is "medium"
-        context.where("frequency", ">=", 0.06).andWhere("frequency", "<", 1)
-      else if freq is "high"
-        context.where("frequency", ">=", 1)
-      else
-        fastSimpleQuery(context)
+    context.where("frequency", "<", 0.06)
+  else if freq is "medium"
+    context.where("frequency", ">=", 0.06).andWhere("frequency", "<", 1)
+  else if freq is "high"
+    context.where("frequency", ">=", 1)
+  else
+    fastSimpleQuery(context)
+
+raceQuery = (context, raceArray) ->
+  if (["pctwhite","pctasian","pctnative","pctblack","pcthispanic"].indexOf(raceArray[0]) > -1) and isNumber(raceArray[1])
+    context.where(raceArray[0], ">", Math.abs(raceArray[1]))
+  else
+    fastSimpleQuery(context)
 
 limitQuery = (limit) ->
   if (limit <= 100) and (limit >= 1)
@@ -26,3 +32,8 @@ module.exports.isUndefined = isUndefined
 module.exports.limitQuery = limitQuery
 module.exports.fast = fastSimpleQuery
 module.exports.frequencyQuery = frequencyQuery
+module.exports.raceQuery = raceQuery
+
+
+isNumber = (n) ->
+  return !isNaN(parseFloat(n)) && isFinite(n)
