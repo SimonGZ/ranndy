@@ -1,17 +1,18 @@
 knex = require("knex").knex
 
 fast_simple_query = (context) ->
-  context.where knex.raw("id in (select (random()*(select last_value from surnames_id_seq))::bigint from generate_series(1,120))")
+  context.where( knex.raw("id in (select (random()*(select last_value from surnames_id_seq))::bigint from generate_series(1,120))"))
 
 frequency_query = (context, freq) ->
   if freq is "low"
-        context.where "frequency", "<", 0.06
+        context.where("frequency", "<", 0.06)
       else if freq is "medium"
-        context.where("frequency", ">=", 0.06).andWhere "frequency", "<", 1
+        context.where("frequency", ">=", 0.06).andWhere("frequency", "<", 1)
       else if freq is "high"
-        context.where "frequency", ">=", 1
+        console.log "high received!"
+        context.where("frequency", ">=", 1)
       else
-        fast_simple_query context
+        fast_simple_query(context)
 
 limit_query = (limit) ->
   if (limit <= 100) and (limit >= 1)
