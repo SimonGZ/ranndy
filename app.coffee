@@ -15,19 +15,25 @@ queries = require("./lib/queries")
 app.use express.static(__dirname + "/public")
 
 app.get "/api/surnames", (req, res) ->
-  console.log "Request received"
 
   knex("surnames").where(->
-    if req.query.frequency is `undefined`
+    if [req.query.frequency, req.query.race].every(queries.isUndefined)
       queries.fast(this)
-    else if req.query.frequency
-      console.log req.query.frequency
-      queries.frequency_query(this, req.query.frequency)
+    else
+      pass = this
+      if req.query.frequency
+        pass = pass.where(->
+          queries.frequencyQuery(this, req.query.frequency) 
+        )
+      if req.query.race
+        pass = pass.where(->
+          this.where(req.query.race[0], ">", req.query.race[1])
+        )
+      return pass
   )
   .orderBy(knex.raw("RANDOM()"))
-  .limit(queries.limit_query(req.query.limit))
+  .limit(queries.limitQuery(req.query.limit))
   .then (query_results) ->
-    console.log "Sending query results"
     results = surnames: query_results
     res.json results
 

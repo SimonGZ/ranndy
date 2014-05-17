@@ -51,7 +51,7 @@ describe("API", function() {
         });
       });
     });
-    return describe("the frequency query", function() {
+    describe("the frequency query", function() {
       it("low returns names with frequencies below 0.1", function(done) {
         return request.get("localhost:3000/api/surnames?frequency=low").end(function(res) {
           async.each(res.body.surnames, function(name) {
@@ -73,6 +73,48 @@ describe("API", function() {
         return request.get("localhost:3000/api/surnames?frequency=high").end(function(res) {
           async.each(res.body.surnames, function(name) {
             return expect(name.frequency).to.be.greaterThan(0.99);
+          });
+          return done();
+        });
+      });
+    });
+    return describe("the racial query", function() {
+      it("returns names with pctblack above 50 when sent pctblack, 50", function(done) {
+        return request.get("localhost:3000/api/surnames?race=pctblack&race=50").end(function(res) {
+          async.each(res.body.surnames, function(name) {
+            return expect(name.pctblack).to.be.greaterThan(50);
+          });
+          return done();
+        });
+      });
+      it("returns names with pctasian above 20 when sent pctasian, 20", function(done) {
+        return request.get("localhost:3000/api/surnames?race=pctasian&race=20").end(function(res) {
+          async.each(res.body.surnames, function(name) {
+            return expect(name.pctasian).to.be.greaterThan(20);
+          });
+          return done();
+        });
+      });
+      it("returns names with pctnative above 60 when sent pctnative, 60", function(done) {
+        return request.get("localhost:3000/api/surnames?race=pctnative&race=60").end(function(res) {
+          async.each(res.body.surnames, function(name) {
+            return expect(name.pctnative).to.be.greaterThan(60);
+          });
+          return done();
+        });
+      });
+      it("returns names with pctwhite above 90 when sent pctwhite, 90", function(done) {
+        return request.get("localhost:3000/api/surnames?race=pctwhite&race=90").end(function(res) {
+          async.each(res.body.surnames, function(name) {
+            return expect(name.pctwhite).to.be.greaterThan(90);
+          });
+          return done();
+        });
+      });
+      return it("returns names with pcthispanic above 95 when sent pcthispanic, 95", function(done) {
+        return request.get("localhost:3000/api/surnames?race=pcthispanic&race=95").end(function(res) {
+          async.each(res.body.surnames, function(name) {
+            return expect(name.pcthispanic).to.be.greaterThan(95);
           });
           return done();
         });

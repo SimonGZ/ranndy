@@ -22,17 +22,26 @@ queries = require("./lib/queries");
 app.use(express["static"](__dirname + "/public"));
 
 app.get("/api/surnames", function(req, res) {
-  console.log("Request received");
   return knex("surnames").where(function() {
-    if (req.query.frequency === undefined) {
+    var pass;
+    if ([req.query.frequency, req.query.race].every(queries.isUndefined)) {
       return queries.fast(this);
-    } else if (req.query.frequency) {
-      console.log(req.query.frequency);
-      return queries.frequency_query(this, req.query.frequency);
+    } else {
+      pass = this;
+      if (req.query.frequency) {
+        pass = pass.where(function() {
+          return queries.frequencyQuery(this, req.query.frequency);
+        });
+      }
+      if (req.query.race) {
+        pass = pass.where(function() {
+          return this.where(req.query.race[0], ">", req.query.race[1]);
+        });
+      }
+      return pass;
     }
-  }).orderBy(knex.raw("RANDOM()")).limit(queries.limit_query(req.query.limit)).then(function(query_results) {
+  }).orderBy(knex.raw("RANDOM()")).limit(queries.limitQuery(req.query.limit)).then(function(query_results) {
     var results;
-    console.log("Sending query results");
     results = {
       surnames: query_results
     };
