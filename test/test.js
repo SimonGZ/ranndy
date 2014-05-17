@@ -18,7 +18,7 @@ describe("Server", function() {
 });
 
 describe("API", function() {
-  return describe("surnames", function() {
+  describe("surnames", function() {
     it("responds to /api/surnames", function(done) {
       return request.get("localhost:3000/api/surnames").end(function(res) {
         expect(res).to.exist;
@@ -130,6 +130,25 @@ describe("API", function() {
           expect(res.body).to.exist;
           return done();
         });
+      });
+    });
+  });
+  return describe("firstnames", function() {
+    it("responds to /api/firstnames", function(done) {
+      return request.get("localhost:3000/api/firstnames").end(function(res) {
+        expect(res).to.exist;
+        expect(res.status).to.equal(200);
+        return done();
+      });
+    });
+    return it("returns a JSON array of 10 names by default", function(done) {
+      return request.get("localhost:3000/api/firstnames").end(function(res) {
+        expect(res.body).to.exist;
+        expect(res.body).to.not.be.empty();
+        expect(res.body).to.have.key("firstnames");
+        expect(res.body.firstnames).to.be.an(Array);
+        expect(res.body.firstnames).to.have.length(10);
+        return done();
       });
     });
   });

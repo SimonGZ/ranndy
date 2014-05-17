@@ -89,3 +89,18 @@ describe "API", ->
         request.get("localhost:3000/api/surnames?race=pctwhite&race=dog").end (res) ->
           expect(res.body).to.exist
           done()
+
+  describe "firstnames", ->
+    it "responds to /api/firstnames", (done) ->
+      request.get("localhost:3000/api/firstnames").end (res) ->
+        expect(res).to.exist
+        expect(res.status).to.equal 200
+        done()
+    it "returns a JSON array of 10 names by default", (done) ->
+      request.get("localhost:3000/api/firstnames").end (res) ->
+        expect(res.body).to.exist
+        expect(res.body).to.not.be.empty()
+        expect(res.body).to.have.key "firstnames"
+        expect(res.body.firstnames).to.be.an Array
+        expect(res.body.firstnames).to.have.length 10
+        done()

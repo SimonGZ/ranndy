@@ -49,6 +49,20 @@ app.get("/api/surnames", function(req, res) {
   });
 });
 
+app.get("/api/firstnames", function(req, res) {
+  return knex("firstnames_annual").where(function() {
+    return this.where({
+      year: 0
+    });
+  }).limit(10).then(function(query_results) {
+    var results;
+    results = {
+      firstnames: query_results
+    };
+    return res.json(results);
+  });
+});
+
 server = app.listen(process.env.port || 3000, function() {
   return console.log("Listening on port %d", server.address().port);
 });

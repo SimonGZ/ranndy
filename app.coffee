@@ -37,6 +37,15 @@ app.get "/api/surnames", (req, res) ->
     results = surnames: query_results
     res.json results
 
+app.get "/api/firstnames", (req, res) ->
+
+  knex("firstnames_annual").where(->
+    this.where({year: 0}) 
+  )
+  .limit(10)
+  .then (query_results) ->
+    results = firstnames: query_results
+    res.json results
 
 server = app.listen(process.env.port or 3000, ->
   console.log "Listening on port %d", server.address().port
