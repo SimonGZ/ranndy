@@ -1,4 +1,5 @@
 knex = require("knex").knex
+_ = require('lodash')
 
 fastSimpleQuery = (context) ->
   context.where( knex.raw("id in (select (random()*(select last_value from surnames_id_seq))::bigint from generate_series(1,120))"))
@@ -25,6 +26,14 @@ limitQuery = (limit) ->
   else 
     return 10
 
+yearQuery = (context, req_year) ->
+  validYears = _.range(1880, 2012)
+  validYears.push(0)
+  if validYears.indexOf(parseInt(req_year)) > -1
+    context.where({year: parseInt(req_year)})
+  else
+    context.where({year: 0})
+
 isUndefined = (element, index, array) ->
   return element is `undefined`
 
@@ -33,6 +42,7 @@ module.exports.limitQuery = limitQuery
 module.exports.fast = fastSimpleQuery
 module.exports.frequencyQuery = frequencyQuery
 module.exports.raceQuery = raceQuery
+module.exports.yearQuery = yearQuery
 
 
 isNumber = (n) ->

@@ -51,10 +51,8 @@ app.get("/api/surnames", function(req, res) {
 
 app.get("/api/firstnames", function(req, res) {
   return knex("firstnames_annual").where(function() {
-    return this.where({
-      year: 0
-    });
-  }).limit(10).then(function(query_results) {
+    return queries.yearQuery(this, req.query.year);
+  }).orderBy(knex.raw("RANDOM()")).limit(10).then(function(query_results) {
     var results;
     results = {
       firstnames: query_results

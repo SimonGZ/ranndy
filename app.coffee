@@ -40,8 +40,9 @@ app.get "/api/surnames", (req, res) ->
 app.get "/api/firstnames", (req, res) ->
 
   knex("firstnames_annual").where(->
-    this.where({year: 0}) 
+    queries.yearQuery(this, req.query.year) 
   )
+  .orderBy(knex.raw("RANDOM()"))
   .limit(10)
   .then (query_results) ->
     results = firstnames: query_results

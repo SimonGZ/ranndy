@@ -141,13 +141,29 @@ describe("API", function() {
         return done();
       });
     });
-    return it("returns a JSON array of 10 names by default", function(done) {
+    it("returns a JSON array of 10 names by default", function(done) {
       return request.get("localhost:3000/api/firstnames").end(function(res) {
         expect(res.body).to.exist;
         expect(res.body).to.not.be.empty();
         expect(res.body).to.have.key("firstnames");
         expect(res.body.firstnames).to.be.an(Array);
         expect(res.body.firstnames).to.have.length(10);
+        return done();
+      });
+    });
+    it("returns names from 1985 if set year=1985", function(done) {
+      return request.get("localhost:3000/api/firstnames?year=1985").end(function(res) {
+        async.each(res.body.firstnames, function(name) {
+          return expect(name.year).to.eql(1985);
+        });
+        return done();
+      });
+    });
+    return it("returns results from year 0 if year is gibberish", function(done) {
+      return request.get("localhost:3000/api/firstnames?year=boogie").end(function(res) {
+        async.each(res.body.firstnames, function(name) {
+          return expect(name.year).to.eql(0);
+        });
         return done();
       });
     });
