@@ -51,8 +51,18 @@ app.get("/api/surnames", function(req, res) {
 
 app.get("/api/firstnames", function(req, res) {
   return knex("firstnames_annual").where(function() {
-    return queries.yearQuery(this, req.query.year);
-  }).orderBy(knex.raw("RANDOM()")).limit(10).then(function(query_results) {
+    var pass;
+    pass = this;
+    if (req.query.gender) {
+      pass = pass.where(function() {
+        return queries.genderQuery(this, req.query.gender.toLowerCase());
+      });
+    }
+    pass = pass.where(function() {
+      return queries.yearQuery(this, req.query.year);
+    });
+    return pass;
+  }).orderBy(knex.raw("RANDOM()")).limit(queries.limitQuery(req.query.limit)).then(function(query_results) {
     var results;
     results = {
       firstnames: query_results

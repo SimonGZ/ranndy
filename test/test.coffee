@@ -1,6 +1,8 @@
 request = require("superagent")
 expect = require("expect.js")
 async = require("async")
+_ = require("lodash")
+
 describe "Server", ->
   it "responds to basic requests", (done) ->
     request.get("localhost:3000/").end (res) ->
@@ -114,14 +116,55 @@ describe "API", ->
         expect(res.body.firstnames).to.have.length 10
         done()
 
-    it "returns names from 1985 if set year=1985", (done) ->
-      request.get("localhost:3000/api/firstnames?year=1985").end (res) ->
-        async.each res.body.firstnames, (name) ->
-          expect(name.year).to.eql(1985)
-        done()
+    describe "the year query", ->
+      it "returns names from 1985 if set year=1985", (done) ->
+        request.get("localhost:3000/api/firstnames?year=1985").end (res) ->
+          async.each res.body.firstnames, (name) ->
+            expect(name.year).to.eql(1985)
+          done()
 
-    it "returns results from year 0 if year is gibberish", (done) ->
-      request.get("localhost:3000/api/firstnames?year=boogie").end (res) ->
-        async.each res.body.firstnames, (name) ->
-          expect(name.year).to.eql(0)
-        done()
+      it "returns results from year 0 if year is gibberish", (done) ->
+        request.get("localhost:3000/api/firstnames?year=boogie").end (res) ->
+          async.each res.body.firstnames, (name) ->
+            expect(name.year).to.eql(0)
+          done()
+
+    describe "the limit query", ->
+      it "changes the number of results", (done) ->
+        request.get("localhost:3000/api/firstnames?limit=33").end (res) ->
+          expect(res.body).to.exist
+          expect(res.body.firstnames).to.have.length 33
+          done()
+
+      it "returns 10 results if the limit is over 100 or under 0", (done) ->
+        request.get("localhost:3000/api/firstnames?limit=229").end (res) ->
+          expect(res.body.firstnames).to.have.length 10
+          done()
+
+    describe "the gender query", ->
+      it "returns a mix of male and female names when left blank", (done) ->
+        request.get("localhost:3000/api/firstnames?limit=20").end (res) ->
+          genders = []
+          _(res.body.firstnames).forEach (name) ->
+            genders.push(name.gender)
+          genders = _.uniq(genders)
+          expect(genders).to.contain("M")
+          expect(genders).to.contain("F")
+          done()
+
+      it "returns only male names when sent gender=male", (done) ->
+        request.get("localhost:3000/api/firstnames?gender=male").end (res) ->
+          async.each res.body.firstnames, (name) ->
+            expect(name.gender).to.eql("M")
+          done()
+
+      it "returns only female names when sent gender=female", (done) ->
+        request.get("localhost:3000/api/firstnames?gender=female").end (res) ->
+          async.each res.body.firstnames, (name) ->
+            expect(name.gender).to.eql("F")
+          done()
+
+      it "returns results when gender is set to gibberish", (done) ->
+        request.get("localhost:3000/api/firstnames?gender=doggy").end (res) ->
+          expect(res.body.firstnames[0].gender).to.exist
+          done()

@@ -34,6 +34,14 @@ yearQuery = (context, req_year) ->
   else
     context.where({year: 0})
 
+genderQuery = (context, req_gender) ->
+  validGenders = ['male', 'female']
+  if validGenders.indexOf(req_gender > -1
+    gender = {'male': 'M', 'female': 'F'}
+    context.where({gender: gender[req_gender]})
+  else
+    context.where({year: 0})
+
 isUndefined = (element, index, array) ->
   return element is `undefined`
 
@@ -43,6 +51,7 @@ module.exports.fast = fastSimpleQuery
 module.exports.frequencyQuery = frequencyQuery
 module.exports.raceQuery = raceQuery
 module.exports.yearQuery = yearQuery
+module.exports.genderQuery = genderQuery
 
 
 isNumber = (n) ->
