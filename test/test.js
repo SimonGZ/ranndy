@@ -75,11 +75,21 @@ describe("API", function() {
           return done();
         });
       });
-      return it("high returns names with frequencies >=1", function(done) {
+      it("high returns names with frequencies >=1", function(done) {
         return request.get("localhost:3000/api/surnames?frequency=high").end(function(res) {
           async.each(res.body.surnames, function(name) {
             return expect(name.frequency).to.be.greaterThan(0.99);
           });
+          return done();
+        });
+      });
+      return it("returns an error when sent gibberish", function(done) {
+        return request.get("localhost:3000/api/surnames?frequency=38be").end(function(res) {
+          expect(res.status).to.equal(400);
+          expect(res.body).to.have.key("errors");
+          expect(res.body.errors).to.be.an(Array);
+          expect(res.body.errors[0].code).to.equal(6);
+          expect(res.body.errors[0].message).to.equal("Invalid frequency specified");
           return done();
         });
       });
@@ -125,15 +135,33 @@ describe("API", function() {
           return done();
         });
       });
-      it("returns results when sent a non-existent race", function(done) {
+      it("returns an error when sent a non-existent race", function(done) {
         return request.get("localhost:3000/api/surnames?race=pctdog&race=95").end(function(res) {
-          expect(res.body).to.exist;
+          expect(res.status).to.equal(400);
+          expect(res.body).to.have.key("errors");
+          expect(res.body.errors).to.be.an(Array);
+          expect(res.body.errors[0].code).to.equal(4);
+          expect(res.body.errors[0].message).to.equal("Invalid race specified");
           return done();
         });
       });
-      return it("returns results when sent a wrong race number", function(done) {
+      it("returns an error when sent a wrong race number", function(done) {
         return request.get("localhost:3000/api/surnames?race=pctwhite&race=dog").end(function(res) {
-          expect(res.body).to.exist;
+          expect(res.status).to.equal(400);
+          expect(res.body).to.have.key("errors");
+          expect(res.body.errors).to.be.an(Array);
+          expect(res.body.errors[0].code).to.equal(5);
+          expect(res.body.errors[0].message).to.equal("Invalid race percent specified");
+          return done();
+        });
+      });
+      return it("returns an error when sent a race percent over 99", function(done) {
+        return request.get("localhost:3000/api/surnames?race=pctwhite&race=102").end(function(res) {
+          expect(res.status).to.equal(400);
+          expect(res.body).to.have.key("errors");
+          expect(res.body.errors).to.be.an(Array);
+          expect(res.body.errors[0].code).to.equal(5);
+          expect(res.body.errors[0].message).to.equal("Invalid race percent specified");
           return done();
         });
       });
@@ -256,11 +284,21 @@ describe("API", function() {
             return done();
           });
         });
-        return it("low returns names ranked greater than 100", function(done) {
+        it("low returns names ranked greater than 100", function(done) {
           return request.get("localhost:3000/api/firstnames?rank=low&gender=male&year=1902").end(function(res) {
             async.each(res.body.firstnames, function(name) {
               return expect(name.rank).to.be.greaterThan(100);
             });
+            return done();
+          });
+        });
+        return it("returns an error when sent gibberish", function(done) {
+          return request.get("localhost:3000/api/firstnames?rank=dkd8&gender=female&year=1900").end(function(res) {
+            expect(res.status).to.equal(400);
+            expect(res.body).to.have.key("errors");
+            expect(res.body.errors).to.be.an(Array);
+            expect(res.body.errors[0].code).to.equal(3);
+            expect(res.body.errors[0].message).to.equal("Invalid rank specified");
             return done();
           });
         });
@@ -283,11 +321,21 @@ describe("API", function() {
             return done();
           });
         });
-        return it("low returns names ranked greater than 300", function(done) {
+        it("low returns names ranked greater than 300", function(done) {
           return request.get("localhost:3000/api/firstnames?rank=low&gender=female&year=2002").end(function(res) {
             async.each(res.body.firstnames, function(name) {
               return expect(name.rank).to.be.greaterThan(300);
             });
+            return done();
+          });
+        });
+        return it("returns an error when sent gibberish", function(done) {
+          return request.get("localhost:3000/api/firstnames?rank=dkd8&gender=female&year=2002").end(function(res) {
+            expect(res.status).to.equal(400);
+            expect(res.body).to.have.key("errors");
+            expect(res.body.errors).to.be.an(Array);
+            expect(res.body.errors[0].code).to.equal(3);
+            expect(res.body.errors[0].message).to.equal("Invalid rank specified");
             return done();
           });
         });

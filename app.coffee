@@ -28,10 +28,10 @@ app.get "/api/surnames", (req, res) ->
       queries.fast(this)
     else
       this.where(->
-        queries.frequencyQuery(this, req.query.frequency) 
+        queries.frequencyQuery(this, req.query.frequency, errorHandler) 
       )
       .andWhere(->
-        queries.raceQuery(this, req.query.race)
+        queries.raceQuery(this, req.query.race, errorHandler)
       )
   )
   .orderBy(knex.raw("RANDOM()"))
@@ -79,7 +79,7 @@ app.get "/api/firstnames", (req, res) ->
           queries.genderQuery(this, req.query.gender, errorHandler)
         )
         .andWhere(->
-          queries.rankQuery(this, req.query.rank, results[0])
+          queries.rankQuery(this, req.query.rank, results[0], errorHandler)
         )
         .orderBy(knex.raw("RANDOM()"))
         .limit(queries.limitQuery(req.query.limit, errorHandler))

@@ -6,7 +6,7 @@ errorHandler = require('../lib/errorHandler')
 fastSimpleQuery = (context) ->
   context.where( knex.raw("id in (select (random()*(select last_value from surnames_id_seq))::bigint from generate_series(1,120))"))
 
-frequencyQuery = (context, freq) ->
+frequencyQuery = (context, freq, errorHandler) ->
   if freq is "low"
     context.where("frequency", "<", 0.06)
   else if freq is "medium"
@@ -14,16 +14,20 @@ frequencyQuery = (context, freq) ->
   else if freq is "high"
     context.where("frequency", ">=", 1)
   else
+    if !_.isUndefined(freq) then errorHandler.addError(errorHandler.errorCodes['invalid_frequency'])
     context.where("frequency", ">", -1)
 
-raceQuery = (context, raceArray) ->
-  unless _.isUndefined(raceArray) 
+raceQuery = (context, raceArray, errorHandler) ->
+  if !_.isUndefined(raceArray) 
     if _.isString(raceArray[0]) and _.parseInt(raceArray[1])
       if _.contains(["pctwhite","pctasian","pctnative","pctblack","pcthispanic"], raceArray[0])
+        if raceArray[1] > 99 or raceArray[1] < 1 then errorHandler.addError(errorHandler.errorCodes['invalid_race_pct'])
         context.where(raceArray[0], ">", Math.abs(raceArray[1]))
       else
+        errorHandler.addError(errorHandler.errorCodes['invalid_race'])
         context.where("pctwhite", ">", -1)
     else
+      errorHandler.addError(errorHandler.errorCodes['invalid_race_pct'])
       context.where("pctwhite", ">", -1)  
   else
     context.where("pctwhite", ">", -1)
@@ -67,7 +71,7 @@ sanitizeGender = (rawGender) ->
   else
     return false
 
-rankQuery = (context, req_rank, maxRank) ->
+rankQuery = (context, req_rank, maxRank, errorHandler) ->
   if _.isString(req_rank) and !_.isUndefined(maxRank)
     if maxRank > 500
       if req_rank is "low"
@@ -77,6 +81,7 @@ rankQuery = (context, req_rank, maxRank) ->
       else if req_rank is "high"
         context.where("rank", "<=", 150)
       else
+        errorHandler.addError(errorHandler.errorCodes['invalid_rank'])
         anyRank(context)
     else if maxRank < 500
       if req_rank is "low"
@@ -86,6 +91,7 @@ rankQuery = (context, req_rank, maxRank) ->
       else if req_rank is 'high'
         context.where("rank", "<=", 50)
       else
+        errorHandler.addError(errorHandler.errorCodes['invalid_rank'])
         anyRank(context)
   else
     anyRank(context)

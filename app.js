@@ -35,9 +35,9 @@ app.get("/api/surnames", function(req, res) {
       return queries.fast(this);
     } else {
       return this.where(function() {
-        return queries.frequencyQuery(this, req.query.frequency);
+        return queries.frequencyQuery(this, req.query.frequency, errorHandler);
       }).andWhere(function() {
-        return queries.raceQuery(this, req.query.race);
+        return queries.raceQuery(this, req.query.race, errorHandler);
       });
     }
   }).orderBy(knex.raw("RANDOM()")).limit(queries.limitQuery(req.query.limit, errorHandler)).then(function(query_results) {
@@ -81,7 +81,7 @@ app.get("/api/firstnames", function(req, res) {
     }).andWhere(function() {
       return queries.genderQuery(this, req.query.gender, errorHandler);
     }).andWhere(function() {
-      return queries.rankQuery(this, req.query.rank, results[0]);
+      return queries.rankQuery(this, req.query.rank, results[0], errorHandler);
     }).orderBy(knex.raw("RANDOM()")).limit(queries.limitQuery(req.query.limit, errorHandler)).then(function(query_results) {
       if (errorHandler.errorsFound() > 0) {
         throw new Error("Errors detected in errorHandler");

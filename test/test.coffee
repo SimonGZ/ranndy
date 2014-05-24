@@ -63,6 +63,15 @@ describe "API", ->
             expect(name.frequency).to.be.greaterThan(0.99)
           done()
 
+      it "returns an error when sent gibberish", (done) ->
+        request.get("localhost:3000/api/surnames?frequency=38be").end (res) ->
+          expect(res.status).to.equal 400
+          expect(res.body).to.have.key "errors"
+          expect(res.body.errors).to.be.an Array
+          expect(res.body.errors[0].code).to.equal 6
+          expect(res.body.errors[0].message).to.equal "Invalid frequency specified"
+          done()
+
     describe "the racial query", ->
       it "returns names with pctblack above 50 when sent pctblack, 50", (done) ->
         request.get("localhost:3000/api/surnames?race=pctblack&race=50").end (res) ->
@@ -94,14 +103,31 @@ describe "API", ->
             expect(name.pcthispanic).to.be.greaterThan(95)
           done()
 
-      it "returns results when sent a non-existent race", (done) ->
+      it "returns an error when sent a non-existent race", (done) ->
         request.get("localhost:3000/api/surnames?race=pctdog&race=95").end (res) ->
-          expect(res.body).to.exist
+          expect(res.status).to.equal 400
+          expect(res.body).to.have.key "errors"
+          expect(res.body.errors).to.be.an Array
+          expect(res.body.errors[0].code).to.equal 4
+          expect(res.body.errors[0].message).to.equal "Invalid race specified"
           done()
 
-      it "returns results when sent a wrong race number", (done) ->
+      it "returns an error when sent a wrong race number", (done) ->
         request.get("localhost:3000/api/surnames?race=pctwhite&race=dog").end (res) ->
-          expect(res.body).to.exist
+          expect(res.status).to.equal 400
+          expect(res.body).to.have.key "errors"
+          expect(res.body.errors).to.be.an Array
+          expect(res.body.errors[0].code).to.equal 5
+          expect(res.body.errors[0].message).to.equal "Invalid race percent specified"
+          done()
+
+      it "returns an error when sent a race percent over 99", (done) ->
+        request.get("localhost:3000/api/surnames?race=pctwhite&race=102").end (res) ->
+          expect(res.status).to.equal 400
+          expect(res.body).to.have.key "errors"
+          expect(res.body.errors).to.be.an Array
+          expect(res.body.errors[0].code).to.equal 5
+          expect(res.body.errors[0].message).to.equal "Invalid race percent specified"
           done()
 
   describe "firstnames", ->
@@ -205,6 +231,15 @@ describe "API", ->
               expect(name.rank).to.be.greaterThan(100)
             done()
 
+        it "returns an error when sent gibberish", (done) ->
+          request.get("localhost:3000/api/firstnames?rank=dkd8&gender=female&year=1900").end (res) ->
+            expect(res.status).to.equal 400
+            expect(res.body).to.have.key "errors"
+            expect(res.body.errors).to.be.an Array
+            expect(res.body.errors[0].code).to.equal 3
+            expect(res.body.errors[0].message).to.equal "Invalid rank specified"
+            done()
+
       describe "max(rank) greater than 500", ->
         it "high returns names from the top 150", (done) ->
           request.get("localhost:3000/api/firstnames?rank=high&gender=female&year=1980").end (res) ->
@@ -223,4 +258,13 @@ describe "API", ->
           request.get("localhost:3000/api/firstnames?rank=low&gender=female&year=2002").end (res) ->
             async.each res.body.firstnames, (name) ->
               expect(name.rank).to.be.greaterThan(300)
+            done()
+
+        it "returns an error when sent gibberish", (done) ->
+          request.get("localhost:3000/api/firstnames?rank=dkd8&gender=female&year=2002").end (res) ->
+            expect(res.status).to.equal 400
+            expect(res.body).to.have.key "errors"
+            expect(res.body.errors).to.be.an Array
+            expect(res.body.errors[0].code).to.equal 3
+            expect(res.body.errors[0].message).to.equal "Invalid rank specified"
             done()
