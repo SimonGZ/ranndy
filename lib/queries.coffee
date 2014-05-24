@@ -1,6 +1,7 @@
 knex = require("knex").knex
 async = require("async")
 _ = require('lodash')
+errorHandler = require('../lib/errorHandler')
 
 fastSimpleQuery = (context) ->
   context.where( knex.raw("id in (select (random()*(select last_value from surnames_id_seq))::bigint from generate_series(1,120))"))
@@ -27,29 +28,35 @@ raceQuery = (context, raceArray) ->
   else
     context.where("pctwhite", ">", -1)
 
-limitQuery = (limit) ->
+limitQuery = (limit, errorHandler) ->
   if (limit <= 100) and (limit >= 1)
     return limit
-  else 
+  else
+    if !_.isUndefined(limit) then errorHandler.addError(errorHandler.errorCodes['invalid_limit'])
     return 10
 
-yearQuery = (context, req_year) ->
-  year = sanitizeYear(req_year)
+yearQuery = (context, req_year, errorHandler) ->
+  year = sanitizeYear(req_year, errorHandler)
   context.where({year: year})
 
-sanitizeYear = (rawYear) ->
+sanitizeYear = (rawYear, errorHandler) ->
   validYears = _.range(1880, 2012)
   validYears.push(0)
   if validYears.indexOf(parseInt(rawYear)) > -1
     return parseInt(rawYear)
+  else if _.isUndefined(rawYear)
+    return 0
   else
+    errorHandler.addError(errorHandler.errorCodes['invalid_year'])
     return 0
 
-genderQuery = (context, req_gender) ->  
+genderQuery = (context, req_gender, errorHandler) ->  
   gender = sanitizeGender(req_gender)
   if gender
     context.where({gender: gender})
   else
+    if !_.isUndefined(req_gender)
+      errorHandler.addError(errorHandler.errorCodes['invalid_gender'])
     context.where('gender', 'LIKE', '%')
 
 sanitizeGender = (rawGender) ->

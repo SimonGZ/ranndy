@@ -46,9 +46,13 @@ describe("API", function() {
           return done();
         });
       });
-      return it("returns 10 results if the limit is over 100 or under 0", function(done) {
+      return it("returns an error if the limit is over 100", function(done) {
         return request.get("localhost:3000/api/surnames?limit=130").end(function(res) {
-          expect(res.body.surnames).to.have.length(10);
+          expect(res.status).to.equal(400);
+          expect(res.body).to.have.key("errors");
+          expect(res.body.errors).to.be.an(Array);
+          expect(res.body.errors[0].code).to.equal(0);
+          expect(res.body.errors[0].message).to.equal("Invalid limit specified");
           return done();
         });
       });
@@ -162,11 +166,13 @@ describe("API", function() {
           return done();
         });
       });
-      return it("returns results from year 0 if year is gibberish", function(done) {
+      return it("returns an error if year is gibberish", function(done) {
         return request.get("localhost:3000/api/firstnames?year=boogie").end(function(res) {
-          async.each(res.body.firstnames, function(name) {
-            return expect(name.year).to.eql(0);
-          });
+          expect(res.status).to.equal(400);
+          expect(res.body).to.have.key("errors");
+          expect(res.body.errors).to.be.an(Array);
+          expect(res.body.errors[0].code).to.equal(1);
+          expect(res.body.errors[0].message).to.equal("Invalid year specified");
           return done();
         });
       });
@@ -179,9 +185,13 @@ describe("API", function() {
           return done();
         });
       });
-      return it("returns 10 results if the limit is over 100 or under 0", function(done) {
-        return request.get("localhost:3000/api/firstnames?limit=229").end(function(res) {
-          expect(res.body.firstnames).to.have.length(10);
+      return it("returns an error if the limit is under 0", function(done) {
+        return request.get("localhost:3000/api/firstnames?limit=-5").end(function(res) {
+          expect(res.status).to.equal(400);
+          expect(res.body).to.have.key("errors");
+          expect(res.body.errors).to.be.an(Array);
+          expect(res.body.errors[0].code).to.equal(0);
+          expect(res.body.errors[0].message).to.equal("Invalid limit specified");
           return done();
         });
       });
@@ -216,9 +226,13 @@ describe("API", function() {
           return done();
         });
       });
-      return it("returns results when gender is set to gibberish", function(done) {
+      return it("returns an error when gender is set to gibberish", function(done) {
         return request.get("localhost:3000/api/firstnames?gender=doggy").end(function(res) {
-          expect(res.body.firstnames[0].gender).to.exist;
+          expect(res.status).to.equal(400);
+          expect(res.body).to.have.key("errors");
+          expect(res.body.errors).to.be.an(Array);
+          expect(res.body.errors[0].code).to.equal(2);
+          expect(res.body.errors[0].message).to.equal("Invalid gender specified");
           return done();
         });
       });

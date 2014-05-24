@@ -34,9 +34,13 @@ describe "API", ->
           expect(res.body.surnames).to.have.length 23
           done()
 
-      it "returns 10 results if the limit is over 100 or under 0", (done) ->
+      it "returns an error if the limit is over 100", (done) ->
         request.get("localhost:3000/api/surnames?limit=130").end (res) ->
-          expect(res.body.surnames).to.have.length 10
+          expect(res.status).to.equal 400
+          expect(res.body).to.have.key "errors"
+          expect(res.body.errors).to.be.an Array
+          expect(res.body.errors[0].code).to.equal 0
+          expect(res.body.errors[0].message).to.equal "Invalid limit specified"
           done()
 
     describe "the frequency query", ->
@@ -123,10 +127,13 @@ describe "API", ->
             expect(name.year).to.eql(1985)
           done()
 
-      it "returns results from year 0 if year is gibberish", (done) ->
+      it "returns an error if year is gibberish", (done) ->
         request.get("localhost:3000/api/firstnames?year=boogie").end (res) ->
-          async.each res.body.firstnames, (name) ->
-            expect(name.year).to.eql(0)
+          expect(res.status).to.equal 400
+          expect(res.body).to.have.key "errors"
+          expect(res.body.errors).to.be.an Array
+          expect(res.body.errors[0].code).to.equal 1
+          expect(res.body.errors[0].message).to.equal "Invalid year specified"
           done()
 
     describe "the limit query", ->
@@ -136,9 +143,13 @@ describe "API", ->
           expect(res.body.firstnames).to.have.length 33
           done()
 
-      it "returns 10 results if the limit is over 100 or under 0", (done) ->
-        request.get("localhost:3000/api/firstnames?limit=229").end (res) ->
-          expect(res.body.firstnames).to.have.length 10
+      it "returns an error if the limit is under 0", (done) ->
+        request.get("localhost:3000/api/firstnames?limit=-5").end (res) ->
+          expect(res.status).to.equal 400
+          expect(res.body).to.have.key "errors"
+          expect(res.body.errors).to.be.an Array
+          expect(res.body.errors[0].code).to.equal 0
+          expect(res.body.errors[0].message).to.equal "Invalid limit specified"
           done()
 
     describe "the gender query", ->
@@ -164,9 +175,13 @@ describe "API", ->
             expect(name.gender).to.eql("F")
           done()
 
-      it "returns results when gender is set to gibberish", (done) ->
+      it "returns an error when gender is set to gibberish", (done) ->
         request.get("localhost:3000/api/firstnames?gender=doggy").end (res) ->
-          expect(res.body.firstnames[0].gender).to.exist
+          expect(res.status).to.equal 400
+          expect(res.body).to.have.key "errors"
+          expect(res.body.errors).to.be.an Array
+          expect(res.body.errors[0].code).to.equal 2
+          expect(res.body.errors[0].message).to.equal "Invalid gender specified"
           done()
 
     describe "the rank query", ->

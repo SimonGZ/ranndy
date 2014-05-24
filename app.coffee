@@ -17,6 +17,10 @@ queries = require("./lib/queries")
 
 app.use express.static(__dirname + "/public")
 
+GLOBAL.errors = []
+
+errorHandler = require("./lib/errorHandler")
+
 app.get "/api/surnames", (req, res) ->
 
   knex("surnames").where(->
@@ -31,15 +35,21 @@ app.get "/api/surnames", (req, res) ->
       )
   )
   .orderBy(knex.raw("RANDOM()"))
-  .limit(queries.limitQuery(req.query.limit))
-  .then (query_results) ->
+  .limit(queries.limitQuery(req.query.limit, errorHandler))
+  .then( (query_results) ->
+    if errorHandler.errorsFound() > 0 
+      throw new Error("Errors detected in errorHandler")
+    else
     results = surnames: query_results
     res.json results
+  )
+  .catch(Error, (e) ->
+    console.log e
+    res.json 400, errors: errorHandler.listErrors()
+    errorHandler.clearErrors()
+  )
 
 app.get "/api/firstnames", (req, res) ->
-
-  # New plan. Create an async series in which the first part of the series is an if statement wrapped around the maxRank function. Then use the callback to run the knex.where here.
-  # Also rewrite the queries so that they don't require if statements. Instead they use the sanitizers so that if the query is blank, the AND WHERE is executed but in a way that doesn't actually filter the results.
 
   async.series([
     (callback) ->
@@ -63,19 +73,28 @@ app.get "/api/firstnames", (req, res) ->
 
         knex("firstnames_annual").where(->
           # Year query
-          queries.yearQuery(this, req.query.year)
+          queries.yearQuery(this, req.query.year, errorHandler)
         )
         .andWhere(->
-          queries.genderQuery(this, req.query.gender)
+          queries.genderQuery(this, req.query.gender, errorHandler)
         )
         .andWhere(->
           queries.rankQuery(this, req.query.rank, results[0])
         )
         .orderBy(knex.raw("RANDOM()"))
-        .limit(queries.limitQuery(req.query.limit))
-        .then (query_results) ->
-          results = firstnames: query_results
-          res.json results
+        .limit(queries.limitQuery(req.query.limit, errorHandler))
+        .then( (query_results) ->
+          if errorHandler.errorsFound() > 0 
+            throw new Error("Errors detected in errorHandler")
+          else
+            results = firstnames: query_results
+            res.json results
+        )
+        .catch(Error, (e) ->
+          console.log e
+          res.json 400, errors: errorHandler.listErrors()
+          errorHandler.clearErrors()
+        )
   )
 
   # knex("firstnames_annual").where(->
