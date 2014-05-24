@@ -56,7 +56,7 @@ app.get("/api/surnames", function(req, res) {
 app.get("/api/firstnames", function(req, res) {
   return async.series([
     function(callback) {
-      if (existy(req.query.rank) && existy(req.query.gender)) {
+      if (!(req.query.rank === undefined || req.query.gender === undefined)) {
         return knex("firstnames_annual").select(knex.raw("max(rank)")).where(function() {
           return queries.yearQuery(this, req.query.year);
         }).andWhere(function() {
@@ -64,6 +64,8 @@ app.get("/api/firstnames", function(req, res) {
         }).then(function(result) {
           return callback(null, result[0].max);
         });
+      } else {
+        return callback(null);
       }
     }
   ], function(err, results) {

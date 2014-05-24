@@ -47,7 +47,7 @@ app.get "/api/firstnames", (req, res) ->
 
   async.series([
     (callback) ->
-      if existy(req.query.rank) and existy(req.query.gender)
+      unless req.query.rank is `undefined` or req.query.gender is `undefined`
         knex("firstnames_annual").select(knex.raw("max(rank)"))
         .where(->
           queries.yearQuery(this, req.query.year)
@@ -57,6 +57,8 @@ app.get "/api/firstnames", (req, res) ->
         )
         .then (result) ->
           callback(null, result[0].max)
+      else
+        callback(null)
       ],
       (err, results) ->
 
@@ -115,6 +117,7 @@ app.get "/api/firstnames", (req, res) ->
 server = app.listen(process.env.port or 3000, ->
   console.log "Listening on port %d", server.address().port
 )
+
 
 
 # Convenience Functions

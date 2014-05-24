@@ -40,7 +40,6 @@ sanitizeYear = (rawYear) ->
     return 0
 
 genderQuery = (context, req_gender) ->  
-  console.log "The requested gender is #{req_gender}"
   gender = sanitizeGender(req_gender)
   if gender
     context.where({gender: gender})
@@ -56,11 +55,8 @@ sanitizeGender = (rawGender) ->
     return false
 
 rankQuery = (context, req_rank, maxRank) ->
-  console.log "rankQuery called with #{req_rank} and maxRank #{maxRank}"
-  if _.isString(req_rank)
-    console.log "#{req_rank} exists."
+  if _.isString(req_rank) and !_.isUndefined(maxRank)
     if maxRank > 500
-      console.log("Above 500. The rank is #{req_rank}")
       if req_rank is "low"
         context.where("rank", ">", 300)
       else if req_rank is "medium"
@@ -70,7 +66,6 @@ rankQuery = (context, req_rank, maxRank) ->
       else
         anyRank(context)
     else if maxRank < 500
-      console.log("Below 500. The rank is #{req_rank}")
       if req_rank is "low"
         context.where("rank", ">", 100)
       else if req_rank is "medium"
