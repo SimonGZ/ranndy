@@ -186,7 +186,7 @@ describe("API", function() {
         });
       });
     });
-    return describe("the gender query", function() {
+    describe("the gender query", function() {
       it("returns a mix of male and female names when left blank", function(done) {
         return request.get("localhost:3000/api/firstnames?limit=20").end(function(res) {
           var genders;
@@ -220,6 +220,62 @@ describe("API", function() {
         return request.get("localhost:3000/api/firstnames?gender=doggy").end(function(res) {
           expect(res.body.firstnames[0].gender).to.exist;
           return done();
+        });
+      });
+    });
+    return describe("the rank query", function() {
+      describe("max(rank) less than 500", function() {
+        it("high returns names from the top 50", function(done) {
+          return request.get("localhost:3000/api/firstnames?rank=high&gender=male&year=1880").end(function(res) {
+            async.each(res.body.firstnames, function(name) {
+              return expect(name.rank).to.be.lessThan(51);
+            });
+            return done();
+          });
+        });
+        it("medium returns names ranked between 50 and 100", function(done) {
+          return request.get("localhost:3000/api/firstnames?rank=medium&gender=male&year=1900").end(function(res) {
+            async.each(res.body.firstnames, function(name) {
+              expect(name.rank).to.be.greaterThan(50);
+              return expect(name.rank).to.be.lessThan(101);
+            });
+            return done();
+          });
+        });
+        return it("low returns names ranked greater than 100", function(done) {
+          return request.get("localhost:3000/api/firstnames?rank=low&gender=male&year=1902").end(function(res) {
+            async.each(res.body.firstnames, function(name) {
+              return expect(name.rank).to.be.greaterThan(100);
+            });
+            return done();
+          });
+        });
+      });
+      return describe("max(rank) greater than 500", function() {
+        it("high returns names from the top 150", function(done) {
+          return request.get("localhost:3000/api/firstnames?rank=high&gender=female&year=1980").end(function(res) {
+            async.each(res.body.firstnames, function(name) {
+              return expect(name.rank).to.be.lessThan(151);
+            });
+            return done();
+          });
+        });
+        it("medium returns names ranked between 150 and 300", function(done) {
+          return request.get("localhost:3000/api/firstnames?rank=medium&gender=male&year=1990").end(function(res) {
+            async.each(res.body.firstnames, function(name) {
+              expect(name.rank).to.be.greaterThan(150);
+              return expect(name.rank).to.be.lessThan(301);
+            });
+            return done();
+          });
+        });
+        return it("low returns names ranked greater than 300", function(done) {
+          return request.get("localhost:3000/api/firstnames?rank=low&gender=female&year=2002").end(function(res) {
+            async.each(res.body.firstnames, function(name) {
+              return expect(name.rank).to.be.greaterThan(300);
+            });
+            return done();
+          });
         });
       });
     });

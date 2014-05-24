@@ -1,6 +1,9 @@
 express = require("express")
 app = express()
 
+async = require("async")
+_ = require("lodash")
+
 Knex = require("knex")
 Knex.knex = Knex.initialize(
   client: "pg"
@@ -39,25 +42,85 @@ app.get "/api/surnames", (req, res) ->
 
 app.get "/api/firstnames", (req, res) ->
 
-  knex("firstnames_annual").where(->
-    pass = this
-    if req.query.gender
-      pass = pass.where(->
-        queries.genderQuery(this, req.query.gender.toLowerCase())
-      )
+  # New plan. Create an async series in which the first part of the series is an if statement wrapped around the maxRank function. Then use the callback to run the knex.where here.
+  # Also rewrite the queries so that they don't require if statements. Instead they use the sanitizers so that if the query is blank, the AND WHERE is executed but in a way that doesn't actually filter the results.
 
-    # Year query must always run
-    pass = pass.where(->
-      queries.yearQuery(this, req.query.year)
-    )
-    return pass
+  async.series([
+    (callback) ->
+      if existy(req.query.rank) and existy(req.query.gender)
+        knex("firstnames_annual").select(knex.raw("max(rank)"))
+        .where(->
+          queries.yearQuery(this, req.query.year)
+        )
+        .andWhere(->
+          queries.genderQuery(this, req.query.gender)
+        )
+        .then (result) ->
+          callback(null, result[0].max)
+      ],
+      (err, results) ->
+
+        knex("firstnames_annual").where(->
+          # Year query
+          queries.yearQuery(this, req.query.year)
+        )
+        .andWhere(->
+          queries.genderQuery(this, req.query.gender)
+        )
+        .andWhere(->
+          queries.rankQuery(this, req.query.rank, results[0])
+        )
+        .orderBy(knex.raw("RANDOM()"))
+        .limit(queries.limitQuery(req.query.limit))
+        .then (query_results) ->
+          results = firstnames: query_results
+          res.json results
   )
-  .orderBy(knex.raw("RANDOM()"))
-  .limit(queries.limitQuery(req.query.limit))
-  .then (query_results) ->
-    results = firstnames: query_results
-    res.json results
+
+  # knex("firstnames_annual").where(->
+  #   pass = this
+    
+  #   # Year query must always run
+  #   pass = pass.where(->
+  #     queries.yearQuery(this, req.query.year)
+  #   )
+
+  #   if req.query.gender
+  #     pass = pass.where(->
+  #       queries.genderQuery(this, req.query.gender.toLowerCase())
+  #     )
+
+  #   if req.query.rank and req.query.gender
+  #     queryOptions = {'rank': req.query.rank, 'gender': queries.sanitizeGender(req.query.gender), 'year': queries.sanitizeYear(req.query.year)}
+      
+  #     pass = queries.rankQuery(this, queryOptions)
+
+  #   return pass
+  # )
+  # .orderBy(knex.raw("RANDOM()"))
+  # .limit(queries.limitQuery(req.query.limit))
+  # .then (query_results) ->
+  #   results = firstnames: query_results
+  #   res.json results
+
+# queryProcessor = (obj, req) ->
+#   obj.where(->
+#     queries.yearQuery(this, req.query.year)
+#   )
+#   .andWhere(->
+#     queries.genderQuery(this, req.query.gender.toLowerCase())
+#   )
+
 
 server = app.listen(process.env.port or 3000, ->
   console.log "Listening on port %d", server.address().port
 )
+
+
+# Convenience Functions
+
+existy = (x) ->
+  return x != null
+
+isUndefined = (element, index, array) ->
+  return element is `undefined`

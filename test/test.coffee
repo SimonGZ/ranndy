@@ -168,3 +168,44 @@ describe "API", ->
         request.get("localhost:3000/api/firstnames?gender=doggy").end (res) ->
           expect(res.body.firstnames[0].gender).to.exist
           done()
+
+    describe "the rank query", ->
+      describe "max(rank) less than 500", ->
+        it "high returns names from the top 50", (done) ->
+          request.get("localhost:3000/api/firstnames?rank=high&gender=male&year=1880").end (res) ->
+            async.each res.body.firstnames, (name) ->
+              expect(name.rank).to.be.lessThan(51)
+            done()
+
+        it "medium returns names ranked between 50 and 100", (done) ->
+          request.get("localhost:3000/api/firstnames?rank=medium&gender=male&year=1900").end (res) ->
+            async.each res.body.firstnames, (name) ->
+              expect(name.rank).to.be.greaterThan(50)
+              expect(name.rank).to.be.lessThan(101)
+            done()
+
+        it "low returns names ranked greater than 100", (done) ->
+          request.get("localhost:3000/api/firstnames?rank=low&gender=male&year=1902").end (res) ->
+            async.each res.body.firstnames, (name) ->
+              expect(name.rank).to.be.greaterThan(100)
+            done()
+
+      describe "max(rank) greater than 500", ->
+        it "high returns names from the top 150", (done) ->
+          request.get("localhost:3000/api/firstnames?rank=high&gender=female&year=1980").end (res) ->
+            async.each res.body.firstnames, (name) ->
+              expect(name.rank).to.be.lessThan(151)
+            done()
+
+        it "medium returns names ranked between 150 and 300", (done) ->
+          request.get("localhost:3000/api/firstnames?rank=medium&gender=male&year=1990").end (res) ->
+            async.each res.body.firstnames, (name) ->
+              expect(name.rank).to.be.greaterThan(150)
+              expect(name.rank).to.be.lessThan(301)
+            done()
+
+        it "low returns names ranked greater than 300", (done) ->
+          request.get("localhost:3000/api/firstnames?rank=low&gender=female&year=2002").end (res) ->
+            async.each res.body.firstnames, (name) ->
+              expect(name.rank).to.be.greaterThan(300)
+            done()
