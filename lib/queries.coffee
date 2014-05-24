@@ -13,13 +13,19 @@ frequencyQuery = (context, freq) ->
   else if freq is "high"
     context.where("frequency", ">=", 1)
   else
-    fastSimpleQuery(context)
+    context.where("frequency", ">", -1)
 
 raceQuery = (context, raceArray) ->
-  if (["pctwhite","pctasian","pctnative","pctblack","pcthispanic"].indexOf(raceArray[0]) > -1) and isNumber(raceArray[1])
-    context.where(raceArray[0], ">", Math.abs(raceArray[1]))
+  unless _.isUndefined(raceArray) 
+    if _.isString(raceArray[0]) and _.parseInt(raceArray[1])
+      if _.contains(["pctwhite","pctasian","pctnative","pctblack","pcthispanic"], raceArray[0])
+        context.where(raceArray[0], ">", Math.abs(raceArray[1]))
+      else
+        context.where("pctwhite", ">", -1)
+    else
+      context.where("pctwhite", ">", -1)  
   else
-    fastSimpleQuery(context)
+    context.where("pctwhite", ">", -1)
 
 limitQuery = (limit) ->
   if (limit <= 100) and (limit >= 1)

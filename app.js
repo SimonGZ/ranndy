@@ -27,22 +27,14 @@ app.use(express["static"](__dirname + "/public"));
 
 app.get("/api/surnames", function(req, res) {
   return knex("surnames").where(function() {
-    var pass;
     if ([req.query.frequency, req.query.race].every(queries.isUndefined)) {
       return queries.fast(this);
     } else {
-      pass = this;
-      if (req.query.frequency) {
-        pass = pass.where(function() {
-          return queries.frequencyQuery(this, req.query.frequency);
-        });
-      }
-      if (req.query.race) {
-        pass = pass.where(function() {
-          return queries.raceQuery(this, req.query.race);
-        });
-      }
-      return pass;
+      return this.where(function() {
+        return queries.frequencyQuery(this, req.query.frequency);
+      }).andWhere(function() {
+        return queries.raceQuery(this, req.query.race);
+      });
     }
   }).orderBy(knex.raw("RANDOM()")).limit(queries.limitQuery(req.query.limit)).then(function(query_results) {
     var results;

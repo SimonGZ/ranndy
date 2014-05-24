@@ -23,16 +23,12 @@ app.get "/api/surnames", (req, res) ->
     if [req.query.frequency, req.query.race].every(queries.isUndefined)
       queries.fast(this)
     else
-      pass = this
-      if req.query.frequency
-        pass = pass.where(->
-          queries.frequencyQuery(this, req.query.frequency) 
-        )
-      if req.query.race
-        pass = pass.where(->
-          queries.raceQuery(this, req.query.race)
-        )
-      return pass
+      this.where(->
+        queries.frequencyQuery(this, req.query.frequency) 
+      )
+      .andWhere(->
+        queries.raceQuery(this, req.query.race)
+      )
   )
   .orderBy(knex.raw("RANDOM()"))
   .limit(queries.limitQuery(req.query.limit))
@@ -47,6 +43,8 @@ app.get "/api/firstnames", (req, res) ->
 
   async.series([
     (callback) ->
+
+      # Only run this code if both req.query.rank and req.query.gender exist
       unless req.query.rank is `undefined` or req.query.gender is `undefined`
         knex("firstnames_annual").select(knex.raw("max(rank)"))
         .where(->
@@ -56,6 +54,7 @@ app.get "/api/firstnames", (req, res) ->
           queries.genderQuery(this, req.query.gender)
         )
         .then (result) ->
+          # Send the max(rank) to the callback function
           callback(null, result[0].max)
       else
         callback(null)
