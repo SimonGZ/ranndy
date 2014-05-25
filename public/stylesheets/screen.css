@@ -448,9 +448,9 @@ th {
 /**
  * Layout for AG grids & Container
  */
-/* line 23, ../sass/screen.scss */
+/* line 26, ../sass/screen.scss */
 .container {
-  max-width: 1140px;
+  max-width: 1000px;
   margin-left: auto;
   margin-right: auto;
   overflow: hidden;
@@ -463,124 +463,53 @@ th {
   clear: both;
 }
 
-@media (min-width: 900px) {
-  /* line 29, ../sass/screen.scss */
-  .ag1 {
-    width: 18.36735%;
-    float: left;
-    margin-right: 2.04082%;
-  }
-
-  /* line 33, ../sass/screen.scss */
-  .ag2 {
-    width: 59.18367%;
-    float: left;
-    margin-right: 2.04082%;
-    overflow: hidden;
-    *zoom: 1;
-  }
-
-  /* line 38, ../sass/screen.scss */
-  .ag3 {
-    width: 18.36735%;
-    float: right;
-    margin-right: 0;
-  }
-
-  /* line 42, ../sass/screen.scss */
-  .ag4 {
-    width: 48.27586%;
-    float: left;
-    margin-right: 3.44828%;
-  }
-
-  /* line 46, ../sass/screen.scss */
-  .ag5 {
-    width: 48.27586%;
-    float: right;
-    margin-right: 0;
-  }
-
-  /* line 50, ../sass/screen.scss */
-  .ag6 {
-    width: 31.03448%;
-    float: left;
-    margin-right: 3.44828%;
-  }
-
-  /* line 54, ../sass/screen.scss */
-  .ag7 {
-    width: 65.51724%;
-    float: right;
-    margin-right: 0;
-    overflow: hidden;
-    *zoom: 1;
-  }
-
-  /* line 59, ../sass/screen.scss */
-  .ag8 {
-    width: 47.36842%;
-    float: left;
-    margin-right: 5.26316%;
-  }
-
-  /* line 63, ../sass/screen.scss */
-  .ag9 {
-    width: 47.36842%;
-    float: right;
-    margin-right: 0;
-  }
-
-  /* line 67, ../sass/screen.scss */
-  .ag10 {
-    width: 100%;
-    float: left;
-    margin-left: 0;
-    margin-right: 0;
-  }
+/* line 31, ../sass/screen.scss */
+.nameRow {
+  padding-top: 8px;
+  text-align: center;
+  font-size: 2rem;
+  font-family: 'Gill Sans';
+  color: #53585F;
+  overflow: hidden;
+  *zoom: 1;
 }
+
+/* line 40, ../sass/screen.scss */
+.firstName {
+  width: 48.61111%;
+  float: left;
+  margin-left: 0.69444%;
+  margin-right: 0.69444%;
+  background-color: #DCDEE0;
+  -moz-border-radius: 10px / 10px;
+  -webkit-border-radius: 10px 10px;
+  border-radius: 10px / 10px;
+}
+
+/* line 46, ../sass/screen.scss */
+.lastName {
+  width: 48.61111%;
+  float: right;
+  margin-left: 0.69444%;
+  margin-right: 0.69444%;
+  background-color: #DCDEE0;
+  -moz-border-radius: 10px / 10px;
+  -webkit-border-radius: 10px 10px;
+  border-radius: 10px / 10px;
+}
+
 /**
  * Styles for AG grids & Container
  */
-/* line 76, ../sass/screen.scss */
+/* line 56, ../sass/screen.scss */
 .container {
-  background-color: #fbeecb;
-}
-
-/* line 80, ../sass/screen.scss */
-.ag1, .ag3 {
-  background-color: #71dad2;
-}
-
-/* line 84, ../sass/screen.scss */
-.ag2 {
-  background-color: #fae7b3;
-}
-
-/* line 88, ../sass/screen.scss */
-.ag4, .ag5, .ag8, .ag9 {
-  background-color: #ee9e9c;
-}
-
-/* line 92, ../sass/screen.scss */
-.ag6 {
-  background-color: #f09671;
-}
-
-/* line 96, ../sass/screen.scss */
-.ag7 {
-  background-color: #f6d784;
-}
-
-/* line 100, ../sass/screen.scss */
-.ag10 {
-  background-color: #ea9fc3;
+  background-color: #FFFDFB;
 }
 
 /**
  * Text Styles
  */
-/* line 107, ../sass/screen.scss */
+/* line 63, ../sass/screen.scss */
 h2 {
   text-align: center;
   font-size: 1rem;
