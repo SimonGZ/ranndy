@@ -25,28 +25,71 @@ $susy: (
 
 .container {
   @include container(1000px);
+  
+}
+
+.topBar {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  height: 2rem;
+  line-height: 2rem;
+  background-color: #426E93;
+  color: #FFFDFB;
+  font-size: 0.75rem;
+  text-align: center;
+  @include clearfix;
+  position: fixed;
+  width: 100%;
+}
+
+header {
+  @include container(1000px);
+  @include clearfix;
+}
+
+.labels {
+  @include span(8 of 8);
   @include clearfix; 
 }
 
+.firstLabel {
+  @include span(4 of 8);
+}
+
+.lastLabel {
+  @include span(4 of 8 last);
+}
+
+.nameTable {
+  padding-top: 2rem;
+}
+
 .nameRow {
-  padding-top: 8px;
+  @include span(8);
+  padding-top: 4px;
   text-align: center;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-family: 'Gill Sans';
   color: #53585F;
   @include clearfix; 
 }
 
+@mixin name-styles {
+  background-color: #DCDEE0;
+  height: 3rem;
+  line-height: 3rem;
+  @include border-radius(10px, 10px);
+}
+
 .firstName {
   @include span(4);
-  background-color: #DCDEE0;
-  @include border-radius(10px, 10px);
+  @include name-styles;
 }
 
 .lastName {
   @include span(4 last);
-  background-color: #DCDEE0;
-  @include border-radius(10px, 10px);
+  @include name-styles;
 }
 
 /**
