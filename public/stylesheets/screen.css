@@ -520,11 +520,30 @@ header:after {
 }
 
 /* line 64, ../sass/screen.scss */
+.controls {
+  width: 98.61111%;
+  float: left;
+  margin-left: 0.69444%;
+  margin-right: 0.69444%;
+  margin-top: -1.8rem;
+}
+
+/* line 69, ../sass/screen.scss */
+.controlDrawer {
+  height: 1rem;
+  background-color: #FFFDFB;
+  -moz-box-shadow: black 0 -1px 5px inset;
+  -webkit-box-shadow: black 0 -1px 5px inset;
+  box-shadow: black 0 -1px 5px inset;
+  display: none;
+}
+
+/* line 76, ../sass/screen.scss */
 .nameTable {
   padding-top: 2rem;
 }
 
-/* line 68, ../sass/screen.scss */
+/* line 80, ../sass/screen.scss */
 .nameRow {
   width: 98.61111%;
   float: left;
@@ -539,7 +558,7 @@ header:after {
   *zoom: 1;
 }
 
-/* line 85, ../sass/screen.scss */
+/* line 97, ../sass/screen.scss */
 .firstName {
   width: 48.61111%;
   float: left;
@@ -553,7 +572,7 @@ header:after {
   border-radius: 10px / 10px;
 }
 
-/* line 90, ../sass/screen.scss */
+/* line 102, ../sass/screen.scss */
 .lastName {
   width: 48.61111%;
   float: right;
@@ -570,7 +589,7 @@ header:after {
 /**
  * Styles for AG grids & Container
  */
-/* line 99, ../sass/screen.scss */
+/* line 111, ../sass/screen.scss */
 .container {
   background-color: #FFFDFB;
 }
@@ -578,7 +597,7 @@ header:after {
 /**
  * Text Styles
  */
-/* line 106, ../sass/screen.scss */
+/* line 118, ../sass/screen.scss */
 h2 {
   text-align: center;
   font-size: 1rem;

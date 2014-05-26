@@ -61,6 +61,18 @@ header {
   @include span(4 of 8 last);
 }
 
+.controls {
+  @include span(8 of 8);
+  margin-top: -1.8rem;
+}
+
+.controlDrawer {
+  height: 1rem;
+  background-color: #FFFDFB;
+  @include box-shadow(black 0 -1px 5px inset);
+  display: none;
+}
+
 .nameTable {
   padding-top: 2rem;
 }
