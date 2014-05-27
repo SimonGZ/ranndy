@@ -268,3 +268,10 @@ describe "API", ->
             expect(res.body.errors[0].code).to.equal 3
             expect(res.body.errors[0].message).to.equal "Invalid rank specified"
             done()
+
+  describe "names", ->
+    it "responds to /api/names", (done) ->
+      request.get("localhost:3000/api/names").end (res) ->
+        expect(res).to.exist
+        expect(res.status).to.equal 200
+        done()

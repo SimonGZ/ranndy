@@ -1,10 +1,9 @@
-express = require("express")
-app = express()
-
+# Loading libraries
 async = require("async")
 _ = require("lodash")
-
 Knex = require("knex")
+
+# Setting up database connection
 Knex.knex = Knex.initialize(
   client: "pg"
   connection:
@@ -13,15 +12,68 @@ Knex.knex = Knex.initialize(
 )
 knex = require("knex").knex
 
+# Loading Express
+express = require("express")
+app = express()
+
+# Loading query functions
 queries = require("./lib/queries")
 
-app.use express.static(__dirname + "/public")
-
-GLOBAL.errors = []
-
+# Loading error handler
 errorHandler = require("./lib/errorHandler")
 
+# Setting up public directory
+app.use express.static(__dirname + "/public")
+
 app.get "/api/surnames", (req, res) ->
+
+  getSurnames(req, (json, error = false) ->
+    if error is true
+      res.json 400, json
+    else
+      res.json json
+  )
+
+app.get "/api/firstnames", (req, res) ->
+
+  getFirstnames(req, (json, error = false) ->
+    if error is true
+      res.json 400, json
+    else
+      res.json json
+  )
+
+app.get "/api/names", (req, res) ->
+  
+  async.parallel(
+    [(callback) ->
+      getFirstnames(req, (json) ->
+        callback(null, json)
+      )
+    ,
+    (callback) ->
+      getSurnames(req, (json) ->
+        callback(null, json)
+      )  
+    ],
+    (err, results) ->
+      errors = []
+
+      _.each results, (result) ->
+        if result.errors
+          errors = result.errors
+
+      if errors.length > 0
+        res.json 400, errors: errors
+      else
+        res.json(
+          firstnames: results[0]
+          lastnames: results[1]
+        )
+  )
+
+
+getSurnames = (req, resultsCallback) ->
 
   knex("surnames").where(->
     if [req.query.frequency, req.query.race].every(queries.isUndefined)
@@ -41,15 +93,15 @@ app.get "/api/surnames", (req, res) ->
       throw new Error("Errors detected in errorHandler")
     else
     results = surnames: query_results
-    res.json results
+    resultsCallback(results)
   )
   .catch(Error, (e) ->
-    console.log e
-    res.json 400, errors: errorHandler.listErrors()
+    # console.log e
+    resultsCallback(errors: errorHandler.listErrors(), true)
     errorHandler.clearErrors()
   )
 
-app.get "/api/firstnames", (req, res) ->
+getFirstnames = (req, resultsCallback) ->
 
   async.series([
     (callback) ->
@@ -88,60 +140,15 @@ app.get "/api/firstnames", (req, res) ->
             throw new Error("Errors detected in errorHandler")
           else
             results = firstnames: query_results
-            res.json results
+            resultsCallback results
         )
         .catch(Error, (e) ->
-          console.log e
-          res.json 400, errors: errorHandler.listErrors()
+          # console.log e
+          resultsCallback errors: errorHandler.listErrors(), true
           errorHandler.clearErrors()
         )
   )
 
-  # knex("firstnames_annual").where(->
-  #   pass = this
-    
-  #   # Year query must always run
-  #   pass = pass.where(->
-  #     queries.yearQuery(this, req.query.year)
-  #   )
-
-  #   if req.query.gender
-  #     pass = pass.where(->
-  #       queries.genderQuery(this, req.query.gender.toLowerCase())
-  #     )
-
-  #   if req.query.rank and req.query.gender
-  #     queryOptions = {'rank': req.query.rank, 'gender': queries.sanitizeGender(req.query.gender), 'year': queries.sanitizeYear(req.query.year)}
-      
-  #     pass = queries.rankQuery(this, queryOptions)
-
-  #   return pass
-  # )
-  # .orderBy(knex.raw("RANDOM()"))
-  # .limit(queries.limitQuery(req.query.limit))
-  # .then (query_results) ->
-  #   results = firstnames: query_results
-  #   res.json results
-
-# queryProcessor = (obj, req) ->
-#   obj.where(->
-#     queries.yearQuery(this, req.query.year)
-#   )
-#   .andWhere(->
-#     queries.genderQuery(this, req.query.gender.toLowerCase())
-#   )
-
-
 server = app.listen(process.env.port or 3000, ->
   console.log "Listening on port %d", server.address().port
 )
-
-
-
-# Convenience Functions
-
-existy = (x) ->
-  return x != null
-
-isUndefined = (element, index, array) ->
-  return element is `undefined`

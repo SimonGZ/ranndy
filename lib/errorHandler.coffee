@@ -16,7 +16,7 @@ module.exports.errorsFound = () ->
   return errorLog.length
 
 module.exports.addError = (error) ->
-  console.log "Logging error: #{error.message}"
+  # console.log "Logging error: #{error.message}"
   errorLog.push(error)
 
 module.exports.listErrors = ->

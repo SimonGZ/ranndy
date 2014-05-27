@@ -167,7 +167,7 @@ describe("API", function() {
       });
     });
   });
-  return describe("firstnames", function() {
+  describe("firstnames", function() {
     it("responds to /api/firstnames", function(done) {
       return request.get("localhost:3000/api/firstnames").end(function(res) {
         expect(res).to.exist;
@@ -339,6 +339,15 @@ describe("API", function() {
             return done();
           });
         });
+      });
+    });
+  });
+  return describe("names", function() {
+    return it("responds to /api/names", function(done) {
+      return request.get("localhost:3000/api/names").end(function(res) {
+        expect(res).to.exist;
+        expect(res.status).to.equal(200);
+        return done();
       });
     });
   });
