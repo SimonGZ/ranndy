@@ -39,10 +39,11 @@ $ ->
 
     initialize: ->
       this.listenTo(nameList, 'add', this.addOne)
+      nameList.getNames()
 
     addOne: (name) ->
       view = new NameView(model: name)
-      $('#names').append( view.render().el )
+      $('#nameTable').append( view.render().el )
 
   nameView = new NameView({model: name})
   nameList = new NameList
@@ -55,11 +56,18 @@ $ ->
       callback(data)
 
   $('.nameBtn').on 'click', ->
-    console.log "Clicked"
+    console.log "Click: Loading Names"
     nameList.getNames()
-    return false
+
+
+  # Infinite scroll code
+
+  getNamesForScroll = ->
+    console.log "Infinite Scroll: Loading Names"
+    nameList.getNames()
+
+  throttledGetNamesForScroll = _.throttle(getNamesForScroll, 2000, {'trailing': false})
 
   $(window).scroll ->
-    if $(window).scrollTop() + $(window).height() >= $(document).height() and loading == false
-      console.log "BOTTOM"
-      $('nameBtn').click()
+    if $(window).scrollTop() + $(window).height() + 500 >= $(document).height() and loading == false
+      throttledGetNamesForScroll()

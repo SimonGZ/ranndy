@@ -4,7 +4,7 @@ var __hasProp = {}.hasOwnProperty,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 $(function() {
-  var AppView, Name, NameList, NameView, app, getNames, loading, nameList, nameView;
+  var AppView, Name, NameList, NameView, app, getNames, getNamesForScroll, loading, nameList, nameView, throttledGetNamesForScroll;
   Name = (function(_super) {
     __extends(Name, _super);
 
@@ -84,7 +84,8 @@ $(function() {
     AppView.prototype.el = '#raandy';
 
     AppView.prototype.initialize = function() {
-      return this.listenTo(nameList, 'add', this.addOne);
+      this.listenTo(nameList, 'add', this.addOne);
+      return nameList.getNames();
     };
 
     AppView.prototype.addOne = function(name) {
@@ -92,7 +93,7 @@ $(function() {
       view = new NameView({
         model: name
       });
-      return $('#names').append(view.render().el);
+      return $('#nameTable').append(view.render().el);
     };
 
     return AppView;
@@ -115,14 +116,19 @@ $(function() {
     });
   };
   $('.nameBtn').on('click', function() {
-    console.log("Clicked");
-    nameList.getNames();
-    return false;
+    console.log("Click: Loading Names");
+    return nameList.getNames();
+  });
+  getNamesForScroll = function() {
+    console.log("Infinite Scroll: Loading Names");
+    return nameList.getNames();
+  };
+  throttledGetNamesForScroll = _.throttle(getNamesForScroll, 2000, {
+    'trailing': false
   });
   return $(window).scroll(function() {
-    if ($(window).scrollTop() + $(window).height() >= $(document).height() && loading === false) {
-      console.log("BOTTOM");
-      return $('nameBtn').click();
+    if ($(window).scrollTop() + $(window).height() + 500 >= $(document).height() && loading === false) {
+      return throttledGetNamesForScroll();
     }
   });
 });

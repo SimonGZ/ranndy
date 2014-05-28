@@ -19,13 +19,16 @@ $susy: (
 
 @include border-box-sizing;
 
+body {
+  background-color: #F0F0F0;
+}
+
 /**
  * Layout for AG grids & Container
  */
 
-.container {
+#raandy {
   @include container(1000px);
-  
 }
 
 .topBar {
@@ -73,25 +76,32 @@ header {
   display: none;
 }
 
-.nameTable {
-  padding-top: 2rem;
+#nameTable {
+  padding-top: 0.8rem;
 }
 
 .nameRow {
   @include span(8);
-  padding-top: 4px;
+  margin-top: 4px;
   text-align: center;
   font-size: 1.5rem;
   font-family: 'Gill Sans';
   color: #53585F;
   @include clearfix; 
+
+  &:nth-child(2n+2) {
+    background-color: #CCC;
+  }
 }
 
 @mixin name-styles {
-  background-color: #DCDEE0;
+  background-color: inherit;
   height: 3rem;
   line-height: 3rem;
-  @include border-radius(10px, 10px);
+}
+
+.nameRow {
+  background-color: #F0F0F0;
 }
 
 .firstName {

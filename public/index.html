@@ -4,6 +4,18 @@
 	<title>Raandy - Random Name Generator</title>
 	<meta name="viewport" content="width=device-width, user-scalable=no">
 	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.1.3/zepto.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+	<script type="text/javascript" src="javascript/app.js"></script>
+	<script type="text/template" id="name-template">
+		<div class="firstName">
+			<%= first %>
+		</div>
+		<div class="lastName">
+			<%= last %>
+		</div>
+	</script>
 </head>
 <body>
 	<div class="topBar">
@@ -57,73 +69,9 @@
 			</div>
 		</header>
 	</div>
-	<div class="container">
-		<div class="nameTable">
-			<div class="nameRow">
-				<div class="firstName">
-					Simon
-				</div>
-				<div class="lastName">
-					Ganz
-				</div>
-			</div>
-			<div class="nameRow">
-				<div class="firstName">
-					Anna
-				</div>
-				<div class="lastName">
-					Almendrala
-				</div>
-			</div>
-			<div class="nameRow">
-				<div class="firstName">
-					Cameron
-				</div>
-				<div class="lastName">
-					Cooper
-				</div>
-			</div>
-			<div class="nameRow">
-				<div class="firstName">
-					Raandy
-				</div>
-				<div class="lastName">
-					Cruz
-				</div>
-			</div>
-			<div class="nameRow">
-				<div class="firstName">
-					Ashleyrae
-				</div>
-				<div class="lastName">
-					Decrescenzo
-				</div>
-			</div>
-			<div class="nameRow">
-				<div class="firstName">
-					Clinique
-				</div>
-				<div class="lastName">
-					Oginsky
-				</div>
-			</div>
-			<div class="nameRow">
-				<div class="firstName">
-					Rami
-				</div>
-				<div class="lastName">
-					Munkers
-				</div>
-			</div>
-			<div class="nameRow">
-				<div class="firstName">
-					Alexi
-				</div>
-				<div class="lastName">
-					Prinsen
-				</div>
-			</div>
-		</div>
+	<div id="raandy">
+		<a href="#" class="nameBtn">Button</a>
+		<div id="nameTable"></div>
 	</div>
 	<!-- /container -->
 </body>
