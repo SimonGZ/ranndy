@@ -7,44 +7,31 @@ $ ->
       last: 'Ganz'
 
     initialize: ->
-      console.log "Initializing name #{this.get('first')} #{this.get('last')}"
+      # console.log "Initializing name #{this.get('first')} #{this.get('last')}"
 
   class NameView extends Backbone.View
 
-    tagName: 'li'
+    className: 'nameRow'
 
     tmpl: _.template( $("#name-template").html() )
 
     initialize: ->
-      console.log "Initialized NameView"
+      # console.log "Initialized NameView"
 
     render: =>
       this.$el.html( this.tmpl( this.model.toJSON() ))
-      console.log "Rendering name"
+      # console.log "Rendering name"
       return this
 
   class NameList extends Backbone.Collection
 
     model: Name
 
-  name = new Name({first: 'Marcus', last: 'Bowa'})  
-  nameView = new NameView({model: name})
-  nameList = new NameList
-  
-  getFirstNames = (callback) ->
-      $.getJSON 'api/firstnames', (data) ->
-        callback(data.firstnames)
-
-  $('.nameBtn').on 'click', ->
-    console.log("Click!")
-    console.log nameList.length
-    getFirstNames( (data) ->
-      console.log data
-      nameList.add _.map(data, (name) ->
-         return first: name.name
-      )
-    )
-    return false
+    getNames: (name) ->
+      $.getJSON 'api/names', {limit: 100, rank: 'high', frequency: 'high', gender: 'male'}, (data) =>
+        _.forEach(data.names, (name) =>
+          this.add(first: name[0].name, last: name[1].name)
+        )
 
   class AppView extends Backbone.View
 
@@ -57,6 +44,22 @@ $ ->
       view = new NameView(model: name)
       $('#names').append( view.render().el )
 
+  nameView = new NameView({model: name})
+  nameList = new NameList
   app = new AppView
-  nameList.add(new Name(first:'Simon', last: 'Ganz'))
-  nameList.add(new Name(first:'JC', last: 'Ganz'))
+
+  loading = false
+
+  getNames = (callback) ->
+    $.getJSON 'api/names', {limit: 100, rank: 'high', frequency: 'high', gender: 'male'}, (data) ->
+      callback(data)
+
+  $('.nameBtn').on 'click', ->
+    console.log "Clicked"
+    nameList.getNames()
+    return false
+
+  $(window).scroll ->
+    if $(window).scrollTop() + $(window).height() >= $(document).height() and loading == false
+      console.log "BOTTOM"
+      $('nameBtn').click()

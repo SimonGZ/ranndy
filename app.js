@@ -78,8 +78,7 @@ app.get("/api/names", function(req, res) {
       });
     } else {
       return res.json({
-        firstnames: results[0],
-        lastnames: results[1]
+        names: _.zip(results[0].firstnames, results[1].surnames)
       });
     }
   });

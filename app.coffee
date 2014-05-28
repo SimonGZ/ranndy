@@ -67,8 +67,7 @@ app.get "/api/names", (req, res) ->
         res.json 400, errors: errors
       else
         res.json(
-          firstnames: results[0]
-          lastnames: results[1]
+          names: _.zip(results[0].firstnames, results[1].surnames)
         )
   )
 

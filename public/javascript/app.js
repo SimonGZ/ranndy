@@ -4,7 +4,7 @@ var __hasProp = {}.hasOwnProperty,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 $(function() {
-  var AppView, Name, NameList, NameView, app, getFirstNames, name, nameList, nameView;
+  var AppView, Name, NameList, NameView, app, getNames, loading, nameList, nameView;
   Name = (function(_super) {
     __extends(Name, _super);
 
@@ -17,9 +17,7 @@ $(function() {
       last: 'Ganz'
     };
 
-    Name.prototype.initialize = function() {
-      return console.log("Initializing name " + (this.get('first')) + " " + (this.get('last')));
-    };
+    Name.prototype.initialize = function() {};
 
     return Name;
 
@@ -32,17 +30,14 @@ $(function() {
       return NameView.__super__.constructor.apply(this, arguments);
     }
 
-    NameView.prototype.tagName = 'li';
+    NameView.prototype.className = 'nameRow';
 
     NameView.prototype.tmpl = _.template($("#name-template").html());
 
-    NameView.prototype.initialize = function() {
-      return console.log("Initialized NameView");
-    };
+    NameView.prototype.initialize = function() {};
 
     NameView.prototype.render = function() {
       this.$el.html(this.tmpl(this.model.toJSON()));
-      console.log("Rendering name");
       return this;
     };
 
@@ -58,35 +53,27 @@ $(function() {
 
     NameList.prototype.model = Name;
 
+    NameList.prototype.getNames = function(name) {
+      return $.getJSON('api/names', {
+        limit: 100,
+        rank: 'high',
+        frequency: 'high',
+        gender: 'male'
+      }, (function(_this) {
+        return function(data) {
+          return _.forEach(data.names, function(name) {
+            return _this.add({
+              first: name[0].name,
+              last: name[1].name
+            });
+          });
+        };
+      })(this));
+    };
+
     return NameList;
 
   })(Backbone.Collection);
-  name = new Name({
-    first: 'Marcus',
-    last: 'Bowa'
-  });
-  nameView = new NameView({
-    model: name
-  });
-  nameList = new NameList;
-  getFirstNames = function(callback) {
-    return $.getJSON('api/firstnames', function(data) {
-      return callback(data.firstnames);
-    });
-  };
-  $('.nameBtn').on('click', function() {
-    console.log("Click!");
-    console.log(nameList.length);
-    getFirstNames(function(data) {
-      console.log(data);
-      return nameList.add(_.map(data, function(name) {
-        return {
-          first: name.name
-        };
-      }));
-    });
-    return false;
-  });
   AppView = (function(_super) {
     __extends(AppView, _super);
 
@@ -111,13 +98,31 @@ $(function() {
     return AppView;
 
   })(Backbone.View);
+  nameView = new NameView({
+    model: name
+  });
+  nameList = new NameList;
   app = new AppView;
-  nameList.add(new Name({
-    first: 'Simon',
-    last: 'Ganz'
-  }));
-  return nameList.add(new Name({
-    first: 'JC',
-    last: 'Ganz'
-  }));
+  loading = false;
+  getNames = function(callback) {
+    return $.getJSON('api/names', {
+      limit: 100,
+      rank: 'high',
+      frequency: 'high',
+      gender: 'male'
+    }, function(data) {
+      return callback(data);
+    });
+  };
+  $('.nameBtn').on('click', function() {
+    console.log("Clicked");
+    nameList.getNames();
+    return false;
+  });
+  return $(window).scroll(function() {
+    if ($(window).scrollTop() + $(window).height() >= $(document).height() && loading === false) {
+      console.log("BOTTOM");
+      return $('nameBtn').click();
+    }
+  });
 });

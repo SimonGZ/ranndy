@@ -10,13 +10,17 @@
 	<script type="text/javascript" src="javascript/app.js"></script>
 
 	<script type="text/template" id="name-template">
-		<%= first %> <%= last %>
+		<div class="firstName">
+			<%= first %>
+		</div>
+		<div class="lastName">
+			<%= last %>
+		</div>
 	</script>
 </head>
 <body>
 	<div id="raandy">
 		<a href="#" class="nameBtn">Button</a>
-		Content goes here
 		<div id="names"></div>
 	</div>
 </body>
