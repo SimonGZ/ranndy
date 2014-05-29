@@ -4,7 +4,7 @@ var __hasProp = {}.hasOwnProperty,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 $(function() {
-  var AppView, Name, NameList, NameView, app, getNames, getNamesForScroll, loading, nameList, nameView, throttledGetNamesForScroll;
+  var AppView, Name, NameList, NameView, app, getNamesForScroll, nameList, nameView, throttledGetNamesForScroll;
   Name = (function(_super) {
     __extends(Name, _super);
 
@@ -58,7 +58,7 @@ $(function() {
         limit: 100,
         rank: 'high',
         frequency: 'high',
-        gender: 'male'
+        gender: 'female'
       }, (function(_this) {
         return function(data) {
           return _.forEach(data.names, function(name) {
@@ -104,21 +104,6 @@ $(function() {
   });
   nameList = new NameList;
   app = new AppView;
-  loading = false;
-  getNames = function(callback) {
-    return $.getJSON('api/names', {
-      limit: 100,
-      rank: 'high',
-      frequency: 'high',
-      gender: 'male'
-    }, function(data) {
-      return callback(data);
-    });
-  };
-  $('.nameBtn').on('click', function() {
-    console.log("Click: Loading Names");
-    return nameList.getNames();
-  });
   getNamesForScroll = function() {
     console.log("Infinite Scroll: Loading Names");
     return nameList.getNames();
@@ -126,9 +111,22 @@ $(function() {
   throttledGetNamesForScroll = _.throttle(getNamesForScroll, 2000, {
     'trailing': false
   });
-  return $(window).scroll(function() {
-    if ($(window).scrollTop() + $(window).height() + 500 >= $(document).height() && loading === false) {
+  $(window).scroll(function() {
+    if ($(window).scrollTop() + $(window).height() + 500 >= $(document).height()) {
       return throttledGetNamesForScroll();
+    }
+  });
+  return $('#settingsBtn').on('click', function() {
+    if ($('.topBar').css("max-height") === "16rem") {
+      $('.topBar').css("max-height", "2rem");
+      $('.controlDrawer').css("margin-top", "-14rem");
+      $('#nameTable').css("padding-top", "2rem");
+      return console.log($('.topBar').height());
+    } else {
+      $('.topBar').css("max-height", "16rem");
+      $('.controlDrawer').css("margin-top", "0");
+      $('#nameTable').css("padding-top", "16rem");
+      return console.log($('.topBar').height());
     }
   });
 });

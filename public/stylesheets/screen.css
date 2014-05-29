@@ -445,15 +445,136 @@ th {
   box-sizing: border-box;
 }
 
-/* line 22, ../sass/screen.scss */
+/* line 27, ../sass/screen.scss */
 body {
   background-color: #F0F0F0;
+  font-size: 16px;
 }
 
 /**
- * Layout for AG grids & Container
+ * Variables
  */
-/* line 30, ../sass/screen.scss */
+/**
+ * Layout for controls
+ */
+/* line 42, ../sass/screen.scss */
+.topBar {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  max-height: 2rem;
+  line-height: 2rem;
+  background-color: #426E93;
+  color: #FFFDFB;
+  font-size: 0.75rem;
+  text-align: center;
+  overflow: hidden;
+  *zoom: 1;
+  position: fixed;
+  width: 100%;
+  -moz-transition-property: max-height;
+  -o-transition-property: max-height;
+  -webkit-transition-property: max-height;
+  transition-property: max-height;
+  -moz-transition-duration: 0.75s;
+  -o-transition-duration: 0.75s;
+  -webkit-transition-duration: 0.75s;
+  transition-duration: 0.75s;
+}
+
+/* line 59, ../sass/screen.scss */
+.controlDrawer {
+  margin-top: -14rem;
+  height: 14rem;
+  background-color: #FFFDFB;
+  -moz-box-shadow: black 0 -1px 5px inset;
+  -webkit-box-shadow: black 0 -1px 5px inset;
+  box-shadow: black 0 -1px 5px inset;
+  -moz-transition-property: margin-top;
+  -o-transition-property: margin-top;
+  -webkit-transition-property: margin-top;
+  transition-property: margin-top;
+  -moz-transition-duration: 0.75s;
+  -o-transition-duration: 0.75s;
+  -webkit-transition-duration: 0.75s;
+  transition-duration: 0.75s;
+}
+
+/* line 68, ../sass/screen.scss */
+form {
+  display: inline-block;
+  color: #53585f;
+  text-align: center;
+  font-size: 1rem;
+}
+
+/* line 77, ../sass/screen.scss */
+fieldset div {
+  display: inline-block;
+}
+/* line 80, ../sass/screen.scss */
+fieldset label {
+  display: block;
+  height: 1.6rem;
+}
+
+/* line 88, ../sass/screen.scss */
+header {
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+  *zoom: 1;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+}
+/* line 12, ../../../../../.rvm/gems/ruby-2.1.1/gems/susy-2.1.2/sass/susy/output/support/_clearfix.scss */
+header:after {
+  content: " ";
+  display: block;
+  clear: both;
+}
+
+/* line 95, ../sass/screen.scss */
+.labels {
+  width: 98.61111%;
+  float: left;
+  margin-left: 0.69444%;
+  margin-right: 0.69444%;
+  overflow: hidden;
+  *zoom: 1;
+}
+
+/* line 100, ../sass/screen.scss */
+.firstLabel {
+  width: 48.61111%;
+  float: left;
+  margin-left: 0.69444%;
+  margin-right: 0.69444%;
+}
+
+/* line 104, ../sass/screen.scss */
+.lastLabel {
+  width: 48.61111%;
+  float: right;
+  margin-left: 0.69444%;
+  margin-right: 0.69444%;
+}
+
+/* line 108, ../sass/screen.scss */
+.settings {
+  width: 98.61111%;
+  float: left;
+  margin-left: 0.69444%;
+  margin-right: 0.69444%;
+  margin-top: -1.8rem;
+  height: 1rem;
+}
+
+/**
+ * Layout for grids & container
+ */
+/* line 118, ../sass/screen.scss */
 #raandy {
   max-width: 1000px;
   margin-left: auto;
@@ -466,89 +587,20 @@ body {
   clear: both;
 }
 
-/* line 34, ../sass/screen.scss */
-.topBar {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  height: 2rem;
-  line-height: 2rem;
-  background-color: #426E93;
-  color: #FFFDFB;
-  font-size: 0.75rem;
-  text-align: center;
-  overflow: hidden;
-  *zoom: 1;
-  position: fixed;
-  width: 100%;
-}
-
-/* line 49, ../sass/screen.scss */
-header {
-  max-width: 1000px;
-  margin-left: auto;
-  margin-right: auto;
-  overflow: hidden;
-  *zoom: 1;
-}
-/* line 12, ../../../../../.rvm/gems/ruby-2.1.1/gems/susy-2.1.2/sass/susy/output/support/_clearfix.scss */
-header:after {
-  content: " ";
-  display: block;
-  clear: both;
-}
-
-/* line 54, ../sass/screen.scss */
-.labels {
-  width: 98.61111%;
-  float: left;
-  margin-left: 0.69444%;
-  margin-right: 0.69444%;
-  overflow: hidden;
-  *zoom: 1;
-}
-
-/* line 59, ../sass/screen.scss */
-.firstLabel {
-  width: 48.61111%;
-  float: left;
-  margin-left: 0.69444%;
-  margin-right: 0.69444%;
-}
-
-/* line 63, ../sass/screen.scss */
-.lastLabel {
-  width: 48.61111%;
-  float: right;
-  margin-left: 0.69444%;
-  margin-right: 0.69444%;
-}
-
-/* line 67, ../sass/screen.scss */
-.controls {
-  width: 98.61111%;
-  float: left;
-  margin-left: 0.69444%;
-  margin-right: 0.69444%;
-  margin-top: -1.8rem;
-}
-
-/* line 72, ../sass/screen.scss */
-.controlDrawer {
-  height: 4.5rem;
-  background-color: #FFFDFB;
-  -moz-box-shadow: black 0 -1px 5px inset;
-  -webkit-box-shadow: black 0 -1px 5px inset;
-  box-shadow: black 0 -1px 5px inset;
-  display: none;
-}
-
-/* line 79, ../sass/screen.scss */
+/* line 122, ../sass/screen.scss */
 #nameTable {
-  padding-top: 0.8rem;
+  padding-top: 2rem;
+  -moz-transition-property: padding-top;
+  -o-transition-property: padding-top;
+  -webkit-transition-property: padding-top;
+  transition-property: padding-top;
+  -moz-transition-duration: 0.75s;
+  -o-transition-duration: 0.75s;
+  -webkit-transition-duration: 0.75s;
+  transition-duration: 0.75s;
 }
 
-/* line 83, ../sass/screen.scss */
+/* line 128, ../sass/screen.scss */
 .nameRow {
   width: 98.61111%;
   float: left;
@@ -558,21 +610,21 @@ header:after {
   text-align: center;
   font-size: 1.5rem;
   font-family: 'Gill Sans';
-  color: #53585F;
+  color: #53585f;
   overflow: hidden;
   *zoom: 1;
 }
-/* line 92, ../sass/screen.scss */
+/* line 137, ../sass/screen.scss */
 .nameRow:nth-child(2n+2) {
   background-color: #CCC;
 }
 
-/* line 103, ../sass/screen.scss */
+/* line 148, ../sass/screen.scss */
 .nameRow {
   background-color: #F0F0F0;
 }
 
-/* line 107, ../sass/screen.scss */
+/* line 152, ../sass/screen.scss */
 .firstName {
   width: 48.61111%;
   float: left;
@@ -583,7 +635,7 @@ header:after {
   line-height: 3rem;
 }
 
-/* line 112, ../sass/screen.scss */
+/* line 157, ../sass/screen.scss */
 .lastName {
   width: 48.61111%;
   float: right;
@@ -597,7 +649,7 @@ header:after {
 /**
  * Styles for AG grids & Container
  */
-/* line 121, ../sass/screen.scss */
+/* line 166, ../sass/screen.scss */
 .container {
   background-color: #FFFDFB;
 }
@@ -605,7 +657,7 @@ header:after {
 /**
  * Text Styles
  */
-/* line 128, ../sass/screen.scss */
+/* line 173, ../sass/screen.scss */
 h2 {
   text-align: center;
   font-size: 1rem;

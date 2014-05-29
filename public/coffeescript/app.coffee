@@ -28,7 +28,7 @@ $ ->
     model: Name
 
     getNames: (name) ->
-      $.getJSON 'api/names', {limit: 100, rank: 'high', frequency: 'high', gender: 'male'}, (data) =>
+      $.getJSON 'api/names', {limit: 100, rank: 'high', frequency: 'high', gender: 'female'}, (data) =>
         _.forEach(data.names, (name) =>
           this.add(first: name[0].name, last: name[1].name)
         )
@@ -45,20 +45,11 @@ $ ->
       view = new NameView(model: name)
       $('#nameTable').append( view.render().el )
 
+  # Setting up Backbone App
+
   nameView = new NameView({model: name})
   nameList = new NameList
   app = new AppView
-
-  loading = false
-
-  getNames = (callback) ->
-    $.getJSON 'api/names', {limit: 100, rank: 'high', frequency: 'high', gender: 'male'}, (data) ->
-      callback(data)
-
-  $('.nameBtn').on 'click', ->
-    console.log "Click: Loading Names"
-    nameList.getNames()
-
 
   # Infinite scroll code
 
@@ -69,5 +60,19 @@ $ ->
   throttledGetNamesForScroll = _.throttle(getNamesForScroll, 2000, {'trailing': false})
 
   $(window).scroll ->
-    if $(window).scrollTop() + $(window).height() + 500 >= $(document).height() and loading == false
+    if $(window).scrollTop() + $(window).height() + 500 >= $(document).height()
       throttledGetNamesForScroll()
+
+  # Settings drawer code
+
+  $('#settingsBtn').on 'click', ->
+    if $('.topBar').css("max-height") == "16rem"
+      $('.topBar').css("max-height", "2rem")
+      $('.controlDrawer').css("margin-top", "-14rem")
+      $('#nameTable').css("padding-top", "2rem")
+      console.log($('.topBar').height())
+    else
+      $('.topBar').css("max-height", "16rem")
+      $('.controlDrawer').css("margin-top", "0")
+      $('#nameTable').css("padding-top", "16rem")
+      console.log($('.topBar').height())

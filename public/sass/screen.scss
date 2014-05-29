@@ -3,10 +3,15 @@
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 
+// Compass Settings
+$legacy-support-for-ie: false;
+
 @import "normalize";
 @import "compass";
 @import "susy";
 @import "breakpoint";
+
+// Susy Settings
 
 $susy: (
   columns: 8,
@@ -21,21 +26,24 @@ $susy: (
 
 body {
   background-color: #F0F0F0;
+  font-size: 16px;
 }
 
 /**
- * Layout for AG grids & Container
+ * Variables
  */
 
-#raandy {
-  @include container(1000px);
-}
+ $textColor: #53585F;
+
+/**
+ * Layout for controls
+ */
 
 .topBar {
   margin: 0;
   padding: 0;
   border: 0;
-  height: 2rem;
+  max-height: 2rem;
   line-height: 2rem;
   background-color: #426E93;
   color: #FFFDFB;
@@ -44,11 +52,44 @@ body {
   @include clearfix;
   position: fixed;
   width: 100%;
+  @include transition-property(max-height);
+  @include transition-duration(0.75s);
 }
+
+.controlDrawer {
+  margin-top: -14rem;
+  height: 14rem;
+  background-color: #FFFDFB;
+  @include box-shadow(black 0 -1px 5px inset);
+  @include transition-property(margin-top);
+  @include transition-duration(0.75s);
+}
+
+form {
+  display: inline-block;
+  color: $textColor;
+  text-align: center;
+  font-size: 1rem;
+}
+
+fieldset {
+
+  div {
+    display: inline-block;
+  }
+  label {
+    display: block;
+    height: 1.6rem;
+  }
+}
+
+// Susy container begins at header and only encompasses labels and settingsBtn
 
 header {
   @include container(1000px);
   @include clearfix;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
 }
 
 .labels {
@@ -64,20 +105,24 @@ header {
   @include span(4 of 8 last);
 }
 
-.controls {
+.settings {
   @include span(8 of 8);
   margin-top: -1.8rem;
+  height: 1rem;
 }
 
-.controlDrawer {
-  height: 4.5rem;
-  background-color: #FFFDFB;
-  @include box-shadow(black 0 -1px 5px inset);
-  display: none;
+/**
+ * Layout for grids & container
+ */
+
+#raandy {
+  @include container(1000px);
 }
 
 #nameTable {
-  padding-top: 0.8rem;
+  padding-top: 2rem; // To compensate for fixed topBar
+  @include transition-property(padding-top);
+  @include transition-duration(0.75s);
 }
 
 .nameRow {
@@ -86,7 +131,7 @@ header {
   text-align: center;
   font-size: 1.5rem;
   font-family: 'Gill Sans';
-  color: #53585F;
+  color: $textColor;
   @include clearfix; 
 
   &:nth-child(2n+2) {
