@@ -4,7 +4,7 @@ var __hasProp = {}.hasOwnProperty,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 $(function() {
-  var AppView, Name, NameList, NameView, app, getNamesForScroll, nameList, nameView, throttledGetNamesForScroll;
+  var AppView, Name, NameList, NameView, app, currentQuery, getNamesForScroll, nameList, nameView, sendNewQuery, throttledGetNamesForScroll;
   Name = (function(_super) {
     __extends(Name, _super);
 
@@ -53,14 +53,23 @@ $(function() {
 
     NameList.prototype.model = Name;
 
-    NameList.prototype.getNames = function(name) {
+    NameList.prototype.getNames = function(query, resetFlag) {
+      if (resetFlag == null) {
+        resetFlag = false;
+      }
+      console.log(query);
+      if (resetFlag) {
+        this.reset();
+      }
       return $.getJSON('api/names', {
         limit: 100,
-        rank: 'high',
-        frequency: 'high',
-        gender: 'female'
+        rank: query.rank,
+        frequency: query.frequency,
+        gender: query.gender,
+        year: query.year
       }, (function(_this) {
         return function(data) {
+          $('#nameTable img').remove();
           return _.forEach(data.names, function(name) {
             return _this.add({
               first: name[0].name,
@@ -69,6 +78,14 @@ $(function() {
           });
         };
       })(this));
+    };
+
+    NameList.prototype.defaultQueries = {
+      rank: 'high',
+      frequency: 'high',
+      gender: 'female',
+      year: 0,
+      race: ['any', 0]
     };
 
     return NameList;
@@ -85,7 +102,8 @@ $(function() {
 
     AppView.prototype.initialize = function() {
       this.listenTo(nameList, 'add', this.addOne);
-      return nameList.getNames();
+      this.listenTo(nameList, 'reset', this.reset);
+      return nameList.getNames(nameList.defaultQueries);
     };
 
     AppView.prototype.addOne = function(name) {
@@ -94,6 +112,11 @@ $(function() {
         model: name
       });
       return $('#nameTable').append(view.render().el);
+    };
+
+    AppView.prototype.reset = function() {
+      $('#nameTable').empty();
+      return $('#nameTable').append("<img src='images/ajax-loader.gif' alt='loading' />");
     };
 
     return AppView;
@@ -106,7 +129,7 @@ $(function() {
   app = new AppView;
   getNamesForScroll = function() {
     console.log("Infinite Scroll: Loading Names");
-    return nameList.getNames();
+    return nameList.getNames(currentQuery);
   };
   throttledGetNamesForScroll = _.throttle(getNamesForScroll, 2000, {
     'trailing': false
@@ -116,17 +139,29 @@ $(function() {
       return throttledGetNamesForScroll();
     }
   });
-  return $('#settingsBtn').on('click', function() {
+  $('#settingsBtn').on('click', function() {
     if ($('.topBar').css("max-height") === "16rem") {
       $('.topBar').css("max-height", "2rem");
       $('.controlDrawer').css("margin-top", "-14rem");
-      $('#nameTable').css("padding-top", "2rem");
-      return console.log($('.topBar').height());
+      return $('#nameTable').css("padding-top", "2rem");
     } else {
       $('.topBar').css("max-height", "16rem");
       $('.controlDrawer').css("margin-top", "0");
-      $('#nameTable').css("padding-top", "16rem");
-      return console.log($('.topBar').height());
+      return $('#nameTable').css("padding-top", "16rem");
     }
   });
+  $('.topBar').css("max-height", "16rem");
+  $('.controlDrawer').css("margin-top", "0");
+  $('#nameTable').css("padding-top", "16rem");
+  currentQuery = nameList.defaultQueries;
+  $('#gender, #rank, #frequency, #year').on('change', function() {
+    return sendNewQuery(this);
+  });
+  return sendNewQuery = function(context) {
+    var newQuery;
+    newQuery = {};
+    newQuery["" + ($(context).attr('id'))] = $(context).val();
+    currentQuery = _.assign(currentQuery, newQuery);
+    return nameList.getNames(currentQuery, true);
+  };
 });

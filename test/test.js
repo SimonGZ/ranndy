@@ -58,6 +58,12 @@ describe("API", function() {
       });
     });
     describe("the frequency query", function() {
+      it("returns results when sent any", function(done) {
+        return request.get("localhost:3000/api/surnames?frequency=any").end(function(res) {
+          expect(res.body.surnames).to.have.length(10);
+          return done();
+        });
+      });
       it("low returns names with frequencies below 0.1", function(done) {
         return request.get("localhost:3000/api/surnames?frequency=low").end(function(res) {
           async.each(res.body.surnames, function(name) {
@@ -95,6 +101,12 @@ describe("API", function() {
       });
     });
     return describe("the racial query", function() {
+      it("returns results when sent any", function(done) {
+        return request.get("localhost:3000/api/surnames?race=any&race=50").end(function(res) {
+          expect(res.body.surnames).to.have.length(10);
+          return done();
+        });
+      });
       it("returns names with pctblack above 50 when sent pctblack, 50", function(done) {
         return request.get("localhost:3000/api/surnames?race=pctblack&race=50").end(function(res) {
           async.each(res.body.surnames, function(name) {
@@ -238,6 +250,19 @@ describe("API", function() {
           return done();
         });
       });
+      it("returns a mix of male and female names when sent any", function(done) {
+        return request.get("localhost:3000/api/firstnames?limit=20&gender=any").end(function(res) {
+          var genders;
+          genders = [];
+          _(res.body.firstnames).forEach(function(name) {
+            return genders.push(name.gender);
+          });
+          genders = _.uniq(genders);
+          expect(genders).to.contain("M");
+          expect(genders).to.contain("F");
+          return done();
+        });
+      });
       it("returns only male names when sent gender=male", function(done) {
         return request.get("localhost:3000/api/firstnames?gender=male").end(function(res) {
           async.each(res.body.firstnames, function(name) {
@@ -266,6 +291,12 @@ describe("API", function() {
       });
     });
     return describe("the rank query", function() {
+      it("returns results when sent any", function(done) {
+        return request.get("localhost:3000/api/firstnames?rank=any&gender=male&year=1880").end(function(res) {
+          expect(res.body.firstnames).to.have.length(10);
+          return done();
+        });
+      });
       describe("max(rank) less than 500", function() {
         it("high returns names from the top 50", function(done) {
           return request.get("localhost:3000/api/firstnames?rank=high&gender=male&year=1880").end(function(res) {

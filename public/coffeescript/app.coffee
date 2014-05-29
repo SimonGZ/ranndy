@@ -27,11 +27,22 @@ $ ->
 
     model: Name
 
-    getNames: (name) ->
-      $.getJSON 'api/names', {limit: 100, rank: 'high', frequency: 'high', gender: 'female'}, (data) =>
+    getNames: (query, resetFlag=false) ->
+      console.log query
+      if resetFlag
+        this.reset()
+      $.getJSON 'api/names', {limit: 100, rank: query.rank, frequency: query.frequency, gender: query.gender, year: query.year}, (data) =>
+        $('#nameTable img').remove()
         _.forEach(data.names, (name) =>
           this.add(first: name[0].name, last: name[1].name)
         )
+
+    defaultQueries:
+      rank: 'high'
+      frequency: 'high'
+      gender: 'female'
+      year: 0
+      race: ['any', 0]
 
   class AppView extends Backbone.View
 
@@ -39,11 +50,17 @@ $ ->
 
     initialize: ->
       this.listenTo(nameList, 'add', this.addOne)
-      nameList.getNames()
+      this.listenTo(nameList, 'reset', this.reset)
+      nameList.getNames(nameList.defaultQueries)
 
     addOne: (name) ->
       view = new NameView(model: name)
       $('#nameTable').append( view.render().el )
+
+    reset: ->
+      $('#nameTable').empty()      
+      $('#nameTable').append("<img src='images/ajax-loader.gif' alt='loading' />")
+
 
   # Setting up Backbone App
 
@@ -55,7 +72,7 @@ $ ->
 
   getNamesForScroll = ->
     console.log "Infinite Scroll: Loading Names"
-    nameList.getNames()
+    nameList.getNames(currentQuery)
 
   throttledGetNamesForScroll = _.throttle(getNamesForScroll, 2000, {'trailing': false})
 
@@ -70,9 +87,23 @@ $ ->
       $('.topBar').css("max-height", "2rem")
       $('.controlDrawer').css("margin-top", "-14rem")
       $('#nameTable').css("padding-top", "2rem")
-      console.log($('.topBar').height())
     else
       $('.topBar').css("max-height", "16rem")
       $('.controlDrawer').css("margin-top", "0")
       $('#nameTable').css("padding-top", "16rem")
-      console.log($('.topBar').height())
+
+  $('.topBar').css("max-height", "16rem")
+  $('.controlDrawer').css("margin-top", "0")
+  $('#nameTable').css("padding-top", "16rem")
+
+  # Changing settings code
+  currentQuery = nameList.defaultQueries
+
+  $('#gender, #rank, #frequency, #year').on 'change', ->
+    sendNewQuery(this)
+    
+  sendNewQuery = (context) ->
+    newQuery = {}
+    newQuery["#{$(context).attr('id')}"] = $(context).val()
+    currentQuery = _.assign(currentQuery, newQuery)
+    nameList.getNames(currentQuery, true)

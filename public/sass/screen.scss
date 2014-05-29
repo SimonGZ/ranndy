@@ -3,9 +3,6 @@
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 
-// Compass Settings
-$legacy-support-for-ie: false;
-
 @import "normalize";
 @import "compass";
 @import "susy";
@@ -121,8 +118,13 @@ header {
 
 #nameTable {
   padding-top: 2rem; // To compensate for fixed topBar
+  text-align: center;
   @include transition-property(padding-top);
   @include transition-duration(0.75s);
+
+  img {
+    padding-top: 1rem;
+  }
 }
 
 .nameRow {
@@ -132,6 +134,7 @@ header {
   font-size: 1.5rem;
   font-family: 'Gill Sans';
   color: $textColor;
+  background-color: #e7e7e7;
   @include clearfix; 
 
   &:nth-child(2n+2) {
@@ -143,10 +146,6 @@ header {
   background-color: inherit;
   height: 3rem;
   line-height: 3rem;
-}
-
-.nameRow {
-  background-color: #F0F0F0;
 }
 
 .firstName {

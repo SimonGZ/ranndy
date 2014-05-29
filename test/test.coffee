@@ -44,6 +44,11 @@ describe "API", ->
           done()
 
     describe "the frequency query", ->
+      it "returns results when sent any", (done) ->
+        request.get("localhost:3000/api/surnames?frequency=any").end (res) ->
+            expect(res.body.surnames).to.have.length 10
+            done()
+
       it "low returns names with frequencies below 0.1", (done) ->
         request.get("localhost:3000/api/surnames?frequency=low").end (res) ->
           async.each res.body.surnames, (name) ->
@@ -73,6 +78,11 @@ describe "API", ->
           done()
 
     describe "the racial query", ->
+      it "returns results when sent any", (done) ->
+        request.get("localhost:3000/api/surnames?race=any&race=50").end (res) ->
+            expect(res.body.surnames).to.have.length 10
+            done()
+
       it "returns names with pctblack above 50 when sent pctblack, 50", (done) ->
         request.get("localhost:3000/api/surnames?race=pctblack&race=50").end (res) ->
           async.each res.body.surnames, (name) ->
@@ -189,6 +199,16 @@ describe "API", ->
           expect(genders).to.contain("F")
           done()
 
+      it "returns a mix of male and female names when sent any", (done) ->
+        request.get("localhost:3000/api/firstnames?limit=20&gender=any").end (res) ->
+          genders = []
+          _(res.body.firstnames).forEach (name) ->
+            genders.push(name.gender)
+          genders = _.uniq(genders)
+          expect(genders).to.contain("M")
+          expect(genders).to.contain("F")
+          done()
+
       it "returns only male names when sent gender=male", (done) ->
         request.get("localhost:3000/api/firstnames?gender=male").end (res) ->
           async.each res.body.firstnames, (name) ->
@@ -211,6 +231,11 @@ describe "API", ->
           done()
 
     describe "the rank query", ->
+      it "returns results when sent any", (done) ->
+        request.get("localhost:3000/api/firstnames?rank=any&gender=male&year=1880").end (res) ->
+            expect(res.body.firstnames).to.have.length 10
+            done()
+
       describe "max(rank) less than 500", ->
         it "high returns names from the top 50", (done) ->
           request.get("localhost:3000/api/firstnames?rank=high&gender=male&year=1880").end (res) ->

@@ -112,7 +112,7 @@ getFirstnames = (req, resultsCallback) ->
           queries.yearQuery(this, req.query.year)
         )
         .andWhere(->
-          queries.genderQuery(this, req.query.gender)
+          queries.genderQuery(this, req.query.gender, errorHandler)
         )
         .then (result) ->
           # Send the max(rank) to the callback function

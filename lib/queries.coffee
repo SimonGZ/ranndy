@@ -13,24 +13,36 @@ frequencyQuery = (context, freq, errorHandler) ->
     context.where("frequency", ">=", 0.06).andWhere("frequency", "<", 1)
   else if freq is "high"
     context.where("frequency", ">=", 1)
+  else if freq is "any"
+    anyFrequency(context)
   else
     if !_.isUndefined(freq) then errorHandler.addError(errorHandler.errorCodes['invalid_frequency'])
-    context.where("frequency", ">", -1)
+    anyFrequency(context)
+
+anyFrequency = (context) ->
+  context.where("frequency", ">", -1)
 
 raceQuery = (context, raceArray, errorHandler) ->
   if !_.isUndefined(raceArray) 
     if _.isString(raceArray[0]) and _.parseInt(raceArray[1])
-      if _.contains(["pctwhite","pctasian","pctnative","pctblack","pcthispanic"], raceArray[0])
-        if raceArray[1] > 99 or raceArray[1] < 1 then errorHandler.addError(errorHandler.errorCodes['invalid_race_pct'])
-        context.where(raceArray[0], ">", Math.abs(raceArray[1]))
+      if _.contains(["pctwhite","pctasian","pctnative","pctblack","pcthispanic", "any"], raceArray[0])
+        if raceArray[1] > 99 or raceArray[1] < 1
+          errorHandler.addError(errorHandler.errorCodes['invalid_race_pct'])
+        else if raceArray[0] is "any"
+          anyRace(context)
+        else
+          context.where(raceArray[0], ">", Math.abs(raceArray[1]))
       else
         errorHandler.addError(errorHandler.errorCodes['invalid_race'])
-        context.where("pctwhite", ">", -1)
+        anyRace(context)
     else
       errorHandler.addError(errorHandler.errorCodes['invalid_race_pct'])
-      context.where("pctwhite", ">", -1)  
+      anyRace(context)
   else
-    context.where("pctwhite", ">", -1)
+    anyRace(context)
+
+anyRace = (context) ->
+  context.where("pctwhite", ">", -1)  
 
 limitQuery = (limit, errorHandler) ->
   if (limit <= 100) and (limit >= 1)
@@ -59,7 +71,7 @@ genderQuery = (context, req_gender, errorHandler) ->
   if gender
     context.where({gender: gender})
   else
-    if !_.isUndefined(req_gender)
+    if !_.isUndefined(req_gender) and req_gender != "any"
       errorHandler.addError(errorHandler.errorCodes['invalid_gender'])
     context.where('gender', 'LIKE', '%')
 
@@ -80,6 +92,8 @@ rankQuery = (context, req_rank, maxRank, errorHandler) ->
         context.where("rank", ">", 150).andWhere("rank", "<=", 300)
       else if req_rank is "high"
         context.where("rank", "<=", 150)
+      else if req_rank is "any"
+        anyRank(context)
       else
         errorHandler.addError(errorHandler.errorCodes['invalid_rank'])
         anyRank(context)
@@ -90,6 +104,8 @@ rankQuery = (context, req_rank, maxRank, errorHandler) ->
         context.where("rank", ">", 50).andWhere("rank", "<=", 100)
       else if req_rank is 'high'
         context.where("rank", "<=", 50)
+      else if req_rank is "any"
+        anyRank(context)
       else
         errorHandler.addError(errorHandler.errorCodes['invalid_rank'])
         anyRank(context)

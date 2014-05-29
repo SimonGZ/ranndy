@@ -121,7 +121,7 @@ getFirstnames = function(req, resultsCallback) {
         return knex("firstnames_annual").select(knex.raw("max(rank)")).where(function() {
           return queries.yearQuery(this, req.query.year);
         }).andWhere(function() {
-          return queries.genderQuery(this, req.query.gender);
+          return queries.genderQuery(this, req.query.gender, errorHandler);
         }).then(function(result) {
           return callback(null, result[0].max);
         });
