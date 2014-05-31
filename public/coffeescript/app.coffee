@@ -96,19 +96,19 @@ $ ->
   # Settings drawer code
 
   $('#settingsBtn').on 'click', ->
-    if $('.topBar').css("max-height") == "16rem"
-      $('.topBar').css("max-height", "2rem")
-      $('.controlDrawer').css("margin-top", "-14rem")
-      $('#nameTable').css("padding-top", "2rem")
-      $('.settings img').removeClass('clicked')
+    if $('.topBar').css("max-height") == "17rem"
+      $('.topBar').css("max-height", "4rem")
+      $('.controlDrawer').css("margin-top", "-13rem")
+      $('#nameTable').css("padding-top", "4rem")
+      $('.fa').removeClass('fa-chevron-up').addClass('fa-chevron-down')
     else
-      $('.topBar').css("max-height", "16rem")
+      $('.topBar').css("max-height", "17rem")
       $('.controlDrawer').css("margin-top", "0")
-      $('#nameTable').css("padding-top", "16rem")
-      $('.settings img').addClass('clicked')
+      $('#nameTable').css("padding-top", "17rem")
+      $('.fa').removeClass('fa-chevron-down').addClass('fa-chevron-up')
 
   # Debug code to start with the drawer open
-  # $('.topBar').css("max-height", "16rem")
+  # $('.topBar').css("max-height", "17rem")
   # $('.controlDrawer').css("margin-top", "0")
   # $('#nameTable').css("padding-top", "16rem")
   # $('.settings img').addClass('clicked')
