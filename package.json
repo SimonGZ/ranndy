@@ -1,11 +1,24 @@
 {
   "name": "random-name-generator",
   "description": "API to generate random names",
-  "version": "0.0.1",
+  "version": "0.2.0",
+  "author": "Simon Ganz",
   "private": true,
+  "scripts": {
+    "start": "supervisor app.js",
+    "test": "./node_modules/mocha/bin/mocha -u tdd -R spec"
+  },
   "dependencies": {
-    "express": "3.4.8",
-    "pg": "x",
-    "async": "x"
+    "express" : "4.0.x",
+    "knex"    : "0.5.x",
+    "pg"      : "3.0.x",
+    "async"   : "0.7.x",
+    "lodash"  : "2.4.x"
+  },
+  "devDependencies": {
+    "supervisor": "*",
+    "mocha"      :  "x",
+    "superagent" :  "x",
+    "expect.js"  :  "x"
   }
 }

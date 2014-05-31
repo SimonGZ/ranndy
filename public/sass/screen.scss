@@ -1,0 +1,185 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "normalize";
+@import "compass";
+@import "susy";
+@import "breakpoint";
+
+// Susy Settings
+
+$susy: (
+  columns: 8,
+  gutter-position: split,
+  gutters: 1/8,
+  global-box-sizing: border-box,
+  use-custom: (rem: true
+    )
+  );
+
+@include border-box-sizing;
+
+body {
+  background-color: #F0F0F0;
+  font-size: 16px;
+}
+
+/**
+ * Variables
+ */
+
+ $containerWidth: 600px;
+ $textColor: #53585F;
+
+/**
+ * Layout for controls
+ */
+
+.topBar {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  max-height: 2rem;
+  line-height: 2rem;
+  background-color: #426E93;
+  border-top: 1px solid $textColor;
+  color: #FFFDFB;
+  font-size: 0.75rem;
+  text-align: center;
+  @include clearfix;
+  position: fixed;
+  width: 100%;
+  @include transition-property(max-height);
+  @include transition-duration(0.75s);
+}
+
+.controlDrawer {
+  margin-top: -14rem;
+  height: 14rem;
+  background-color: #FFFDFB;
+  @include box-shadow(black 0 -1px 5px inset);
+  @include transition-property(margin-top);
+  @include transition-duration(0.75s);
+}
+
+form {
+  display: inline-block;
+  color: $textColor;
+  text-align: center;
+  font-size: 1rem;
+}
+
+fieldset {
+
+  div {
+    display: inline-block;
+  }
+  label {
+    display: block;
+    height: 1.6rem;
+  }
+}
+
+// Susy container begins at header and only encompasses labels and settingsBtn
+
+header {
+  @include container($containerWidth);
+  @include clearfix;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+}
+
+.labels {
+  @include span(8 of 8);
+  @include clearfix; 
+}
+
+.firstLabel {
+  @include span(4 of 8);
+}
+
+.lastLabel {
+  @include span(4 of 8 last);
+}
+
+.settings {
+  @include span(8 of 8);
+  margin-top: -1.8rem;
+  height: 1rem;
+}
+
+.clicked {
+  @include border-radius(50%);
+  @include box-shadow(red 0 3px 40px inset);
+}
+
+/**
+ * Layout for grids & container
+ */
+
+#raandy {
+  @include container($containerWidth);
+}
+
+#nameTable {
+  padding-top: 2rem; // To compensate for fixed topBar
+  text-align: center;
+  @include transition-property(padding-top);
+  @include transition-duration(0.75s);
+
+  img {
+    padding-top: 1rem;
+  }
+}
+
+.nameRow {
+  @include span(8);
+  margin-top: 4px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-family: 'Gill Sans';
+  color: $textColor;
+  background-color: #e7e7e7;
+  @include clearfix; 
+
+  &:nth-child(2n+2) {
+    background-color: #CCC;
+  }
+}
+
+@mixin name-styles {
+  background-color: inherit;
+  height: 3rem;
+  line-height: 3rem;
+}
+
+.firstName {
+  @include span(4);
+  @include name-styles;
+}
+
+.lastName {
+  @include span(4 last);
+  @include name-styles;
+}
+
+/**
+ * Styles for AG grids & Container
+ */
+
+.container {
+  background-color: #FFFDFB;
+}
+
+/**
+ * Text Styles
+ */
+h2 {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: normal;
+  padding-top: 1.8rem;
+  padding-bottom: 1.8rem;
+}
