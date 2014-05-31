@@ -59,7 +59,7 @@ $ ->
 
   class AppView extends Backbone.View
 
-    el: '#raandy'
+    el: '#ranndy'
 
     initialize: ->
       this.listenTo(nameList, 'add', this.addOne)

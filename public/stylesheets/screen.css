@@ -582,13 +582,13 @@ header:after {
  * Layout for grids & container
  */
 /* line 126, ../sass/screen.scss */
-#raandy {
+#ranndy {
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
 }
 /* line 12, ../../../../../.rvm/gems/ruby-2.1.1/gems/susy-2.1.2/sass/susy/output/support/_clearfix.scss */
-#raandy:after {
+#ranndy:after {
   content: " ";
   display: block;
   clear: both;

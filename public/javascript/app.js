@@ -110,7 +110,7 @@ $(function() {
       return AppView.__super__.constructor.apply(this, arguments);
     }
 
-    AppView.prototype.el = '#raandy';
+    AppView.prototype.el = '#ranndy';
 
     AppView.prototype.initialize = function() {
       this.listenTo(nameList, 'add', this.addOne);
