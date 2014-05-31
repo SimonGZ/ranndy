@@ -31,7 +31,7 @@ raceQuery = (context, raceArray, errorHandler) ->
         else if raceArray[0] is "any"
           anyRace(context)
         else
-          context.where(raceArray[0], ">", Math.abs(raceArray[1]))
+          context.where(raceArray[0], ">", Math.abs(_.parseInt(raceArray[1])))
       else
         errorHandler.addError(errorHandler.errorCodes['invalid_race'])
         anyRace(context)

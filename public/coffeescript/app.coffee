@@ -28,21 +28,34 @@ $ ->
     model: Name
 
     getNames: (query, resetFlag=false) ->
-      console.log query
+      
       if resetFlag
         this.reset()
-      $.getJSON 'api/names', {limit: 100, rank: query.rank, frequency: query.frequency, gender: query.gender, year: query.year}, (data) =>
-        $('#nameTable img').remove()
-        _.forEach(data.names, (name) =>
-          this.add(first: name[0].name, last: name[1].name)
-        )
+              
+      $.ajax
+        type: 'GET'
+        url: 'api/names'
+        data: {limit: 100, rank: query.rank, frequency: query.frequency, gender: query.gender, year: query.year, race: query.race}
+        dataType: 'json'
+        traditional: true
+        timeout: 300
+        beforeSend: (xhr, settings) ->
+          # Useful for debugging queries
+          console.log settings.url
+        success: (data) =>           
+          $('#nameTable img').remove()
+          _.forEach(data.names, (name) =>
+            this.add(first: name[0].name, last: name[1].name)
+          )
+        error: (xhr, type) ->
+          console.log "Ajax error"
 
     defaultQueries:
       rank: 'high'
       frequency: 'high'
       gender: 'female'
       year: 0
-      race: ['any', 0]
+      race: ['any', 50]
 
   class AppView extends Backbone.View
 
@@ -92,15 +105,30 @@ $ ->
       $('.controlDrawer').css("margin-top", "0")
       $('#nameTable').css("padding-top", "16rem")
 
-  $('.topBar').css("max-height", "16rem")
-  $('.controlDrawer').css("margin-top", "0")
-  $('#nameTable').css("padding-top", "16rem")
+  # Debug code to start with the drawer open
+  # $('.topBar').css("max-height", "16rem")
+  # $('.controlDrawer').css("margin-top", "0")
+  # $('#nameTable').css("padding-top", "16rem")
 
   # Changing settings code
   currentQuery = nameList.defaultQueries
 
   $('#gender, #rank, #frequency, #year').on 'change', ->
     sendNewQuery(this)
+
+  $('#race').on 'change', ->
+    newQuery = {}
+    newQuery['race'] = [$(this).val(), 50]
+    if $(this).val() is "pctnative"
+      $('#frequency')
+      .val 'any'
+      .attr 'disabled', 'disabled'
+      newQuery['frequency'] = "any"
+    else
+      $('#frequency').removeAttr 'disabled'
+    
+    currentQuery = _.assign(currentQuery, newQuery)
+    nameList.getNames(currentQuery, true)
     
   sendNewQuery = (context) ->
     newQuery = {}

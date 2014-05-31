@@ -57,27 +57,41 @@ $(function() {
       if (resetFlag == null) {
         resetFlag = false;
       }
-      console.log(query);
       if (resetFlag) {
         this.reset();
       }
-      return $.getJSON('api/names', {
-        limit: 100,
-        rank: query.rank,
-        frequency: query.frequency,
-        gender: query.gender,
-        year: query.year
-      }, (function(_this) {
-        return function(data) {
-          $('#nameTable img').remove();
-          return _.forEach(data.names, function(name) {
-            return _this.add({
-              first: name[0].name,
-              last: name[1].name
+      return $.ajax({
+        type: 'GET',
+        url: 'api/names',
+        data: {
+          limit: 100,
+          rank: query.rank,
+          frequency: query.frequency,
+          gender: query.gender,
+          year: query.year,
+          race: query.race
+        },
+        dataType: 'json',
+        traditional: true,
+        timeout: 300,
+        beforeSend: function(xhr, settings) {
+          return console.log(settings.url);
+        },
+        success: (function(_this) {
+          return function(data) {
+            $('#nameTable img').remove();
+            return _.forEach(data.names, function(name) {
+              return _this.add({
+                first: name[0].name,
+                last: name[1].name
+              });
             });
-          });
-        };
-      })(this));
+          };
+        })(this),
+        error: function(xhr, type) {
+          return console.log("Ajax error");
+        }
+      });
     };
 
     NameList.prototype.defaultQueries = {
@@ -85,7 +99,7 @@ $(function() {
       frequency: 'high',
       gender: 'female',
       year: 0,
-      race: ['any', 0]
+      race: ['any', 50]
     };
 
     return NameList;
@@ -150,12 +164,22 @@ $(function() {
       return $('#nameTable').css("padding-top", "16rem");
     }
   });
-  $('.topBar').css("max-height", "16rem");
-  $('.controlDrawer').css("margin-top", "0");
-  $('#nameTable').css("padding-top", "16rem");
   currentQuery = nameList.defaultQueries;
   $('#gender, #rank, #frequency, #year').on('change', function() {
     return sendNewQuery(this);
+  });
+  $('#race').on('change', function() {
+    var newQuery;
+    newQuery = {};
+    newQuery['race'] = [$(this).val(), 50];
+    if ($(this).val() === "pctnative") {
+      $('#frequency').val('any').attr('disabled', 'disabled');
+      newQuery['frequency'] = "any";
+    } else {
+      $('#frequency').removeAttr('disabled');
+    }
+    currentQuery = _.assign(currentQuery, newQuery);
+    return nameList.getNames(currentQuery, true);
   });
   return sendNewQuery = function(context) {
     var newQuery;
