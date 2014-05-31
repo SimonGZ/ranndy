@@ -30,6 +30,7 @@ body {
  * Variables
  */
 
+ $containerWidth: 600px;
  $textColor: #53585F;
 
 /**
@@ -43,6 +44,7 @@ body {
   max-height: 2rem;
   line-height: 2rem;
   background-color: #426E93;
+  border-top: 1px solid $textColor;
   color: #FFFDFB;
   font-size: 0.75rem;
   text-align: center;
@@ -83,7 +85,7 @@ fieldset {
 // Susy container begins at header and only encompasses labels and settingsBtn
 
 header {
-  @include container(1000px);
+  @include container($containerWidth);
   @include clearfix;
   -webkit-backface-visibility: hidden;
   -webkit-transform: translateZ(0);
@@ -108,12 +110,17 @@ header {
   height: 1rem;
 }
 
+.clicked {
+  @include border-radius(50%);
+  @include box-shadow(red 0 3px 40px inset);
+}
+
 /**
  * Layout for grids & container
  */
 
 #raandy {
-  @include container(1000px);
+  @include container($containerWidth);
 }
 
 #nameTable {

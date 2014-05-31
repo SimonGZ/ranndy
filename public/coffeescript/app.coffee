@@ -41,7 +41,7 @@ $ ->
         timeout: 300
         beforeSend: (xhr, settings) ->
           # Useful for debugging queries
-          console.log settings.url
+          # console.log settings.url
         success: (data) =>           
           $('#nameTable img').remove()
           _.forEach(data.names, (name) =>
@@ -84,7 +84,7 @@ $ ->
   # Infinite scroll code
 
   getNamesForScroll = ->
-    console.log "Infinite Scroll: Loading Names"
+    # console.log "Infinite Scroll: Loading Names"
     nameList.getNames(currentQuery)
 
   throttledGetNamesForScroll = _.throttle(getNamesForScroll, 2000, {'trailing': false})
@@ -100,15 +100,18 @@ $ ->
       $('.topBar').css("max-height", "2rem")
       $('.controlDrawer').css("margin-top", "-14rem")
       $('#nameTable').css("padding-top", "2rem")
+      $('.settings img').removeClass('clicked')
     else
       $('.topBar').css("max-height", "16rem")
       $('.controlDrawer').css("margin-top", "0")
       $('#nameTable').css("padding-top", "16rem")
+      $('.settings img').addClass('clicked')
 
   # Debug code to start with the drawer open
   # $('.topBar').css("max-height", "16rem")
   # $('.controlDrawer').css("margin-top", "0")
   # $('#nameTable').css("padding-top", "16rem")
+  # $('.settings img').addClass('clicked')
 
   # Changing settings code
   currentQuery = nameList.defaultQueries

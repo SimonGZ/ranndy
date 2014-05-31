@@ -74,9 +74,7 @@ $(function() {
         dataType: 'json',
         traditional: true,
         timeout: 300,
-        beforeSend: function(xhr, settings) {
-          return console.log(settings.url);
-        },
+        beforeSend: function(xhr, settings) {},
         success: (function(_this) {
           return function(data) {
             $('#nameTable img').remove();
@@ -142,7 +140,6 @@ $(function() {
   nameList = new NameList;
   app = new AppView;
   getNamesForScroll = function() {
-    console.log("Infinite Scroll: Loading Names");
     return nameList.getNames(currentQuery);
   };
   throttledGetNamesForScroll = _.throttle(getNamesForScroll, 2000, {
@@ -157,11 +154,13 @@ $(function() {
     if ($('.topBar').css("max-height") === "16rem") {
       $('.topBar').css("max-height", "2rem");
       $('.controlDrawer').css("margin-top", "-14rem");
-      return $('#nameTable').css("padding-top", "2rem");
+      $('#nameTable').css("padding-top", "2rem");
+      return $('.settings img').removeClass('clicked');
     } else {
       $('.topBar').css("max-height", "16rem");
       $('.controlDrawer').css("margin-top", "0");
-      return $('#nameTable').css("padding-top", "16rem");
+      $('#nameTable').css("padding-top", "16rem");
+      return $('.settings img').addClass('clicked');
     }
   });
   currentQuery = nameList.defaultQueries;
