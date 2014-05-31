@@ -462,8 +462,7 @@ body {
   margin: 0;
   padding: 0;
   border: 0;
-  max-height: 2rem;
-  line-height: 2rem;
+  max-height: 4rem;
   background-color: #426E93;
   border-top: 1px solid #53585f;
   color: #FFFDFB;
@@ -483,10 +482,11 @@ body {
   transition-duration: 0.75s;
 }
 
-/* line 58, ../sass/screen.scss */
+/* line 57, ../sass/screen.scss */
 .controlDrawer {
-  margin-top: -14rem;
-  height: 14rem;
+  padding-top: 1rem;
+  margin-top: -13rem;
+  height: 13rem;
   background-color: #FFFDFB;
   -moz-box-shadow: black 0 -1px 5px inset;
   -webkit-box-shadow: black 0 -1px 5px inset;
@@ -537,42 +537,38 @@ header:after {
 }
 
 /* line 94, ../sass/screen.scss */
-.labels {
-  width: 98.61111%;
-  float: left;
-  margin-left: 0.69444%;
-  margin-right: 0.69444%;
-  overflow: hidden;
-  *zoom: 1;
-}
-
-/* line 99, ../sass/screen.scss */
-.firstLabel {
+.title {
   width: 48.61111%;
   float: left;
   margin-left: 0.69444%;
   margin-right: 0.69444%;
+  font-size: 3rem;
+  font-family: ClarendonWideStencil-Bold;
+  text-align: left;
 }
 
-/* line 103, ../sass/screen.scss */
-.lastLabel {
+/* line 101, ../sass/screen.scss */
+.subtitle {
+  text-align: left;
+  font-family: ClarendonWideStencil-Bold;
+}
+
+/* line 106, ../sass/screen.scss */
+.settings {
   width: 48.61111%;
   float: right;
   margin-left: 0.69444%;
   margin-right: 0.69444%;
+  margin-top: 2px;
+  text-align: right;
+}
+/* line 111, ../sass/screen.scss */
+.settings .fa-chevron-up, .settings .fa-chevron-down {
+  font-size: 3rem;
+  color: #FFFDFB;
 }
 
-/* line 107, ../sass/screen.scss */
-.settings {
-  width: 98.61111%;
-  float: left;
-  margin-left: 0.69444%;
-  margin-right: 0.69444%;
-  margin-top: -1.8rem;
-  height: 1rem;
-}
-
-/* line 113, ../sass/screen.scss */
+/* line 117, ../sass/screen.scss */
 .clicked {
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
@@ -585,7 +581,7 @@ header:after {
 /**
  * Layout for grids & container
  */
-/* line 122, ../sass/screen.scss */
+/* line 126, ../sass/screen.scss */
 #raandy {
   max-width: 600px;
   margin-left: auto;
@@ -598,9 +594,9 @@ header:after {
   clear: both;
 }
 
-/* line 126, ../sass/screen.scss */
+/* line 130, ../sass/screen.scss */
 #nameTable {
-  padding-top: 2rem;
+  padding-top: 4rem;
   text-align: center;
   -moz-transition-property: padding-top;
   -o-transition-property: padding-top;
@@ -611,12 +607,12 @@ header:after {
   -webkit-transition-duration: 0.75s;
   transition-duration: 0.75s;
 }
-/* line 132, ../sass/screen.scss */
+/* line 136, ../sass/screen.scss */
 #nameTable img {
   padding-top: 1rem;
 }
 
-/* line 137, ../sass/screen.scss */
+/* line 141, ../sass/screen.scss */
 .nameRow {
   width: 98.61111%;
   float: left;
@@ -625,34 +621,19 @@ header:after {
   margin-top: 4px;
   text-align: center;
   font-size: 1.5rem;
-  font-family: 'Gill Sans';
+  font-family: ClarendonTextPro;
   color: #53585f;
   background-color: #e7e7e7;
   overflow: hidden;
   *zoom: 1;
 }
-/* line 147, ../sass/screen.scss */
+/* line 151, ../sass/screen.scss */
 .nameRow:nth-child(2n+2) {
   background-color: #CCC;
 }
 
-/* line 158, ../sass/screen.scss */
-.firstName {
-  width: 48.61111%;
-  float: left;
-  margin-left: 0.69444%;
-  margin-right: 0.69444%;
-  background-color: inherit;
-  height: 3rem;
-  line-height: 3rem;
-}
-
-/* line 163, ../sass/screen.scss */
-.lastName {
-  width: 48.61111%;
-  float: right;
-  margin-left: 0.69444%;
-  margin-right: 0.69444%;
+/* line 156, ../sass/screen.scss */
+.fullName {
   background-color: inherit;
   height: 3rem;
   line-height: 3rem;
@@ -661,7 +642,7 @@ header:after {
 /**
  * Styles for AG grids & Container
  */
-/* line 172, ../sass/screen.scss */
+/* line 166, ../sass/screen.scss */
 .container {
   background-color: #FFFDFB;
 }
@@ -669,7 +650,7 @@ header:after {
 /**
  * Text Styles
  */
-/* line 179, ../sass/screen.scss */
+/* line 173, ../sass/screen.scss */
 h2 {
   text-align: center;
   font-size: 1rem;

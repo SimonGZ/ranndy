@@ -151,16 +151,16 @@ $(function() {
     }
   });
   $('#settingsBtn').on('click', function() {
-    if ($('.topBar').css("max-height") === "16rem") {
-      $('.topBar').css("max-height", "2rem");
-      $('.controlDrawer').css("margin-top", "-14rem");
-      $('#nameTable').css("padding-top", "2rem");
-      return $('.settings img').removeClass('clicked');
+    if ($('.topBar').css("max-height") === "17rem") {
+      $('.topBar').css("max-height", "4rem");
+      $('.controlDrawer').css("margin-top", "-13rem");
+      $('#nameTable').css("padding-top", "4rem");
+      return $('.fa').removeClass('fa-chevron-up').addClass('fa-chevron-down');
     } else {
-      $('.topBar').css("max-height", "16rem");
+      $('.topBar').css("max-height", "17rem");
       $('.controlDrawer').css("margin-top", "0");
-      $('#nameTable').css("padding-top", "16rem");
-      return $('.settings img').addClass('clicked');
+      $('#nameTable').css("padding-top", "17rem");
+      return $('.fa').removeClass('fa-chevron-down').addClass('fa-chevron-up');
     }
   });
   currentQuery = nameList.defaultQueries;

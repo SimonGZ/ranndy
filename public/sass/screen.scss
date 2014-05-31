@@ -41,8 +41,7 @@ body {
   margin: 0;
   padding: 0;
   border: 0;
-  max-height: 2rem;
-  line-height: 2rem;
+  max-height: 4rem;
   background-color: #426E93;
   border-top: 1px solid $textColor;
   color: #FFFDFB;
@@ -56,8 +55,9 @@ body {
 }
 
 .controlDrawer {
-  margin-top: -14rem;
-  height: 14rem;
+  padding-top: 1rem;
+  margin-top: -13rem;
+  height: 13rem;
   background-color: #FFFDFB;
   @include box-shadow(black 0 -1px 5px inset);
   @include transition-property(margin-top);
@@ -91,23 +91,27 @@ header {
   -webkit-transform: translateZ(0);
 }
 
-.labels {
-  @include span(8 of 8);
-  @include clearfix; 
+.title {
+  @include span(4 of 8 first);
+  font-size: 3rem;
+  font-family: ClarendonWideStencil-Bold;
+  text-align: left;
 }
 
-.firstLabel {
-  @include span(4 of 8);
-}
-
-.lastLabel {
-  @include span(4 of 8 last);
+.subtitle {
+  text-align: left;
+  font-family: ClarendonWideStencil-Bold;
 }
 
 .settings {
-  @include span(8 of 8);
-  margin-top: -1.8rem;
-  height: 1rem;
+  @include span(4 of 8 last);
+  margin-top: 2px;
+  text-align: right;
+  
+  .fa-chevron-up, .fa-chevron-down {
+    font-size: 3rem;
+    color: #FFFDFB;
+  }
 }
 
 .clicked {
@@ -124,7 +128,7 @@ header {
 }
 
 #nameTable {
-  padding-top: 2rem; // To compensate for fixed topBar
+  padding-top: 4rem; // To compensate for fixed topBar
   text-align: center;
   @include transition-property(padding-top);
   @include transition-duration(0.75s);
@@ -139,7 +143,7 @@ header {
   margin-top: 4px;
   text-align: center;
   font-size: 1.5rem;
-  font-family: 'Gill Sans';
+  font-family: ClarendonTextPro;
   color: $textColor;
   background-color: #e7e7e7;
   @include clearfix; 
@@ -149,20 +153,10 @@ header {
   }
 }
 
-@mixin name-styles {
+.fullName {
   background-color: inherit;
   height: 3rem;
   line-height: 3rem;
-}
-
-.firstName {
-  @include span(4);
-  @include name-styles;
-}
-
-.lastName {
-  @include span(4 last);
-  @include name-styles;
 }
 
 /**
