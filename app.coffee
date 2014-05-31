@@ -66,11 +66,19 @@ app.get "/api/names", (req, res) ->
       if errors.length > 0
         res.json 400, errors: errors
       else
-        res.json(
-          names: _.zip(results[0].firstnames, results[1].surnames)
-        )
-  )
+        cleanedResults = {}
+        cleanedResults['names'] = _.filter(_.zip(results[0].firstnames, results[1].surnames), (nameArray) ->
+                                    return !_.some(nameArray, _.isUndefined)
+                                   )
 
+        if queries.limitQuery(req.query.limit) > cleanedResults['names'].length
+          errorHandler.addWarning({message: "Limited Results", description: "The request returned fewer results than the limit. Consider loosening your query conditions."})
+        
+        if errorHandler.warningsFound() > 0
+          cleanedResults['warnings'] = errorHandler.listWarnings()
+
+        res.json cleanedResults
+  )
 
 getSurnames = (req, resultsCallback) ->
 

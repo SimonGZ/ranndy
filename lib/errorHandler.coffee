@@ -24,3 +24,18 @@ module.exports.listErrors = ->
 
 module.exports.clearErrors = () ->
   errorLog = []
+
+warningLog = []
+
+module.exports.warningsFound = () ->
+  return warningLog.length
+
+module.exports.addWarning = (warning) ->
+  console.log "Logging warning: #{warning.message}"
+  warningLog.push(warning)
+
+module.exports.listWarnings = ->
+  return warningLog
+
+module.exports.clearWarnings = () ->
+  warningLog = []

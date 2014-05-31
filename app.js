@@ -65,7 +65,7 @@ app.get("/api/names", function(req, res) {
       });
     }
   ], function(err, results) {
-    var errors;
+    var cleanedResults, errors;
     errors = [];
     _.each(results, function(result) {
       if (result.errors) {
@@ -77,9 +77,20 @@ app.get("/api/names", function(req, res) {
         errors: errors
       });
     } else {
-      return res.json({
-        names: _.zip(results[0].firstnames, results[1].surnames)
+      cleanedResults = {};
+      cleanedResults['names'] = _.filter(_.zip(results[0].firstnames, results[1].surnames), function(nameArray) {
+        return !_.some(nameArray, _.isUndefined);
       });
+      if (queries.limitQuery(req.query.limit) > cleanedResults['names'].length) {
+        errorHandler.addWarning({
+          message: "Limited Results",
+          description: "The request returned fewer results than the limit. Consider loosening your query conditions."
+        });
+      }
+      if (errorHandler.warningsFound() > 0) {
+        cleanedResults['warnings'] = errorHandler.listWarnings();
+      }
+      return res.json(cleanedResults);
     }
   });
 });
