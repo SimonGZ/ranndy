@@ -73,7 +73,7 @@ $(function() {
         },
         dataType: 'json',
         traditional: true,
-        timeout: 1000,
+        timeout: 3000,
         beforeSend: function(xhr, settings) {},
         success: (function(_this) {
           return function(data) {
@@ -150,7 +150,7 @@ $(function() {
       return throttledGetNamesForScroll();
     }
   });
-  $('.settingsBtn').on('click', function() {
+  $('.topBar').on('click', function() {
     if ($('.topBar').css("max-height") === "17rem") {
       $('.topBar').css("max-height", "4rem");
       $('.controlDrawer').css("margin-top", "-13rem");
