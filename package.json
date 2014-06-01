@@ -16,7 +16,6 @@
     "lodash"  : "2.4.x"
   },
   "devDependencies": {
-    "forever" :  "*",
     "mocha"      :  "x",
     "superagent" :  "x",
     "expect.js"  :  "x"
