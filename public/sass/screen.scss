@@ -114,6 +114,13 @@ header {
   }
 }
 
+.settingsBtn {
+  a, a:link, a:visited {
+    text-decoration: none;
+    color: #FFFDFB;
+  }
+}
+
 .clicked {
   @include border-radius(50%);
   @include box-shadow(red 0 3px 40px inset);
