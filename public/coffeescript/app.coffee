@@ -95,7 +95,7 @@ $ ->
 
   # Settings drawer code
 
-  $('.topBar').on 'click', ->
+  $('header').on 'click', ->
     if $('.topBar').css("max-height") == "17rem"
       $('.topBar').css("max-height", "4rem")
       $('.controlDrawer').css("margin-top", "-13rem")
