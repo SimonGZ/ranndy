@@ -8,7 +8,8 @@ Knex.knex = Knex.initialize(
   client: "pg"
   connection:
     localhost: "localhost"
-    user: "simonganz"
+    user: "names"
+    password: "***REMOVED***"
     database: "names"
 )
 knex = require("knex").knex
