@@ -38,7 +38,7 @@ $ ->
         data: {limit: 100, rank: query.rank, frequency: query.frequency, gender: query.gender, year: query.year, race: query.race}
         dataType: 'json'
         traditional: true
-        timeout: 1000
+        timeout: 3000
         beforeSend: (xhr, settings) ->
           # Useful for debugging queries
           # console.log settings.url
