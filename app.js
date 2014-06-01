@@ -11,6 +11,7 @@ Knex.knex = Knex.initialize({
   client: "pg",
   connection: {
     localhost: "localhost",
+    user: "simonganz",
     database: "names"
   }
 });
