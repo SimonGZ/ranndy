@@ -568,13 +568,13 @@ header:after {
   color: #FFFDFB;
 }
 
-/* line 118, ../sass/screen.scss */
-.settingsBtn a, .settingsBtn a:link, .settingsBtn a:visited {
+/* line 117, ../sass/screen.scss */
+a, a:link, a:visited {
   text-decoration: none;
   color: #FFFDFB;
 }
 
-/* line 124, ../sass/screen.scss */
+/* line 122, ../sass/screen.scss */
 .clicked {
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
@@ -587,7 +587,7 @@ header:after {
 /**
  * Layout for grids & container
  */
-/* line 133, ../sass/screen.scss */
+/* line 131, ../sass/screen.scss */
 #ranndy {
   max-width: 600px;
   margin-left: auto;
@@ -600,7 +600,7 @@ header:after {
   clear: both;
 }
 
-/* line 137, ../sass/screen.scss */
+/* line 135, ../sass/screen.scss */
 #nameTable {
   padding-top: 4rem;
   text-align: center;
@@ -613,12 +613,12 @@ header:after {
   -webkit-transition-duration: 0.75s;
   transition-duration: 0.75s;
 }
-/* line 143, ../sass/screen.scss */
+/* line 141, ../sass/screen.scss */
 #nameTable img {
   padding-top: 1rem;
 }
 
-/* line 148, ../sass/screen.scss */
+/* line 146, ../sass/screen.scss */
 .nameRow {
   width: 98.61111%;
   float: left;
@@ -633,12 +633,12 @@ header:after {
   overflow: hidden;
   *zoom: 1;
 }
-/* line 158, ../sass/screen.scss */
+/* line 156, ../sass/screen.scss */
 .nameRow:nth-child(2n+2) {
   background-color: #CCC;
 }
 
-/* line 163, ../sass/screen.scss */
+/* line 161, ../sass/screen.scss */
 .fullName {
   background-color: inherit;
   height: 3rem;
@@ -648,7 +648,7 @@ header:after {
 /**
  * Styles for AG grids & Container
  */
-/* line 173, ../sass/screen.scss */
+/* line 171, ../sass/screen.scss */
 .container {
   background-color: #FFFDFB;
 }
@@ -656,7 +656,7 @@ header:after {
 /**
  * Text Styles
  */
-/* line 180, ../sass/screen.scss */
+/* line 178, ../sass/screen.scss */
 h2 {
   text-align: center;
   font-size: 1rem;
