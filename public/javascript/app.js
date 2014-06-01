@@ -73,7 +73,7 @@ $(function() {
         },
         dataType: 'json',
         traditional: true,
-        timeout: 300,
+        timeout: 1000,
         beforeSend: function(xhr, settings) {},
         success: (function(_this) {
           return function(data) {
