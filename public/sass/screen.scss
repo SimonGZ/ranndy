@@ -89,6 +89,7 @@ header {
   @include clearfix;
   -webkit-backface-visibility: hidden;
   -webkit-transform: translateZ(0);
+  cursor: pointer;
 }
 
 .title {

@@ -528,6 +528,7 @@ header {
   *zoom: 1;
   -webkit-backface-visibility: hidden;
   -webkit-transform: translateZ(0);
+  cursor: pointer;
 }
 /* line 12, ../../../../../.rvm/gems/ruby-2.1.1/gems/susy-2.1.2/sass/susy/output/support/_clearfix.scss */
 header:after {
@@ -536,7 +537,7 @@ header:after {
   clear: both;
 }
 
-/* line 94, ../sass/screen.scss */
+/* line 95, ../sass/screen.scss */
 .title {
   width: 48.61111%;
   float: left;
@@ -547,13 +548,13 @@ header:after {
   text-align: left;
 }
 
-/* line 101, ../sass/screen.scss */
+/* line 102, ../sass/screen.scss */
 .subtitle {
   text-align: left;
   font-family: ClarendonWideStencil-Bold;
 }
 
-/* line 106, ../sass/screen.scss */
+/* line 107, ../sass/screen.scss */
 .settings {
   width: 48.61111%;
   float: right;
@@ -562,19 +563,19 @@ header:after {
   margin-top: 2px;
   text-align: right;
 }
-/* line 111, ../sass/screen.scss */
+/* line 112, ../sass/screen.scss */
 .settings .fa-chevron-up, .settings .fa-chevron-down {
   font-size: 3rem;
   color: #FFFDFB;
 }
 
-/* line 117, ../sass/screen.scss */
+/* line 118, ../sass/screen.scss */
 a, a:link, a:visited {
   text-decoration: none;
   color: #FFFDFB;
 }
 
-/* line 122, ../sass/screen.scss */
+/* line 123, ../sass/screen.scss */
 .clicked {
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
@@ -587,7 +588,7 @@ a, a:link, a:visited {
 /**
  * Layout for grids & container
  */
-/* line 131, ../sass/screen.scss */
+/* line 132, ../sass/screen.scss */
 #ranndy {
   max-width: 600px;
   margin-left: auto;
@@ -600,7 +601,7 @@ a, a:link, a:visited {
   clear: both;
 }
 
-/* line 135, ../sass/screen.scss */
+/* line 136, ../sass/screen.scss */
 #nameTable {
   padding-top: 4rem;
   text-align: center;
@@ -613,12 +614,12 @@ a, a:link, a:visited {
   -webkit-transition-duration: 0.75s;
   transition-duration: 0.75s;
 }
-/* line 141, ../sass/screen.scss */
+/* line 142, ../sass/screen.scss */
 #nameTable img {
   padding-top: 1rem;
 }
 
-/* line 146, ../sass/screen.scss */
+/* line 147, ../sass/screen.scss */
 .nameRow {
   width: 98.61111%;
   float: left;
@@ -633,12 +634,12 @@ a, a:link, a:visited {
   overflow: hidden;
   *zoom: 1;
 }
-/* line 156, ../sass/screen.scss */
+/* line 157, ../sass/screen.scss */
 .nameRow:nth-child(2n+2) {
   background-color: #CCC;
 }
 
-/* line 161, ../sass/screen.scss */
+/* line 162, ../sass/screen.scss */
 .fullName {
   background-color: inherit;
   height: 3rem;
@@ -648,7 +649,7 @@ a, a:link, a:visited {
 /**
  * Styles for AG grids & Container
  */
-/* line 171, ../sass/screen.scss */
+/* line 172, ../sass/screen.scss */
 .container {
   background-color: #FFFDFB;
 }
@@ -656,7 +657,7 @@ a, a:link, a:visited {
 /**
  * Text Styles
  */
-/* line 178, ../sass/screen.scss */
+/* line 179, ../sass/screen.scss */
 h2 {
   text-align: center;
   font-size: 1rem;
