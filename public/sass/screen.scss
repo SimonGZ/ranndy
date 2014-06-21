@@ -32,6 +32,7 @@ body {
 
  $containerWidth: 600px;
  $textColor: #53585F;
+ $blueBackground: #426E93;
 
 /**
  * Layout for controls
@@ -42,7 +43,7 @@ body {
   padding: 0;
   border: 0;
   max-height: 4rem;
-  background-color: #426E93;
+  background-color: $blueBackground;
   border-top: 1px solid $textColor;
   color: #FFFDFB;
   font-size: 0.75rem;
@@ -171,6 +172,22 @@ a, a:link, a:visited {
 
 .container {
   background-color: #FFFDFB;
+}
+
+/**
+ * Styles for SimonGanz.com
+ */
+
+#sg_link {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  font-family: ClarendonTextPro;
+  font-size: 2rem;
+  color: white;
+  padding: 5px 5px 0 8px;
+  background: $blueBackground;
+  @include border-top-left-radius(5px);
 }
 
 /**

@@ -457,13 +457,13 @@ body {
 /**
  * Layout for controls
  */
-/* line 40, ../sass/screen.scss */
+/* line 41, ../sass/screen.scss */
 .topBar {
   margin: 0;
   padding: 0;
   border: 0;
   max-height: 4rem;
-  background-color: #426E93;
+  background-color: #426e93;
   border-top: 1px solid #53585f;
   color: #FFFDFB;
   font-size: 0.75rem;
@@ -482,7 +482,7 @@ body {
   transition-duration: 0.75s;
 }
 
-/* line 57, ../sass/screen.scss */
+/* line 58, ../sass/screen.scss */
 .controlDrawer {
   padding-top: 1rem;
   margin-top: -13rem;
@@ -501,7 +501,7 @@ body {
   transition-duration: 0.75s;
 }
 
-/* line 67, ../sass/screen.scss */
+/* line 68, ../sass/screen.scss */
 form {
   display: inline-block;
   color: #53585f;
@@ -509,17 +509,17 @@ form {
   font-size: 1rem;
 }
 
-/* line 76, ../sass/screen.scss */
+/* line 77, ../sass/screen.scss */
 fieldset div {
   display: inline-block;
 }
-/* line 79, ../sass/screen.scss */
+/* line 80, ../sass/screen.scss */
 fieldset label {
   display: block;
   height: 1.6rem;
 }
 
-/* line 87, ../sass/screen.scss */
+/* line 88, ../sass/screen.scss */
 header {
   max-width: 600px;
   margin-left: auto;
@@ -537,7 +537,7 @@ header:after {
   clear: both;
 }
 
-/* line 95, ../sass/screen.scss */
+/* line 96, ../sass/screen.scss */
 .title {
   width: 48.61111%;
   float: left;
@@ -548,13 +548,13 @@ header:after {
   text-align: left;
 }
 
-/* line 102, ../sass/screen.scss */
+/* line 103, ../sass/screen.scss */
 .subtitle {
   text-align: left;
   font-family: ClarendonWideStencil-Bold;
 }
 
-/* line 107, ../sass/screen.scss */
+/* line 108, ../sass/screen.scss */
 .settings {
   width: 48.61111%;
   float: right;
@@ -563,19 +563,19 @@ header:after {
   margin-top: 2px;
   text-align: right;
 }
-/* line 112, ../sass/screen.scss */
+/* line 113, ../sass/screen.scss */
 .settings .fa-chevron-up, .settings .fa-chevron-down {
   font-size: 3rem;
   color: #FFFDFB;
 }
 
-/* line 118, ../sass/screen.scss */
+/* line 119, ../sass/screen.scss */
 a, a:link, a:visited {
   text-decoration: none;
   color: #FFFDFB;
 }
 
-/* line 123, ../sass/screen.scss */
+/* line 124, ../sass/screen.scss */
 .clicked {
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
@@ -588,7 +588,7 @@ a, a:link, a:visited {
 /**
  * Layout for grids & container
  */
-/* line 132, ../sass/screen.scss */
+/* line 133, ../sass/screen.scss */
 #ranndy {
   max-width: 600px;
   margin-left: auto;
@@ -601,7 +601,7 @@ a, a:link, a:visited {
   clear: both;
 }
 
-/* line 136, ../sass/screen.scss */
+/* line 137, ../sass/screen.scss */
 #nameTable {
   padding-top: 4rem;
   text-align: center;
@@ -614,12 +614,12 @@ a, a:link, a:visited {
   -webkit-transition-duration: 0.75s;
   transition-duration: 0.75s;
 }
-/* line 142, ../sass/screen.scss */
+/* line 143, ../sass/screen.scss */
 #nameTable img {
   padding-top: 1rem;
 }
 
-/* line 147, ../sass/screen.scss */
+/* line 148, ../sass/screen.scss */
 .nameRow {
   width: 98.61111%;
   float: left;
@@ -634,12 +634,12 @@ a, a:link, a:visited {
   overflow: hidden;
   *zoom: 1;
 }
-/* line 157, ../sass/screen.scss */
+/* line 158, ../sass/screen.scss */
 .nameRow:nth-child(2n+2) {
   background-color: #CCC;
 }
 
-/* line 162, ../sass/screen.scss */
+/* line 163, ../sass/screen.scss */
 .fullName {
   background-color: inherit;
   height: 3rem;
@@ -649,15 +649,33 @@ a, a:link, a:visited {
 /**
  * Styles for AG grids & Container
  */
-/* line 172, ../sass/screen.scss */
+/* line 173, ../sass/screen.scss */
 .container {
   background-color: #FFFDFB;
 }
 
 /**
+ * Styles for SimonGanz.com
+ */
+/* line 181, ../sass/screen.scss */
+#sg_link {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  font-family: ClarendonTextPro;
+  font-size: 2rem;
+  color: white;
+  padding: 5px 5px 0 8px;
+  background: #426e93;
+  -moz-border-radius-topleft: 5px;
+  -webkit-border-top-left-radius: 5px;
+  border-top-left-radius: 5px;
+}
+
+/**
  * Text Styles
  */
-/* line 179, ../sass/screen.scss */
+/* line 196, ../sass/screen.scss */
 h2 {
   text-align: center;
   font-size: 1rem;
