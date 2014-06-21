@@ -237,23 +237,23 @@ describe "API", ->
             done()
 
       describe "max(rank) less than 500", ->
-        it "high returns names from the top 50", (done) ->
+        it "high returns names from the top 75", (done) ->
           request.get("localhost:3000/api/firstnames?rank=high&gender=male&year=1880").end (res) ->
             async.each res.body.firstnames, (name) ->
-              expect(name.rank).to.be.lessThan(51)
+              expect(name.rank).to.be.lessThan(76)
             done()
 
-        it "medium returns names ranked between 50 and 100", (done) ->
+        it "medium returns names ranked between 75 and 125", (done) ->
           request.get("localhost:3000/api/firstnames?rank=medium&gender=male&year=1900").end (res) ->
             async.each res.body.firstnames, (name) ->
-              expect(name.rank).to.be.greaterThan(50)
-              expect(name.rank).to.be.lessThan(101)
+              expect(name.rank).to.be.greaterThan(75)
+              expect(name.rank).to.be.lessThan(126)
             done()
 
-        it "low returns names ranked greater than 100", (done) ->
+        it "low returns names ranked greater than 125", (done) ->
           request.get("localhost:3000/api/firstnames?rank=low&gender=male&year=1902").end (res) ->
             async.each res.body.firstnames, (name) ->
-              expect(name.rank).to.be.greaterThan(100)
+              expect(name.rank).to.be.greaterThan(125)
             done()
 
         it "returns an error when sent gibberish", (done) ->
@@ -303,6 +303,6 @@ describe "API", ->
 
     it "truncates results if fewer than the requested number of names are available and provides a warning", (done) ->
       request.get("localhost:3000/api/names?limit=100&rank=high&frequency=high&gender=female&year=1880&race=any&race=50").end (res) ->
-        expect(res.body.names).to.have.length 51
+        expect(res.body.names).to.have.length 78
         expect(res.body).to.have.key "warnings"
         done()

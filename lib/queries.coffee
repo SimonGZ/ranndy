@@ -99,11 +99,11 @@ rankQuery = (context, req_rank, maxRank, errorHandler) ->
         anyRank(context)
     else if maxRank < 500
       if req_rank is "low"
-        context.where("rank", ">", 100)
+        context.where("rank", ">", 125)
       else if req_rank is "medium"
-        context.where("rank", ">", 50).andWhere("rank", "<=", 100)
+        context.where("rank", ">", 75).andWhere("rank", "<=", 125)
       else if req_rank is 'high'
-        context.where("rank", "<=", 50)
+        context.where("rank", "<=", 75)
       else if req_rank is "any"
         anyRank(context)
       else

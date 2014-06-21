@@ -31,7 +31,7 @@ module.exports.warningsFound = () ->
   return warningLog.length
 
 module.exports.addWarning = (warning) ->
-  console.log "Logging warning: #{warning.message}"
+  # console.log "Logging warning: #{warning.message}"
   warningLog.push(warning)
 
 module.exports.listWarnings = ->
