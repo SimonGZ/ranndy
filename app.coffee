@@ -105,7 +105,7 @@ getSurnames = (req, resultsCallback) ->
     resultsCallback(results)
   )
   .catch(Error, (e) ->
-    # console.log e
+    console.log "Caught Surnames Error: #{e}"
     resultsCallback(errors: errorHandler.listErrors(), true)
     errorHandler.clearErrors()
   )
@@ -152,7 +152,7 @@ getFirstnames = (req, resultsCallback) ->
             resultsCallback results
         )
         .catch(Error, (e) ->
-          # console.log e
+          console.log "Caught Firstnames Error: #{e}"
           resultsCallback errors: errorHandler.listErrors(), true
           errorHandler.clearErrors()
         )

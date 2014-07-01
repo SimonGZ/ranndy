@@ -11,6 +11,8 @@ Knex.knex = Knex.initialize({
   client: "pg",
   connection: {
     localhost: "localhost",
+    user: "names",
+    password: "***REMOVED***",
     database: "names"
   }
 });
@@ -118,6 +120,7 @@ getSurnames = function(req, resultsCallback) {
     };
     return resultsCallback(results);
   })["catch"](Error, function(e) {
+    console.log("Caught Surnames Error: " + e);
     resultsCallback({
       errors: errorHandler.listErrors()
     }, true);
@@ -157,6 +160,7 @@ getFirstnames = function(req, resultsCallback) {
         return resultsCallback(results);
       }
     })["catch"](Error, function(e) {
+      console.log("Caught Firstnames Error: " + e);
       resultsCallback({
         errors: errorHandler.listErrors()
       }, true);
