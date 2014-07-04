@@ -79,6 +79,7 @@ app.get "/api/names", (req, res) ->
         if errorHandler.warningsFound() > 0
           cleanedResults['warnings'] = errorHandler.listWarnings()
 
+
         res.json cleanedResults
   )
 
@@ -105,9 +106,10 @@ getSurnames = (req, resultsCallback) ->
     resultsCallback(results)
   )
   .catch(Error, (e) ->
-    console.log "Caught Surnames Error: #{e}"
+    # console.log "Caught Surnames Error: #{e}"
     resultsCallback(errors: errorHandler.listErrors(), true)
     errorHandler.clearErrors()
+    errorHandler.clearWarnings()
   )
 
 getFirstnames = (req, resultsCallback) ->
@@ -152,9 +154,10 @@ getFirstnames = (req, resultsCallback) ->
             resultsCallback results
         )
         .catch(Error, (e) ->
-          console.log "Caught Firstnames Error: #{e}"
+          # console.log "Caught Firstnames Error: #{e}"
           resultsCallback errors: errorHandler.listErrors(), true
           errorHandler.clearErrors()
+          errorHandler.clearWarnings()
         )
   )
 

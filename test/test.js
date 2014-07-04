@@ -381,6 +381,14 @@ describe("API", function() {
         return done();
       });
     });
+    it("should not have any warnings when accessed with default settings", function(done) {
+      return request.get("localhost:3000/api/names").end(function(res) {
+        expect(res).to.exist;
+        console.log(res.body.warnings);
+        expect(res.body).not.to.have.key("warnings");
+        return done();
+      });
+    });
     return it("truncates results if fewer than the requested number of names are available and provides a warning", function(done) {
       return request.get("localhost:3000/api/names?limit=100&rank=high&frequency=high&gender=female&year=1880&race=any&race=50").end(function(res) {
         expect(res.body.names).to.have.length(78);

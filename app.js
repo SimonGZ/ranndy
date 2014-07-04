@@ -120,11 +120,11 @@ getSurnames = function(req, resultsCallback) {
     };
     return resultsCallback(results);
   })["catch"](Error, function(e) {
-    console.log("Caught Surnames Error: " + e);
     resultsCallback({
       errors: errorHandler.listErrors()
     }, true);
-    return errorHandler.clearErrors();
+    errorHandler.clearErrors();
+    return errorHandler.clearWarnings();
   });
 };
 
@@ -160,11 +160,11 @@ getFirstnames = function(req, resultsCallback) {
         return resultsCallback(results);
       }
     })["catch"](Error, function(e) {
-      console.log("Caught Firstnames Error: " + e);
       resultsCallback({
         errors: errorHandler.listErrors()
       }, true);
-      return errorHandler.clearErrors();
+      errorHandler.clearErrors();
+      return errorHandler.clearWarnings();
     });
   });
 };
