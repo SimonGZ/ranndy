@@ -56,7 +56,7 @@ yearQuery = (context, req_year, errorHandler) ->
   context.where({year: year})
 
 sanitizeYear = (rawYear, errorHandler) ->
-  validYears = _.range(1880, 2012)
+  validYears = _.range(1880, 2013)
   validYears.push(0)
   if validYears.indexOf(parseInt(rawYear)) > -1
     return parseInt(rawYear)
