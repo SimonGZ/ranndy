@@ -34,6 +34,8 @@ app.get "/api/surnames", (req, res) ->
       res.json 400, json
     else
       res.json json
+      errorHandler.clearErrors()
+      errorHandler.clearWarnings()
   )
 
 app.get "/api/firstnames", (req, res) ->
@@ -43,6 +45,8 @@ app.get "/api/firstnames", (req, res) ->
       res.json 400, json
     else
       res.json json
+      errorHandler.clearErrors()
+      errorHandler.clearWarnings()
   )
 
 app.get "/api/names", (req, res) ->
@@ -81,6 +85,8 @@ app.get "/api/names", (req, res) ->
 
 
         res.json cleanedResults
+        errorHandler.clearErrors()
+        errorHandler.clearWarnings()
   )
 
 getSurnames = (req, resultsCallback) ->

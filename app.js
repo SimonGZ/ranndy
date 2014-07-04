@@ -37,7 +37,9 @@ app.get("/api/surnames", function(req, res) {
     if (error === true) {
       return res.json(400, json);
     } else {
-      return res.json(json);
+      res.json(json);
+      errorHandler.clearErrors();
+      return errorHandler.clearWarnings();
     }
   });
 });
@@ -50,7 +52,9 @@ app.get("/api/firstnames", function(req, res) {
     if (error === true) {
       return res.json(400, json);
     } else {
-      return res.json(json);
+      res.json(json);
+      errorHandler.clearErrors();
+      return errorHandler.clearWarnings();
     }
   });
 });
@@ -92,7 +96,9 @@ app.get("/api/names", function(req, res) {
       if (errorHandler.warningsFound() > 0) {
         cleanedResults['warnings'] = errorHandler.listWarnings();
       }
-      return res.json(cleanedResults);
+      res.json(cleanedResults);
+      errorHandler.clearErrors();
+      return errorHandler.clearWarnings();
     }
   });
 });
