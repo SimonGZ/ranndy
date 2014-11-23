@@ -105,10 +105,12 @@ app.get("/api/names", function(req, res) {
 
 getSurnames = function(req, resultsCallback) {
   return knex("surnames").where(function() {
-    if ([req.query.frequency, req.query.race].every(queries.isUndefined)) {
+    if ([req.query.frequency, req.query.race, req.query.sstartswith].every(queries.isUndefined)) {
       return queries.fast(this);
     } else {
       return this.where(function() {
+        return queries.startsWithQuery(this, req.query.sstartswith, errorHandler);
+      }).andWhere(function() {
         return queries.frequencyQuery(this, req.query.frequency, errorHandler);
       }).andWhere(function() {
         return queries.raceQuery(this, req.query.race, errorHandler);
@@ -152,6 +154,8 @@ getFirstnames = function(req, resultsCallback) {
   ], function(err, results) {
     return knex("firstnames_annual").where(function() {
       return queries.yearQuery(this, req.query.year, errorHandler);
+    }).andWhere(function() {
+      return queries.startsWithQuery(this, req.query.fstartswith, errorHandler);
     }).andWhere(function() {
       return queries.genderQuery(this, req.query.gender, errorHandler);
     }).andWhere(function() {

@@ -8,6 +8,7 @@ errorCodes = {
   invalid_race: {message: 'Invalid race specified', description: 'An invalid race was requested. Valid races are pctwhite, pctasian, pctnative, pctblack, and pcthispanic.', code: 4},
   invalid_race_pct: {message: 'Invalid race percent specified', description: 'An invalid race percent was requested or no race percent was requested. Minimum request is 1 and maximum is 99.', code: 5},
   invalid_frequency: {message: 'Invalid frequency specified', description: 'An invalid frequency was requested. Valid frequencies are high, medium, and low.', code: 6}
+  invalid_startswith: {message: 'Invalid startswith specified', description: 'An invalid startswith was requested. Startswith only accepts letters.', code: 7}
 }
 
 module.exports.errorCodes = errorCodes

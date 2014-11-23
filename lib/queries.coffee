@@ -112,11 +112,23 @@ rankQuery = (context, req_rank, maxRank, errorHandler) ->
   else
     anyRank(context)
 
+startsWithQuery = (context, req_letter, errorHandler) ->
+  if req_letter
+    unless req_letter.match(/[^a-zA-Z]/)
+      context.where("name", "LIKE", properCase(req_letter) + "%")
+    else
+      context.where("name", "LIKE", "%")
+      errorHandler.addError(errorHandler.errorCodes['invalid_startswith'])  
+  else
+    context.where("name", "LIKE", "%")
+
 anyRank = (context) ->
   context.where("rank", ">=", 0)
     
+properCase = (string) ->
+  string.replace /\w\S*/g, (txt) ->
+    txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
 
-    
 isUndefined = (element, index, array) ->
   return element is `undefined`
 
@@ -128,6 +140,7 @@ module.exports.raceQuery = raceQuery
 module.exports.yearQuery = yearQuery
 module.exports.genderQuery = genderQuery
 module.exports.rankQuery = rankQuery
+module.exports.startsWithQuery = startsWithQuery
 module.exports.sanitizeGender = sanitizeGender
 module.exports.sanitizeYear = sanitizeYear
 

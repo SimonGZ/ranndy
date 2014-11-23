@@ -140,6 +140,31 @@ describe "API", ->
           expect(res.body.errors[0].message).to.equal "Invalid race percent specified"
           done()
 
+    describe "the starts with query", ->
+      it "returns names starting with j if set sstartswith=j", (done) ->
+        request.get("localhost:3000/api/surnames?sstartswith=j").end (res) ->
+          expect(res.body.surnames).to.not.be.empty()
+          async.each res.body.surnames, (name) ->
+            expect(name.name.charAt(0)).to.eql('J')
+          done()
+
+      it "returns names starting with ka if set sstartswith=ka", (done) ->
+        request.get("localhost:3000/api/surnames?sstartswith=ka").end (res) ->
+          expect(res.body.surnames).to.not.be.empty()
+          async.each res.body.surnames, (name) ->
+            expect(name.name.charAt(0)).to.eql('K')
+            expect(name.name.charAt(1)).to.eql('a')
+          done()
+
+      it "returns an error when sent non-letters", (done) ->
+        request.get("localhost:3000/api/surnames?sstartswith=D^73a").end (res) ->
+          expect(res.status).to.equal 400
+          expect(res.body).to.have.key "errors"
+          expect(res.body.errors).to.be.an Array
+          expect(res.body.errors[0].code).to.equal 7
+          expect(res.body.errors[0].message).to.equal "Invalid startswith specified"
+          done()
+
   describe "firstnames", ->
     it "responds to /api/firstnames", (done) ->
       request.get("localhost:3000/api/firstnames").end (res) ->
@@ -294,6 +319,31 @@ describe "API", ->
             expect(res.body.errors[0].message).to.equal "Invalid rank specified"
             done()
 
+    describe "the starts with query", ->
+      it "returns names starting with s if set fstartswith=s", (done) ->
+        request.get("localhost:3000/api/firstnames?fstartswith=s").end (res) ->
+          expect(res.body.firstnames).to.not.be.empty()
+          async.each res.body.firstnames, (name) ->
+            expect(name.name.charAt(0)).to.eql('S')
+          done()
+
+      it "returns names starting with da if set fstartswith=da", (done) ->
+        request.get("localhost:3000/api/firstnames?fstartswith=da").end (res) ->
+          expect(res.body.firstnames).to.not.be.empty()
+          async.each res.body.firstnames, (name) ->
+            expect(name.name.charAt(0)).to.eql('D')
+            expect(name.name.charAt(1)).to.eql('a')
+          done()
+
+      it "returns an error when sent non-letters", (done) ->
+        request.get("localhost:3000/api/firstnames?fstartswith=D4a").end (res) ->
+          expect(res.status).to.equal 400
+          expect(res.body).to.have.key "errors"
+          expect(res.body.errors).to.be.an Array
+          expect(res.body.errors[0].code).to.equal 7
+          expect(res.body.errors[0].message).to.equal "Invalid startswith specified"
+          done()
+
   describe "names", ->
     it "responds to /api/names", (done) ->
       request.get("localhost:3000/api/names").end (res) ->
@@ -304,7 +354,6 @@ describe "API", ->
     it "should not have any warnings when accessed with default settings", (done) ->
       request.get("localhost:3000/api/names").end (res) ->
         expect(res).to.exist
-        console.log res.body.warnings
         expect(res.body).not.to.have.key "warnings"
         done()
 

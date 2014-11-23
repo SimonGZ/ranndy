@@ -92,14 +92,17 @@ app.get "/api/names", (req, res) ->
 getSurnames = (req, resultsCallback) ->
 
   knex("surnames").where(->
-    if [req.query.frequency, req.query.race].every(queries.isUndefined)
+    if [req.query.frequency, req.query.race, req.query.sstartswith].every(queries.isUndefined)
       queries.fast(this)
     else
       this.where(->
-        queries.frequencyQuery(this, req.query.frequency, errorHandler) 
-      )
-      .andWhere(->
-        queries.raceQuery(this, req.query.race, errorHandler)
+        queries.startsWithQuery(this, req.query.sstartswith, errorHandler)
+        )
+        .andWhere(->
+          queries.frequencyQuery(this, req.query.frequency, errorHandler) 
+        )
+        .andWhere(->
+          queries.raceQuery(this, req.query.race, errorHandler)
       )
   )
   .orderBy(knex.raw("RANDOM()"))
@@ -143,6 +146,9 @@ getFirstnames = (req, resultsCallback) ->
         knex("firstnames_annual").where(->
           # Year query
           queries.yearQuery(this, req.query.year, errorHandler)
+        )
+        .andWhere(->
+          queries.startsWithQuery(this, req.query.fstartswith, errorHandler)
         )
         .andWhere(->
           queries.genderQuery(this, req.query.gender, errorHandler)
