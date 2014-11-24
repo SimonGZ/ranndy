@@ -165,7 +165,7 @@ $(function() {
     } else {
       $('.topBar').css("max-height", "25rem");
       $('.controlDrawer').css("margin-top", "0");
-      $('#nameTable').css("padding-top", "21.5rem");
+      $('#nameTable').css("padding-top", "22rem");
       return $('.fa').removeClass('fa-chevron-down').addClass('fa-chevron-up');
     }
   });
