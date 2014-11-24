@@ -22,10 +22,10 @@
 <body>
   <div class="topBar">
     <div class="controlDrawer">
-        <form>
+        <form action="#">
           <fieldset>
             <legend>First Name:</legend>
-            <div>
+            <div class="selector">
               <label for="gender">Gender</label>
               <select id="gender">
                 <option value="any">Any</option>
@@ -33,7 +33,7 @@
                 <option value="male">Male</option>
               </select>
             </div>
-            <div>
+            <div class="selector">
               <label for="rank">Popularity</label>
               <select id="rank">
                 <option value="any">Any</option>
@@ -42,7 +42,7 @@
                 <option value="low">Low</option>
               </select>  
             </div>
-            <div>
+            <div class="selector">
               <label for="year">Year</label>
               <select id="year">
                 <option value="0" selected>Any</option>
@@ -181,10 +181,14 @@
                 <option value="1880">1880</option>
               </select>  
             </div>
+            <div class="startsWith">
+              <label for="fstartswith">Starts With</label>
+              <input type="search" name="fstartswith" id="fstartswith" placeholder="Jo...">
+            </div>
           </fieldset>
           <fieldset>
             <legend>Last Name:</legend>
-            <div>
+            <div class="selector">
               <label for="race">Race</label>
               <select id="race">
                 <option value="any" selected>Any</option>
@@ -195,7 +199,7 @@
                 <option value="pctnative">Native</option>
               </select>
             </div>
-            <div>
+            <div class="selector">
               <label for="frequency">Popularity</label>
               <select id="frequency">
                 <option value="any">Any</option>
@@ -204,9 +208,9 @@
                 <option value="low">Low</option>
               </select>  
             </div>
-            <div>
+            <div class="startsWith">
               <label for="sstartswith">Starts With</label>
-              <input type="text" name="sstartswith">
+              <input type="search" name="sstartswith" id="sstartswith" placeholder="Smi...">
             </div>
           </fieldset>
         </form>

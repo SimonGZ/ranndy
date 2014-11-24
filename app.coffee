@@ -27,6 +27,10 @@ errorHandler = require("./lib/errorHandler")
 # Setting up public directory
 app.use express.static(__dirname + "/public")
 
+#Convenience Functions
+randomIntFromInterval = (min,max) ->
+  Math.floor(Math.random()*(max-min+1)+min)
+
 app.get "/api/surnames", (req, res) ->
 
   getSurnames(req, (json, error = false) ->
@@ -73,9 +77,21 @@ app.get "/api/names", (req, res) ->
         res.json 400, errors: errors
       else
         cleanedResults = {}
-        cleanedResults['names'] = _.filter(_.zip(results[0].firstnames, results[1].surnames), (nameArray) ->
-                                    return !_.some(nameArray, _.isUndefined)
-                                   )
+        # cleanedResults['names'] = _.filter(_.zip(results[0].firstnames, results[1].surnames), (nameArray) ->
+                                    # return !_.some(nameArray, _.isUndefined)
+                                   # )
+
+        firstMax = results[0].firstnames.length - 1
+        surMax = results[1].surnames.length - 1
+
+        cleanedResults['names'] = _.zip(results[0].firstnames, results[1].surnames)
+
+        _.each cleanedResults['names'], (nameArray) ->
+          if _.isUndefined nameArray[0]
+            nameArray[0] = results[0].firstnames[randomIntFromInterval(0,firstMax)]
+          if _.isUndefined nameArray[1]
+            nameArray[1] = results[1].surnames[randomIntFromInterval(0,surMax)]
+
 
         if queries.limitQuery(req.query.limit) > cleanedResults['names'].length
           errorHandler.addWarning({message: "Limited Results", description: "The request returned fewer results than the limit. Consider loosening your query conditions."})

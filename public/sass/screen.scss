@@ -56,9 +56,8 @@ body {
 }
 
 .controlDrawer {
-  padding-top: 1rem;
-  margin-top: -13rem;
-  height: 13rem;
+  margin-top: -18rem;
+  height: 18rem;
   background-color: #FFFDFB;
   @include box-shadow(black 0 -1px 5px inset);
   @include transition-property(margin-top);
@@ -73,13 +72,32 @@ form {
 }
 
 fieldset {
+  margin-top: 0.5rem;
 
-  div {
+  div.selector {
     display: inline-block;
+    margin-bottom: 0.5rem;
   }
+
   label {
     display: block;
     height: 1.6rem;
+  }
+
+  .startsWith {
+    display: block;
+    clear: both;
+
+    label {
+      clear: both;
+      float: left;
+      padding-top: 0.3rem;
+    }
+
+    input {
+      width: 8rem;
+      display: inline-block;
+    }
   }
 }
 
@@ -135,7 +153,7 @@ a, a:link, a:visited {
 }
 
 #nameTable {
-  padding-top: 4rem; // To compensate for fixed topBar
+  padding-top: 3.5rem; // To compensate for fixed topBar
   text-align: center;
   @include transition-property(padding-top);
   @include transition-duration(0.75s);

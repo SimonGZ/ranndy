@@ -69,12 +69,16 @@ $(function() {
           frequency: query.frequency,
           gender: query.gender,
           year: query.year,
-          race: query.race
+          race: query.race,
+          fstartswith: query.fstartswith,
+          sstartswith: query.sstartswith
         },
         dataType: 'json',
         traditional: true,
         timeout: 3000,
-        beforeSend: function(xhr, settings) {},
+        beforeSend: function(xhr, settings) {
+          return console.log(settings.url);
+        },
         success: (function(_this) {
           return function(data) {
             $('#nameTable img').remove();
@@ -97,7 +101,9 @@ $(function() {
       frequency: 'high',
       gender: 'female',
       year: 0,
-      race: ['any', 50]
+      race: ['any', 50],
+      fstartswith: '',
+      sstartswith: ''
     };
 
     return NameList;
@@ -151,21 +157,22 @@ $(function() {
     }
   });
   $('header').on('click', function() {
-    if ($('.topBar').css("max-height") === "17rem") {
-      $('.topBar').css("max-height", "4rem");
-      $('.controlDrawer').css("margin-top", "-13rem");
-      $('#nameTable').css("padding-top", "4rem");
+    if ($('.topBar').css("max-height") === "25rem") {
+      $('.topBar').css("max-height", "3.5rem");
+      $('.controlDrawer').css("margin-top", "-18rem");
+      $('#nameTable').css("padding-top", "3.5rem");
       return $('.fa').removeClass('fa-chevron-up').addClass('fa-chevron-down');
     } else {
-      $('.topBar').css("max-height", "17rem");
+      $('.topBar').css("max-height", "25rem");
       $('.controlDrawer').css("margin-top", "0");
-      $('#nameTable').css("padding-top", "17rem");
+      $('#nameTable').css("padding-top", "19.5rem");
       return $('.fa').removeClass('fa-chevron-down').addClass('fa-chevron-up');
     }
   });
   currentQuery = nameList.defaultQueries;
-  $('#gender, #rank, #frequency, #year').on('change', function() {
-    return sendNewQuery(this);
+  $('#gender, #rank, #frequency, #year, #fstartswith, #sstartswith').on('change', function() {
+    sendNewQuery(this);
+    return $('input[type=search]').blur();
   });
   $('#race').on('change', function() {
     var newQuery;

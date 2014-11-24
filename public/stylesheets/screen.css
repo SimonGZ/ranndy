@@ -438,7 +438,7 @@ th {
   padding: 0;
 }
 
-/* line 11, ../../../../../.rvm/gems/ruby-2.1.1/gems/susy-2.1.2/sass/susy/language/susy/_box-sizing.scss */
+/* line 14, ../../../../../.rvm/gems/ruby-2.1.1/gems/susy-2.1.3/sass/susy/language/susy/_box-sizing.scss */
 *, *:before, *:after {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -463,8 +463,8 @@ body {
   padding: 0;
   border: 0;
   max-height: 4rem;
-  background-color: #426e93;
-  border-top: 1px solid #53585f;
+  background-color: #426E93;
+  border-top: 1px solid #53585F;
   color: #FFFDFB;
   font-size: 0.75rem;
   text-align: center;
@@ -484,9 +484,8 @@ body {
 
 /* line 58, ../sass/screen.scss */
 .controlDrawer {
-  padding-top: 1rem;
-  margin-top: -13rem;
-  height: 13rem;
+  margin-top: -18rem;
+  height: 18rem;
   background-color: #FFFDFB;
   -moz-box-shadow: black 0 -1px 5px inset;
   -webkit-box-shadow: black 0 -1px 5px inset;
@@ -501,25 +500,46 @@ body {
   transition-duration: 0.75s;
 }
 
-/* line 68, ../sass/screen.scss */
+/* line 67, ../sass/screen.scss */
 form {
   display: inline-block;
-  color: #53585f;
+  color: #53585F;
   text-align: center;
   font-size: 1rem;
 }
 
-/* line 77, ../sass/screen.scss */
-fieldset div {
-  display: inline-block;
+/* line 74, ../sass/screen.scss */
+fieldset {
+  margin-top: 0.5rem;
 }
-/* line 80, ../sass/screen.scss */
+/* line 77, ../sass/screen.scss */
+fieldset div.selector {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+/* line 82, ../sass/screen.scss */
 fieldset label {
   display: block;
   height: 1.6rem;
 }
+/* line 87, ../sass/screen.scss */
+fieldset .startsWith {
+  display: block;
+  clear: both;
+}
+/* line 91, ../sass/screen.scss */
+fieldset .startsWith label {
+  clear: both;
+  float: left;
+  padding-top: 0.3rem;
+}
+/* line 97, ../sass/screen.scss */
+fieldset .startsWith input {
+  width: 8rem;
+  display: inline-block;
+}
 
-/* line 88, ../sass/screen.scss */
+/* line 106, ../sass/screen.scss */
 header {
   max-width: 600px;
   margin-left: auto;
@@ -530,14 +550,14 @@ header {
   -webkit-transform: translateZ(0);
   cursor: pointer;
 }
-/* line 12, ../../../../../.rvm/gems/ruby-2.1.1/gems/susy-2.1.2/sass/susy/output/support/_clearfix.scss */
+/* line 12, ../../../../../.rvm/gems/ruby-2.1.1/gems/susy-2.1.3/sass/susy/output/support/_clearfix.scss */
 header:after {
   content: " ";
   display: block;
   clear: both;
 }
 
-/* line 96, ../sass/screen.scss */
+/* line 114, ../sass/screen.scss */
 .title {
   width: 48.61111%;
   float: left;
@@ -548,13 +568,13 @@ header:after {
   text-align: left;
 }
 
-/* line 103, ../sass/screen.scss */
+/* line 121, ../sass/screen.scss */
 .subtitle {
   text-align: left;
   font-family: ClarendonWideStencil-Bold;
 }
 
-/* line 108, ../sass/screen.scss */
+/* line 126, ../sass/screen.scss */
 .settings {
   width: 48.61111%;
   float: right;
@@ -563,19 +583,19 @@ header:after {
   margin-top: 2px;
   text-align: right;
 }
-/* line 113, ../sass/screen.scss */
+/* line 131, ../sass/screen.scss */
 .settings .fa-chevron-up, .settings .fa-chevron-down {
   font-size: 3rem;
   color: #FFFDFB;
 }
 
-/* line 119, ../sass/screen.scss */
+/* line 137, ../sass/screen.scss */
 a, a:link, a:visited {
   text-decoration: none;
   color: #FFFDFB;
 }
 
-/* line 124, ../sass/screen.scss */
+/* line 142, ../sass/screen.scss */
 .clicked {
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
@@ -588,22 +608,22 @@ a, a:link, a:visited {
 /**
  * Layout for grids & container
  */
-/* line 133, ../sass/screen.scss */
+/* line 151, ../sass/screen.scss */
 #ranndy {
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
 }
-/* line 12, ../../../../../.rvm/gems/ruby-2.1.1/gems/susy-2.1.2/sass/susy/output/support/_clearfix.scss */
+/* line 12, ../../../../../.rvm/gems/ruby-2.1.1/gems/susy-2.1.3/sass/susy/output/support/_clearfix.scss */
 #ranndy:after {
   content: " ";
   display: block;
   clear: both;
 }
 
-/* line 137, ../sass/screen.scss */
+/* line 155, ../sass/screen.scss */
 #nameTable {
-  padding-top: 4rem;
+  padding-top: 3.5rem;
   text-align: center;
   -moz-transition-property: padding-top;
   -o-transition-property: padding-top;
@@ -614,12 +634,12 @@ a, a:link, a:visited {
   -webkit-transition-duration: 0.75s;
   transition-duration: 0.75s;
 }
-/* line 143, ../sass/screen.scss */
+/* line 161, ../sass/screen.scss */
 #nameTable img {
   padding-top: 1rem;
 }
 
-/* line 148, ../sass/screen.scss */
+/* line 166, ../sass/screen.scss */
 .nameRow {
   width: 98.61111%;
   float: left;
@@ -629,17 +649,17 @@ a, a:link, a:visited {
   text-align: center;
   font-size: 1.5rem;
   font-family: ClarendonTextPro;
-  color: #53585f;
+  color: #53585F;
   background-color: #e7e7e7;
   overflow: hidden;
   *zoom: 1;
 }
-/* line 158, ../sass/screen.scss */
+/* line 176, ../sass/screen.scss */
 .nameRow:nth-child(2n+2) {
   background-color: #CCC;
 }
 
-/* line 163, ../sass/screen.scss */
+/* line 181, ../sass/screen.scss */
 .fullName {
   background-color: inherit;
   height: 3rem;
@@ -649,7 +669,7 @@ a, a:link, a:visited {
 /**
  * Styles for AG grids & Container
  */
-/* line 173, ../sass/screen.scss */
+/* line 191, ../sass/screen.scss */
 .container {
   background-color: #FFFDFB;
 }
@@ -657,7 +677,7 @@ a, a:link, a:visited {
 /**
  * Styles for SimonGanz.com
  */
-/* line 181, ../sass/screen.scss */
+/* line 199, ../sass/screen.scss */
 #sg_link {
   position: fixed;
   bottom: 0;
@@ -666,7 +686,7 @@ a, a:link, a:visited {
   font-size: 2rem;
   color: white;
   padding: 5px 5px 0 8px;
-  background: #426e93;
+  background: #426E93;
   -moz-border-radius-topleft: 5px;
   -webkit-border-top-left-radius: 5px;
   border-top-left-radius: 5px;
@@ -675,7 +695,7 @@ a, a:link, a:visited {
 /**
  * Text Styles
  */
-/* line 196, ../sass/screen.scss */
+/* line 214, ../sass/screen.scss */
 h2 {
   text-align: center;
   font-size: 1rem;

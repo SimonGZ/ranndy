@@ -35,13 +35,13 @@ $ ->
       $.ajax
         type: 'GET'
         url: 'api/names'
-        data: {limit: 100, rank: query.rank, frequency: query.frequency, gender: query.gender, year: query.year, race: query.race}
+        data: {limit: 100, rank: query.rank, frequency: query.frequency, gender: query.gender, year: query.year, race: query.race, fstartswith: query.fstartswith, sstartswith: query.sstartswith}
         dataType: 'json'
         traditional: true
         timeout: 3000
         beforeSend: (xhr, settings) ->
           # Useful for debugging queries
-          # console.log settings.url
+          console.log settings.url
         success: (data) =>           
           $('#nameTable img').remove()
           _.forEach(data.names, (name) =>
@@ -56,6 +56,8 @@ $ ->
       gender: 'female'
       year: 0
       race: ['any', 50]
+      fstartswith: ''
+      sstartswith: ''
 
   class AppView extends Backbone.View
 
@@ -96,28 +98,31 @@ $ ->
   # Settings drawer code
 
   $('header').on 'click', ->
-    if $('.topBar').css("max-height") == "17rem"
-      $('.topBar').css("max-height", "4rem")
-      $('.controlDrawer').css("margin-top", "-13rem")
-      $('#nameTable').css("padding-top", "4rem")
+    if $('.topBar').css("max-height") == "25rem"
+      $('.topBar').css("max-height", "3.5rem")
+      $('.controlDrawer').css("margin-top", "-18rem")
+      $('#nameTable').css("padding-top", "3.5rem")
       $('.fa').removeClass('fa-chevron-up').addClass('fa-chevron-down')
     else
-      $('.topBar').css("max-height", "17rem")
+      $('.topBar').css("max-height", "25rem")
       $('.controlDrawer').css("margin-top", "0")
-      $('#nameTable').css("padding-top", "17rem")
+      $('#nameTable').css("padding-top", "19.5rem")
       $('.fa').removeClass('fa-chevron-down').addClass('fa-chevron-up')
 
   # Debug code to start with the drawer open
-  # $('.topBar').css("max-height", "17rem")
+  # $('.topBar').css("max-height", "25rem")
   # $('.controlDrawer').css("margin-top", "0")
-  # $('#nameTable').css("padding-top", "16rem")
+  # $('#nameTable').css("padding-top", "19rem")
   # $('.settings img').addClass('clicked')
+
+  # Input Focus
 
   # Changing settings code
   currentQuery = nameList.defaultQueries
 
-  $('#gender, #rank, #frequency, #year').on 'change', ->
+  $('#gender, #rank, #frequency, #year, #fstartswith, #sstartswith').on 'change', ->
     sendNewQuery(this)
+    $('input[type=search]').blur()
 
   $('#race').on 'change', ->
     newQuery = {}
