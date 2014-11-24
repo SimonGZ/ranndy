@@ -357,8 +357,7 @@ describe "API", ->
         expect(res.body).not.to.have.key "warnings"
         done()
 
-    it "truncates results if fewer than the requested number of names are available and provides a warning", (done) ->
+    it "provides warning if fewer than the requested number of names are available", (done) ->
       request.get("localhost:3000/api/names?limit=100&rank=high&frequency=high&gender=female&year=1880&race=any&race=50").end (res) ->
-        expect(res.body.names).to.have.length 78
         expect(res.body).to.have.key "warnings"
         done()

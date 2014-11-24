@@ -31,6 +31,10 @@ app.use express.static(__dirname + "/public")
 randomIntFromInterval = (min,max) ->
   Math.floor(Math.random()*(max-min+1)+min)
 
+properCase = (string) ->
+  string.replace /\w\S*/g, (txt) ->
+    txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+
 app.get "/api/surnames", (req, res) ->
 
   getSurnames(req, (json, error = false) ->
@@ -77,27 +81,37 @@ app.get "/api/names", (req, res) ->
         res.json 400, errors: errors
       else
         cleanedResults = {}
+        
+        # Old method that cut down the array so that no entries were null
         # cleanedResults['names'] = _.filter(_.zip(results[0].firstnames, results[1].surnames), (nameArray) ->
                                     # return !_.some(nameArray, _.isUndefined)
                                    # )
-
-        firstMax = results[0].firstnames.length - 1
-        surMax = results[1].surnames.length - 1
-
-        cleanedResults['names'] = _.zip(results[0].firstnames, results[1].surnames)
-
-        _.each cleanedResults['names'], (nameArray) ->
-          if _.isUndefined nameArray[0]
-            nameArray[0] = results[0].firstnames[randomIntFromInterval(0,firstMax)]
-          if _.isUndefined nameArray[1]
-            nameArray[1] = results[1].surnames[randomIntFromInterval(0,surMax)]
-
-
-        if queries.limitQuery(req.query.limit) > cleanedResults['names'].length
+        
+        # Send a warning if the number of results is below the limit
+        if queries.limitQuery(req.query.limit) > results[0].firstnames.length or queries.limitQuery(req.query.limit) > results[1].surnames.length
           errorHandler.addWarning({message: "Limited Results", description: "The request returned fewer results than the limit. Consider loosening your query conditions."})
         
         if errorHandler.warningsFound() > 0
           cleanedResults['warnings'] = errorHandler.listWarnings()
+
+        # If the first element of the array is null, replace it with the requested name
+        if _.isUndefined results[0].firstnames[0]
+          results[0].firstnames[0] = {'name': properCase(req.query.fstartswith)}
+        if _.isUndefined results[1].surnames[0]
+          results[1].surnames[0] = {'name': properCase(req.query.sstartswith)}
+
+        # Note the length of the arrays for use in random generator
+        firstMax = results[0].firstnames.length - 1
+        surMax = results[1].surnames.length - 1
+
+        # Create a "cleaned" array by zipping the two arrays into one and replacing null entries with a random earlier entry in the same array
+        cleanedResults['names'] = _.filter(_.zip(results[0].firstnames, results[1].surnames), (nameArray) ->
+                                    if _.isUndefined nameArray[0]
+                                      nameArray[0] = results[0].firstnames[randomIntFromInterval(0,firstMax)]
+                                    if _.isUndefined nameArray[1]
+                                      nameArray[1] = results[1].surnames[randomIntFromInterval(0,surMax)]
+                                    return nameArray
+                                   )
 
 
         res.json cleanedResults
