@@ -106,7 +106,7 @@ $ ->
     else
       $('.topBar').css("max-height", "25rem")
       $('.controlDrawer').css("margin-top", "0")
-      $('#nameTable').css("padding-top", "19.5rem")
+      $('#nameTable').css("padding-top", "21.5rem")
       $('.fa').removeClass('fa-chevron-down').addClass('fa-chevron-up')
 
   # Debug code to start with the drawer open
