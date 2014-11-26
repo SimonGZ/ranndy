@@ -115,14 +115,12 @@ $ ->
   # $('#nameTable').css("padding-top", "19rem")
   # $('.settings img').addClass('clicked')
 
-  # Input Focus
-
   # Changing settings code
   currentQuery = nameList.defaultQueries
 
   $('#gender, #rank, #frequency, #year, #fstartswith, #sstartswith').on 'change', ->
     sendNewQuery(this)
-    $('input[type=search]').blur()
+    $('input[type=search]').blur() # Dismiss iOS keyboard
 
   $('#race').on 'change', ->
     newQuery = {}

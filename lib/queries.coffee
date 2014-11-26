@@ -85,13 +85,18 @@ sanitizeGender = (rawGender) ->
 
 rankQuery = (context, req_rank, maxRank, errorHandler) ->
   if _.isString(req_rank) and !_.isUndefined(maxRank)
-    if maxRank > 500
+    if maxRank > 5000
+      if req_rank is "low"
+        context.where("rank", ">", 800)
+      else if req_rank is "high"
+        context.where("rank", "<=", 800)
+      else if req_rank is "any"
+        anyRank(context)
+    else if maxRank > 500
       if req_rank is "low"
         context.where("rank", ">", 300)
-      else if req_rank is "medium"
-        context.where("rank", ">", 150).andWhere("rank", "<=", 300)
       else if req_rank is "high"
-        context.where("rank", "<=", 150)
+        context.where("rank", "<=", 300)
       else if req_rank is "any"
         anyRank(context)
       else
@@ -100,10 +105,8 @@ rankQuery = (context, req_rank, maxRank, errorHandler) ->
     else if maxRank < 500
       if req_rank is "low"
         context.where("rank", ">", 125)
-      else if req_rank is "medium"
-        context.where("rank", ">", 75).andWhere("rank", "<=", 125)
       else if req_rank is 'high'
-        context.where("rank", "<=", 75)
+        context.where("rank", "<=", 125)
       else if req_rank is "any"
         anyRank(context)
       else

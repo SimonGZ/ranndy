@@ -262,16 +262,9 @@ describe "API", ->
             done()
 
       describe "max(rank) less than 500", ->
-        it "high returns names from the top 75", (done) ->
+        it "high returns names from the top 125", (done) ->
           request.get("localhost:3000/api/firstnames?rank=high&gender=male&year=1880").end (res) ->
             async.each res.body.firstnames, (name) ->
-              expect(name.rank).to.be.lessThan(76)
-            done()
-
-        it "medium returns names ranked between 75 and 125", (done) ->
-          request.get("localhost:3000/api/firstnames?rank=medium&gender=male&year=1900").end (res) ->
-            async.each res.body.firstnames, (name) ->
-              expect(name.rank).to.be.greaterThan(75)
               expect(name.rank).to.be.lessThan(126)
             done()
 
@@ -291,16 +284,9 @@ describe "API", ->
             done()
 
       describe "max(rank) greater than 500", ->
-        it "high returns names from the top 150", (done) ->
+        it "high returns names from the top 300", (done) ->
           request.get("localhost:3000/api/firstnames?rank=high&gender=female&year=1980").end (res) ->
             async.each res.body.firstnames, (name) ->
-              expect(name.rank).to.be.lessThan(151)
-            done()
-
-        it "medium returns names ranked between 150 and 300", (done) ->
-          request.get("localhost:3000/api/firstnames?rank=medium&gender=male&year=1990").end (res) ->
-            async.each res.body.firstnames, (name) ->
-              expect(name.rank).to.be.greaterThan(150)
               expect(name.rank).to.be.lessThan(301)
             done()
 
@@ -317,6 +303,19 @@ describe "API", ->
             expect(res.body.errors).to.be.an Array
             expect(res.body.errors[0].code).to.equal 3
             expect(res.body.errors[0].message).to.equal "Invalid rank specified"
+            done()
+
+      describe "when in year zero", ->
+        it "high returns names from the top 800", (done) ->
+          request.get("localhost:3000/api/firstnames?rank=high&gender=female&year=0").end (res) ->
+            async.each res.body.firstnames, (name) ->
+              expect(name.rank).to.be.lessThan(801)
+            done()
+
+        it "low returns names ranked greater than 800", (done) ->
+          request.get("localhost:3000/api/firstnames?rank=low&gender=female&year=0&limit=100").end (res) ->
+            async.each res.body.firstnames, (name) ->
+              expect(name.rank).to.be.greaterThan(800)
             done()
 
     describe "the starts with query", ->
@@ -358,6 +357,6 @@ describe "API", ->
         done()
 
     it "provides warning if fewer than the requested number of names are available", (done) ->
-      request.get("localhost:3000/api/names?limit=100&rank=high&frequency=high&gender=female&year=1880&race=any&race=50").end (res) ->
+      request.get("localhost:3000/api/names?limit=100&rank=high&frequency=high&gender=female&year=1880&race=pctnative&race=50").end (res) ->
         expect(res.body).to.have.key "warnings"
         done()
