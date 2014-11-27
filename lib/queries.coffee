@@ -119,10 +119,11 @@ startsWithQuery = (context, req_letter, errorHandler) ->
   if req_letter
     unless req_letter.match(/[^a-zA-Z]/)
       context.where("name", "LIKE", properCase(req_letter) + "%")
-    else if req_letter.match(/[a-zA-Z]+\*/) # Replace with new Regex /,*([a-zA-Z]+)\*/g
-      not_match = req_letter.match(/[a-zA-Z]+\*/)[0].replace('*', '')
+    else if req_letter.match(/,*([a-zA-Z]+)\*/g)
+      not_match = req_letter.match(/,*([a-zA-Z]+)\*/g)[0].replace('*', '').replace(',', '')
       context.where("name", "NOT LIKE", properCase(not_match) + "%")
       # Need to figure out how to do multiple where statements based on number of matches
+      # Maybe limit it to three exclusions and change NOT LIKE to LIKE and leave "%" by itself
     else
       context.where("name", "LIKE", "%")
       errorHandler.addError(errorHandler.errorCodes['invalid_startswith'])  
