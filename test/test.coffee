@@ -141,14 +141,14 @@ describe "API", ->
           done()
 
     describe "the starts with query", ->
-      it "returns names starting with j if set sstartswith=j", (done) ->
+      it "returns names starting with j if sent sstartswith=j", (done) ->
         request.get("localhost:3000/api/surnames?sstartswith=j").end (res) ->
           expect(res.body.surnames).to.not.be.empty()
           async.each res.body.surnames, (name) ->
             expect(name.name.charAt(0)).to.eql('J')
           done()
 
-      it "returns names starting with ka if set sstartswith=ka", (done) ->
+      it "returns names starting with ka if sent sstartswith=ka", (done) ->
         request.get("localhost:3000/api/surnames?sstartswith=ka").end (res) ->
           expect(res.body.surnames).to.not.be.empty()
           async.each res.body.surnames, (name) ->
@@ -157,13 +157,29 @@ describe "API", ->
           done()
 
       it "returns an error when sent non-letters", (done) ->
-        request.get("localhost:3000/api/surnames?sstartswith=D^73a").end (res) ->
+        request.get("localhost:3000/api/surnames?sstartswith=D^7*,;3a").end (res) ->
           expect(res.status).to.equal 400
           expect(res.body).to.have.key "errors"
           expect(res.body.errors).to.be.an Array
           expect(res.body.errors[0].code).to.equal 7
           expect(res.body.errors[0].message).to.equal "Invalid startswith specified"
           done()
+
+      describe "starts with special features", ->
+        it "returns names NOT starting with C when sent sstartswith=c*", (done) ->
+          request.get("localhost:3000/api/surnames?sstartswith=c*&limit=50").end (res) ->
+            expect(res.body.surnames).to.not.be.empty()
+            async.each res.body.surnames, (name) ->
+              expect(name.name.charAt(0)).to.not.eql('C')
+            done()
+
+        it "returns names NOT starting with P and S when sent sstartswith=p*,s*", (done) ->
+          request.get("localhost:3000/api/surnames?sstartswith=p*,s*&limit=50").end (res) ->
+            expect(res.body.surnames).to.not.be.empty()
+            async.each res.body.surnames, (name) ->
+              expect(name.name.charAt(0)).to.not.eql('P')
+              expect(name.name.charAt(0)).to.not.eql('S')
+            done()
 
   describe "firstnames", ->
     it "responds to /api/firstnames", (done) ->

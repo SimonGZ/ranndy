@@ -9,10 +9,10 @@
     "test": "./node_modules/mocha/bin/mocha -u tdd -R spec"
   },
   "dependencies": {
-    "express" : "4.0.x",
-    "knex"    : "0.5.x",
-    "pg"      : "3.0.x",
-    "async"   : "0.7.x",
+    "express" : "4.1.x",
+    "knex"    : "0.7.x",
+    "pg"      : "4.0.x",
+    "async"   : "0.9.x",
     "lodash"  : "2.4.x"
   },
   "devDependencies": {
