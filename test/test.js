@@ -199,7 +199,7 @@ describe("API", function() {
         });
       });
       it("returns an error when sent non-letters", function(done) {
-        return request.get("localhost:3000/api/surnames?sstartswith=D^7*,;3a").end(function(res) {
+        return request.get("localhost:3000/api/surnames?sstartswith=D7*,;3a").end(function(res) {
           expect(res.status).to.equal(400);
           expect(res.body).to.have.key("errors");
           expect(res.body.errors).to.be.an(Array);
@@ -218,12 +218,21 @@ describe("API", function() {
             return done();
           });
         });
-        return it("returns names NOT starting with P and S when sent sstartswith=p*,s*", function(done) {
+        it("returns names NOT starting with P and S when sent sstartswith=p*,s*", function(done) {
           return request.get("localhost:3000/api/surnames?sstartswith=p*,s*&limit=50").end(function(res) {
             expect(res.body.surnames).to.not.be.empty();
             async.each(res.body.surnames, function(name) {
               expect(name.name.charAt(0)).to.not.eql('P');
               return expect(name.name.charAt(0)).to.not.eql('S');
+            });
+            return done();
+          });
+        });
+        return it("returns Ganz if set sstartswith=ganz^", function(done) {
+          return request.get("localhost:3000/api/surnames?sstartswith=ganz^").end(function(res) {
+            expect(res.body.surnames).to.not.be.empty();
+            async.each(res.body.surnames, function(name) {
+              return expect(name.name).to.eql('Ganz');
             });
             return done();
           });
@@ -444,7 +453,16 @@ describe("API", function() {
           return done();
         });
       });
-      return it("returns an error when sent non-letters", function(done) {
+      it("returns Jason if set fstartswith=jason^", function(done) {
+        return request.get("localhost:3000/api/firstnames?fstartswith=jason^&gender=male").end(function(res) {
+          expect(res.body.firstnames).to.not.be.empty();
+          async.each(res.body.firstnames, function(name) {
+            return expect(name.name).to.eql('Jason');
+          });
+          return done();
+        });
+      });
+      it("returns an error when sent non-letters", function(done) {
         return request.get("localhost:3000/api/firstnames?fstartswith=D4a").end(function(res) {
           expect(res.status).to.equal(400);
           expect(res.body).to.have.key("errors");
@@ -452,6 +470,27 @@ describe("API", function() {
           expect(res.body.errors[0].code).to.equal(7);
           expect(res.body.errors[0].message).to.equal("Invalid startswith specified");
           return done();
+        });
+      });
+      return describe("starts with special features", function() {
+        it("returns names NOT starting with C when sent fstartswith=c*", function(done) {
+          return request.get("localhost:3000/api/firstnames?fstartswith=c*&limit=50").end(function(res) {
+            expect(res.body.firstnames).to.not.be.empty();
+            async.each(res.body.firstnames, function(name) {
+              return expect(name.name.charAt(0)).to.not.eql('C');
+            });
+            return done();
+          });
+        });
+        return it("returns names NOT starting with P and S when sent fstartswith=p*,s*", function(done) {
+          return request.get("localhost:3000/api/firstnames?fstartswith=p*,s*&limit=50").end(function(res) {
+            expect(res.body.firstnames).to.not.be.empty();
+            async.each(res.body.firstnames, function(name) {
+              expect(name.name.charAt(0)).to.not.eql('P');
+              return expect(name.name.charAt(0)).to.not.eql('S');
+            });
+            return done();
+          });
         });
       });
     });

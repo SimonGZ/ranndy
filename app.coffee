@@ -96,9 +96,9 @@ app.get "/api/names", (req, res) ->
 
         # If the first element of the array is null, replace it with the requested name
         if _.isUndefined results[0].firstnames[0]
-          results[0].firstnames[0] = {'name': properCase(req.query.fstartswith)}
+          results[0].firstnames[0] = {'name': properCase(req.query.fstartswith.replace('^', ''))}
         if _.isUndefined results[1].surnames[0]
-          results[1].surnames[0] = {'name': properCase(req.query.sstartswith)}
+          results[1].surnames[0] = {'name': properCase(req.query.sstartswith.replace('^', ''))}
 
         # Note the length of the arrays for use in random generator
         firstMax = results[0].firstnames.length - 1

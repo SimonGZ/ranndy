@@ -157,7 +157,7 @@ describe "API", ->
           done()
 
       it "returns an error when sent non-letters", (done) ->
-        request.get("localhost:3000/api/surnames?sstartswith=D^7*,;3a").end (res) ->
+        request.get("localhost:3000/api/surnames?sstartswith=D7*,;3a").end (res) ->
           expect(res.status).to.equal 400
           expect(res.body).to.have.key "errors"
           expect(res.body.errors).to.be.an Array
@@ -180,6 +180,13 @@ describe "API", ->
               expect(name.name.charAt(0)).to.not.eql('P')
               expect(name.name.charAt(0)).to.not.eql('S')
             done()
+
+        it "returns Ganz if set sstartswith=ganz^", (done) ->
+          request.get("localhost:3000/api/surnames?sstartswith=ganz^").end (res) ->
+            expect(res.body.surnames).to.not.be.empty()
+            async.each res.body.surnames, (name) ->
+              expect(name.name).to.eql('Ganz')
+            done()        
 
   describe "firstnames", ->
     it "responds to /api/firstnames", (done) ->
@@ -350,6 +357,13 @@ describe "API", ->
             expect(name.name.charAt(1)).to.eql('a')
           done()
 
+      it "returns Jason if set fstartswith=jason^", (done) ->
+        request.get("localhost:3000/api/firstnames?fstartswith=jason^&gender=male").end (res) ->
+          expect(res.body.firstnames).to.not.be.empty()
+          async.each res.body.firstnames, (name) ->
+            expect(name.name).to.eql('Jason')
+          done()        
+
       it "returns an error when sent non-letters", (done) ->
         request.get("localhost:3000/api/firstnames?fstartswith=D4a").end (res) ->
           expect(res.status).to.equal 400
@@ -358,6 +372,22 @@ describe "API", ->
           expect(res.body.errors[0].code).to.equal 7
           expect(res.body.errors[0].message).to.equal "Invalid startswith specified"
           done()
+
+      describe "starts with special features", ->
+        it "returns names NOT starting with C when sent fstartswith=c*", (done) ->
+          request.get("localhost:3000/api/firstnames?fstartswith=c*&limit=50").end (res) ->
+            expect(res.body.firstnames).to.not.be.empty()
+            async.each res.body.firstnames, (name) ->
+              expect(name.name.charAt(0)).to.not.eql('C')
+            done()
+
+        it "returns names NOT starting with P and S when sent fstartswith=p*,s*", (done) ->
+          request.get("localhost:3000/api/firstnames?fstartswith=p*,s*&limit=50").end (res) ->
+            expect(res.body.firstnames).to.not.be.empty()
+            async.each res.body.firstnames, (name) ->
+              expect(name.name.charAt(0)).to.not.eql('P')
+              expect(name.name.charAt(0)).to.not.eql('S')
+            done()
 
   describe "names", ->
     it "responds to /api/names", (done) ->

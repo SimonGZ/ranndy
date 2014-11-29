@@ -105,12 +105,12 @@ app.get("/api/names", function(req, res) {
       }
       if (_.isUndefined(results[0].firstnames[0])) {
         results[0].firstnames[0] = {
-          'name': properCase(req.query.fstartswith)
+          'name': properCase(req.query.fstartswith.replace('^', ''))
         };
       }
       if (_.isUndefined(results[1].surnames[0])) {
         results[1].surnames[0] = {
-          'name': properCase(req.query.sstartswith)
+          'name': properCase(req.query.sstartswith.replace('^', ''))
         };
       }
       firstMax = results[0].firstnames.length - 1;

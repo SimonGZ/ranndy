@@ -133,9 +133,14 @@ startsWithQuery = (context, req_letter, errorHandler) ->
       # Maybe limit it to three exclusions and change NOT LIKE to LIKE and leave "%" by itself
       # Or maybe this is a job for some sort of pass variable that holds the context and then adds more through while
       return pass
+    else if req_letter.match(/([a-zA-Z]+)\^/)
+      console.log "force match"
+      match = properCase(req_letter.match(/([a-zA-Z]+)\^/)[0]).replace('^', '')
+      console.log match
+      context.where("name", match)
     else
-      context.where("name", "LIKE", "%")
       errorHandler.addError(errorHandler.errorCodes['invalid_startswith'])  
+      context.where("name", "LIKE", "%")      
   else
     context.where("name", "LIKE", "%")
 
