@@ -134,9 +134,7 @@ startsWithQuery = (context, req_letter, errorHandler) ->
       # Or maybe this is a job for some sort of pass variable that holds the context and then adds more through while
       return pass
     else if req_letter.match(/([a-zA-Z]+)\^/)
-      console.log "force match"
       match = properCase(req_letter.match(/([a-zA-Z]+)\^/)[0]).replace('^', '')
-      console.log match
       context.where("name", match)
     else
       errorHandler.addError(errorHandler.errorCodes['invalid_startswith'])  
