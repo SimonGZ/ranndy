@@ -98,15 +98,15 @@ $ ->
   # Settings drawer code
 
   $('header').on 'click', ->
-    if $('.topBar').css("max-height") == "25rem"
+    if $('.topBar').css("max-height") == "21.5rem"
       $('.topBar').css("max-height", "3.5rem")
       $('.controlDrawer').css("margin-top", "-18rem")
       $('#nameTable').css("padding-top", "3.5rem")
       $('.fa').removeClass('fa-chevron-up').addClass('fa-chevron-down')
     else
-      $('.topBar').css("max-height", "25rem")
+      $('.topBar').css("max-height", "21.5rem")
       $('.controlDrawer').css("margin-top", "0")
-      $('#nameTable').css("padding-top", "22rem")
+      $('#nameTable').css("padding-top", "21.5rem")
       $('.fa').removeClass('fa-chevron-down').addClass('fa-chevron-up')
 
   # Debug code to start with the drawer open
