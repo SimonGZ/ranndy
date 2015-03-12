@@ -189,6 +189,10 @@ a, a:link, a:visited {
   line-height: 3rem;
 }
 
+a.searchLink:link, a.searchLink:visited {
+  color: inherit;
+}
+
 /**
  * Styles for AG grids & Container
  */

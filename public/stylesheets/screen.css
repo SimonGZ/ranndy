@@ -672,10 +672,15 @@ a, a:link, a:visited {
   line-height: 3rem;
 }
 
+/* line 192, ../sass/screen.scss */
+a.searchLink:link, a.searchLink:visited {
+  color: inherit;
+}
+
 /**
  * Styles for AG grids & Container
  */
-/* line 196, ../sass/screen.scss */
+/* line 200, ../sass/screen.scss */
 .container {
   background-color: #FFFDFB;
 }
@@ -683,7 +688,7 @@ a, a:link, a:visited {
 /**
  * Styles for SimonGanz.com
  */
-/* line 204, ../sass/screen.scss */
+/* line 208, ../sass/screen.scss */
 #sg_link {
   position: fixed;
   bottom: 0;
@@ -701,7 +706,7 @@ a, a:link, a:visited {
 /**
  * Text Styles
  */
-/* line 219, ../sass/screen.scss */
+/* line 223, ../sass/screen.scss */
 h2 {
   text-align: center;
   font-size: 1rem;
