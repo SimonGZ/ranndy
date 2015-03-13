@@ -1,7 +1,7 @@
 {
   "name": "Ranndy",
   "description": "API to generate random names",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "author": "Simon Ganz",
   "private": true,
   "scripts": {
