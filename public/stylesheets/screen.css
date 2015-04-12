@@ -570,17 +570,22 @@ header:after {
   margin-left: 0.69444%;
   margin-right: 0.69444%;
   font-size: 3rem;
-  font-family: ClarendonWideStencil-Bold;
+  margin-top: -5px;
+  font-family: "clarendon-wide-stencil";
+  font-weight: 700;
+  font-style: normal;
   text-align: left;
 }
 
-/* line 126, ../sass/screen.scss */
+/* line 129, ../sass/screen.scss */
 .subtitle {
   text-align: left;
-  font-family: ClarendonWideStencil-Bold;
+  font-family: "clarendon-wide-stencil";
+  font-weight: 700;
+  font-style: normal;
 }
 
-/* line 131, ../sass/screen.scss */
+/* line 136, ../sass/screen.scss */
 .settings {
   width: 48.61111%;
   float: right;
@@ -589,19 +594,19 @@ header:after {
   margin-top: 2px;
   text-align: right;
 }
-/* line 136, ../sass/screen.scss */
+/* line 141, ../sass/screen.scss */
 .settings .fa-chevron-up, .settings .fa-chevron-down {
   font-size: 3rem;
   color: #FFFDFB;
 }
 
-/* line 142, ../sass/screen.scss */
+/* line 147, ../sass/screen.scss */
 a, a:link, a:visited {
   text-decoration: none;
   color: #FFFDFB;
 }
 
-/* line 147, ../sass/screen.scss */
+/* line 152, ../sass/screen.scss */
 .clicked {
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
@@ -614,7 +619,7 @@ a, a:link, a:visited {
 /**
  * Layout for grids & container
  */
-/* line 156, ../sass/screen.scss */
+/* line 161, ../sass/screen.scss */
 #ranndy {
   max-width: 600px;
   margin-left: auto;
@@ -627,7 +632,7 @@ a, a:link, a:visited {
   clear: both;
 }
 
-/* line 160, ../sass/screen.scss */
+/* line 165, ../sass/screen.scss */
 #nameTable {
   padding-top: 3.5rem;
   text-align: center;
@@ -640,12 +645,12 @@ a, a:link, a:visited {
   -webkit-transition-duration: 0.75s;
   transition-duration: 0.75s;
 }
-/* line 166, ../sass/screen.scss */
+/* line 171, ../sass/screen.scss */
 #nameTable img {
   padding-top: 1rem;
 }
 
-/* line 171, ../sass/screen.scss */
+/* line 176, ../sass/screen.scss */
 .nameRow {
   width: 98.61111%;
   float: left;
@@ -654,25 +659,27 @@ a, a:link, a:visited {
   margin-top: 4px;
   text-align: center;
   font-size: 1.5rem;
-  font-family: ClarendonTextPro;
+  font-family: "clarendon-text-pro";
+  font-weight: 400;
+  font-style: normal;
   color: #53585F;
   background-color: #e7e7e7;
   overflow: hidden;
   *zoom: 1;
 }
-/* line 181, ../sass/screen.scss */
+/* line 188, ../sass/screen.scss */
 .nameRow:nth-child(2n+2) {
   background-color: #CCC;
 }
 
-/* line 186, ../sass/screen.scss */
+/* line 193, ../sass/screen.scss */
 .fullName {
   background-color: inherit;
   height: 3rem;
   line-height: 3rem;
 }
 
-/* line 192, ../sass/screen.scss */
+/* line 199, ../sass/screen.scss */
 a.searchLink:link, a.searchLink:visited {
   color: inherit;
 }
@@ -680,7 +687,7 @@ a.searchLink:link, a.searchLink:visited {
 /**
  * Styles for AG grids & Container
  */
-/* line 200, ../sass/screen.scss */
+/* line 207, ../sass/screen.scss */
 .container {
   background-color: #FFFDFB;
 }
@@ -688,12 +695,14 @@ a.searchLink:link, a.searchLink:visited {
 /**
  * Styles for SimonGanz.com
  */
-/* line 208, ../sass/screen.scss */
+/* line 215, ../sass/screen.scss */
 #sg_link {
   position: fixed;
   bottom: 0;
   right: 0;
-  font-family: ClarendonTextPro;
+  font-family: "clarendon-text-pro";
+  font-weight: 400;
+  font-style: normal;
   font-size: 2rem;
   color: white;
   padding: 5px 5px 0 8px;
@@ -706,7 +715,7 @@ a.searchLink:link, a.searchLink:visited {
 /**
  * Text Styles
  */
-/* line 223, ../sass/screen.scss */
+/* line 232, ../sass/screen.scss */
 h2 {
   text-align: center;
   font-size: 1rem;
