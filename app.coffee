@@ -31,10 +31,6 @@ app.use express.static(__dirname + "/public")
 randomIntFromInterval = (min,max) ->
   Math.floor(Math.random()*(max-min+1)+min)
 
-properCase = (string) ->
-  string.replace /\w\S*/g, (txt) ->
-    txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-
 app.get "/api/surnames", (req, res) ->
 
   getSurnames(req, (json, error = false) ->
@@ -96,9 +92,9 @@ app.get "/api/names", (req, res) ->
 
         # If the first element of the array is null, replace it with the requested name
         if _.isUndefined results[0].firstnames[0]
-          results[0].firstnames[0] = {'name': properCase(req.query.fstartswith.replace('^', ''))}
+          results[0].firstnames[0] = {'name': queries.properCase(req.query.fstartswith.replace('^', ''))}
         if _.isUndefined results[1].surnames[0]
-          results[1].surnames[0] = {'name': properCase(req.query.sstartswith.replace('^', ''))}
+          results[1].surnames[0] = {'name': queries.properCase(req.query.sstartswith.replace('^', ''))}
 
         # Note the length of the arrays for use in random generator
         firstMax = results[0].firstnames.length - 1

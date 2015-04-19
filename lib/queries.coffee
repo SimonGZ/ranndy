@@ -117,8 +117,9 @@ rankQuery = (context, req_rank, maxRank, errorHandler) ->
 
 startsWithQuery = (context, req_letter, errorHandler) ->
   if req_letter
-    unless req_letter.match(/[^a-zA-Z]/)
+    unless req_letter.match(/[^a-zA-Z\-]/)
       context.where("name", "LIKE", properCase(req_letter) + "%")
+      # console.log "postProper: " + properCase(req_letter)
 
     # Look for * characters
     else if req_letter.match(/,*([a-zA-Z]+)\*/g)
@@ -146,8 +147,17 @@ anyRank = (context) ->
   context.where("rank", ">=", 0)
     
 properCase = (string) ->
-  string.replace /\w\S*/g, (txt) ->
-    txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+  string = string.replace /\w\S*/g, (txt) ->
+    proper = txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+    # console.log "insideProper: " + proper
+
+    unless proper.match(/-([a-z])/) == null
+      match = proper.match(/-([a-z])/)
+      proper = proper.substring(0, match.index + 1) + proper.charAt(match.index + 1).toUpperCase() + proper.substring(match.index + 2)
+      # console.log "MatchLoop: " + proper
+
+    return proper
+
 
 isUndefined = (element, index, array) ->
   return element is `undefined`
@@ -163,6 +173,7 @@ module.exports.rankQuery = rankQuery
 module.exports.startsWithQuery = startsWithQuery
 module.exports.sanitizeGender = sanitizeGender
 module.exports.sanitizeYear = sanitizeYear
+module.exports.properCase = properCase
 
 
 isNumber = (n) ->
