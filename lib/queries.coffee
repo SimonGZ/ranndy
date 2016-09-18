@@ -1,9 +1,8 @@
-knex = require("knex").knex
 async = require("async")
 _ = require('lodash')
 errorHandler = require('../lib/errorHandler')
 
-fastSimpleQuery = (context) ->
+fastSimpleQuery = (context, knex) ->
   context.where( knex.raw("id in (select (random()*(select last_value from surnames_id_seq))::bigint from generate_series(1,120))"))
 
 frequencyQuery = (context, freq, errorHandler) ->
@@ -25,7 +24,7 @@ anyFrequency = (context) ->
 raceQuery = (context, raceArray, errorHandler) ->
   if !_.isUndefined(raceArray) 
     if _.isString(raceArray[0]) and _.parseInt(raceArray[1])
-      if _.contains(["pctwhite","pctasian","pctnative","pctblack","pcthispanic", "any"], raceArray[0])
+      if _.includes(["pctwhite","pctasian","pctnative","pctblack","pcthispanic", "any"], raceArray[0])
         if raceArray[1] > 99 or raceArray[1] < 1
           errorHandler.addError(errorHandler.errorCodes['invalid_race_pct'])
         else if raceArray[0] is "any"
