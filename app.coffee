@@ -1,18 +1,14 @@
 # Loading libraries
 async = require("async")
 _ = require("lodash")
-Knex = require("knex")
-
-# Setting up database connection
-Knex.knex = Knex.initialize(
+knex = require("knex")({
   client: "pg"
   connection:
     localhost: "localhost"
     user: "names"
     password: "***REMOVED***"
     database: "names"
-)
-knex = require("knex").knex
+  })
 
 # Loading Express
 express = require("express")
@@ -35,7 +31,7 @@ app.get "/api/surnames", (req, res) ->
 
   getSurnames(req, (json, error = false) ->
     if error is true
-      res.json 400, json
+      res.status(400).json(json)
     else
       res.json json
       errorHandler.clearErrors()
@@ -46,7 +42,7 @@ app.get "/api/firstnames", (req, res) ->
 
   getFirstnames(req, (json, error = false) ->
     if error is true
-      res.json 400, json
+      res.status(400).json(json)
     else
       res.json json
       errorHandler.clearErrors()
@@ -119,7 +115,7 @@ getSurnames = (req, resultsCallback) ->
 
   knex("surnames").where(->
     if [req.query.frequency, req.query.race, req.query.sstartswith].every(queries.isUndefined)
-      queries.fast(this)
+      queries.fast(this, knex)
     else
       this.where(->
         queries.startsWithQuery(this, req.query.sstartswith, errorHandler)
@@ -131,14 +127,14 @@ getSurnames = (req, resultsCallback) ->
           queries.raceQuery(this, req.query.race, errorHandler)
       )
   )
-  .orderBy(knex.raw("RANDOM()"))
+  .orderByRaw("RANDOM()")
   .limit(queries.limitQuery(req.query.limit, errorHandler))
   .then( (query_results) ->
     if errorHandler.errorsFound() > 0 
       throw new Error("Errors detected in errorHandler")
     else
-    results = surnames: query_results
-    resultsCallback(results)
+      results = surnames: query_results
+      resultsCallback(results)
   )
   .catch(Error, (e) ->
     # console.log "Caught Surnames Error: #{e}"
@@ -154,7 +150,7 @@ getFirstnames = (req, resultsCallback) ->
 
       # Only run this code if both req.query.rank and req.query.gender exist
       unless req.query.rank is `undefined` or req.query.gender is `undefined`
-        knex("firstnames_annual").select(knex.raw("max(rank)"))
+        knex("firstnames_annual").max("rank")
         .where(->
           queries.yearQuery(this, req.query.year)
         )
@@ -182,7 +178,7 @@ getFirstnames = (req, resultsCallback) ->
         .andWhere(->
           queries.rankQuery(this, req.query.rank, results[0], errorHandler)
         )
-        .orderBy(knex.raw("RANDOM()"))
+        .orderByRaw("RANDOM()")
         .limit(queries.limitQuery(req.query.limit, errorHandler))
         .then( (query_results) ->
           if errorHandler.errorsFound() > 0 
@@ -193,6 +189,7 @@ getFirstnames = (req, resultsCallback) ->
         )
         .catch(Error, (e) ->
           # console.log "Caught Firstnames Error: #{e}"
+          # NOTE: The following line can cause crashes from double resultsCallbacks when there's an unexpected error. Not sure how to fix.
           resultsCallback errors: errorHandler.listErrors(), true
           errorHandler.clearErrors()
           errorHandler.clearWarnings()
