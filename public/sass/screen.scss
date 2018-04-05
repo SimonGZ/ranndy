@@ -120,7 +120,7 @@ header {
   @include span(4 of 8 first);
   font-size: 3rem;
   margin-top: -5px;
-  font-family: "clarendon-wide-stencil";
+  font-family: Georgia;
   font-weight: 700;
   font-style: normal;
   text-align: left;
@@ -128,7 +128,7 @@ header {
 
 .subtitle {
   text-align: left;
-  font-family: "clarendon-wide-stencil";
+  font-family: Georgia;
   font-weight: 700;
   font-style: normal;
 }
@@ -178,7 +178,7 @@ a, a:link, a:visited {
   margin-top: 4px;
   text-align: center;
   font-size: 1.5rem;
-  font-family: "clarendon-text-pro";
+  font-family: Georgia;
   font-weight: 400;
   font-style: normal;
   color: $textColor;
@@ -216,7 +216,7 @@ a.searchLink:link, a.searchLink:visited {
   position: fixed;
   bottom: 0;
   right: 0;
-  font-family: "clarendon-text-pro";
+  font-family: Georgia;
   font-weight: 400;
   font-style: normal;
   font-size: 2rem;
