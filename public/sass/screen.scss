@@ -185,7 +185,7 @@ a, a:link, a:visited {
   background-color: #e7e7e7;
   @include clearfix; 
 
-  &:nth-child(2n+2) {
+  &:nth-child(even) {
     background-color: #CCC;
   }
 }

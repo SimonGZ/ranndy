@@ -668,7 +668,7 @@ a, a:link, a:visited {
   *zoom: 1;
 }
 /* line 188, ../sass/screen.scss */
-.nameRow:nth-child(2n+2) {
+.nameRow:nth-child(even) {
   background-color: #CCC;
 }
 
