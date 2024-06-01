@@ -47,7 +47,10 @@ limitQuery = (limit, errorHandler) ->
   if (limit <= 100) and (limit >= 1)
     return limit
   else
-    if !_.isUndefined(limit) then errorHandler.addError(errorHandler.errorCodes['invalid_limit'])
+    if !_.isUndefined(limit)
+        console.log('limit is defined but not right')
+        console.log(limit)
+        errorHandler.addError(errorHandler.errorCodes['invalid_limit'])
     return 10
 
 yearQuery = (context, req_year, errorHandler) ->

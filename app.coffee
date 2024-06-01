@@ -31,8 +31,10 @@ app.get "/api/surnames", (req, res) ->
 
   getSurnames(req, (json, error = false) ->
     if error is true
+      console.log('error happening')
       res.status(400).json(json)
     else
+      console.log('error not happening')
       res.json json
       errorHandler.clearErrors()
       errorHandler.clearWarnings()
@@ -112,6 +114,7 @@ app.get "/api/names", (req, res) ->
   )
 
 getSurnames = (req, resultsCallback) ->
+  console.log("running getSurnames")
 
   knex("surnames").where(->
     if [req.query.frequency, req.query.race, req.query.sstartswith].every(queries.isUndefined)
@@ -130,13 +133,15 @@ getSurnames = (req, resultsCallback) ->
   .orderByRaw("RANDOM()")
   .limit(queries.limitQuery(req.query.limit, errorHandler))
   .then( (query_results) ->
+    console.log("now in then function")
     if errorHandler.errorsFound() > 0 
+      console.log("errors found in error handler")
       throw new Error("Errors detected in errorHandler")
     else
       results = surnames: query_results
       resultsCallback(results)
   )
-  .catch(Error, (e) ->
+  .catch( (e) ->
     # console.log "Caught Surnames Error: #{e}"
     resultsCallback(errors: errorHandler.listErrors(), true)
     errorHandler.clearErrors()
