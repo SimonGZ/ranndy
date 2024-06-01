@@ -192,10 +192,10 @@ getFirstnames = (req, resultsCallback) ->
             results = firstnames: query_results
             resultsCallback results
         )
-        .catch(Error, (e) ->
+        .catch( (e) ->
           # console.log "Caught Firstnames Error: #{e}"
           # NOTE: The following line can cause crashes from double resultsCallbacks when there's an unexpected error. Not sure how to fix.
-          resultsCallback errors: errorHandler.listErrors(), true
+          resultsCallback(errors: errorHandler.listErrors(), true)
           errorHandler.clearErrors()
           errorHandler.clearWarnings()
         )
