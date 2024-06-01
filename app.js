@@ -215,7 +215,7 @@
           };
           return resultsCallback(results);
         }
-      }).catch(Error, function(e) {
+      }).catch(function(e) {
         // console.log "Caught Firstnames Error: #{e}"
         // NOTE: The following line can cause crashes from double resultsCallbacks when there's an unexpected error. Not sure how to fix.
         resultsCallback({

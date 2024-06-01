@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "start": "supervisor app.js",
-    "test": "npx mocha -u tdd -R spec"
+    "test": "npx mocha -R spec"
   },
   "dependencies": {
     "async": "3.2.x",
