@@ -1,7 +1,7 @@
 {
   "name": "Ranndy",
   "description": "API to generate random names",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "author": "Simon Ganz",
   "private": true,
   "scripts": {
@@ -21,6 +21,7 @@
     "coffeescript": "^2.7.0",
     "expect.js": "x",
     "mocha": "^10.4.0",
+    "prettier": "^3.3.0",
     "superagent": "^9.0.2"
   }
 }
