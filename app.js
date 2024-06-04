@@ -4,10 +4,10 @@ const _ = require("lodash");
 const knex = require("knex")({
   client: "pg",
   connection: {
-    localhost: "localhost",
-    user: "names",
-    password: "***REMOVED***",
-    database: "names",
+    localhost: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
   },
 });
 
@@ -140,8 +140,6 @@ app.get("/api/names", (req, res) =>
 );
 
 var getSurnames = function (req, resultsCallback) {
-  console.log("running getSurnames");
-
   knex("surnames")
     .where(function () {
       if (
@@ -165,7 +163,6 @@ var getSurnames = function (req, resultsCallback) {
     .orderByRaw("RANDOM()")
     .limit(queries.limitQuery(req.query.limit, errorHandler))
     .then(function (query_results) {
-      console.log("now in then function");
       if (errorHandler.errorsFound() > 0) {
         throw new Error("Errors detected in errorHandler");
       } else {
