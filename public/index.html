@@ -1,26 +1,50 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <title>Ranndy - Random Name Generator</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Ranndy is a random name generator for use in fiction writing. Ranndy creates first and last names using U.S. Census data from 1880 to 2012.">
-  <meta name="author" content="Simon Ganz">
-  <meta property="og:image" content="http://ranndy.com/images/interface.png">
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.1.3/zepto.min.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
-  <script type="text/javascript" src="javascript/app.js"></script>
-  <script type="text/template" id="name-template">
-    <div class="fullName">
-      <a class="searchLink" href="http://google.com/search?q=name+meaning+<%= first %>"><%= first %></a> <a class="searchLink" href="http://google.com/search?q=surname+<%= last %>"><%= last %></a>
-    </div>
-  </script>
-</head>
-<body>
-  <div class="topBar">
-    <div class="controlDrawer">
+  <head>
+    <title>Ranndy - Random Name Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Ranndy is a random name generator for use in fiction writing. Ranndy creates first and last names using U.S. Census data from 1880 to 2012."
+    />
+    <meta name="author" content="Simon Ganz" />
+    <meta
+      property="og:image"
+      content="http://ranndy.com/images/interface.png"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css"
+    />
+    <link
+      href="/stylesheets/screen.css"
+      media="screen, projection"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.1.3/zepto.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"
+    ></script>
+    <script type="text/javascript" src="javascript/app.js"></script>
+    <script type="text/template" id="name-template">
+      <div class="fullName">
+        <a class="searchLink" href="http://google.com/search?q=name+meaning+<%= first %>"><%= first %></a> <a class="searchLink" href="http://google.com/search?q=surname+<%= last %>"><%= last %></a>
+      </div>
+    </script>
+  </head>
+  <body>
+    <div class="topBar">
+      <div class="controlDrawer">
         <form action="#">
           <fieldset>
             <legend>First Name:</legend>
@@ -38,7 +62,7 @@
                 <option value="any">Any</option>
                 <option value="high" selected>High</option>
                 <option value="low">Low</option>
-              </select>  
+              </select>
             </div>
             <div class="selector">
               <label for="year">Year</label>
@@ -177,11 +201,17 @@
                 <option value="1882">1882</option>
                 <option value="1881">1881</option>
                 <option value="1880">1880</option>
-              </select>  
+              </select>
             </div>
             <div class="startsWith">
               <label for="fstartswith">Starts With:</label>
-              <input type="search" name="fstartswith" id="fstartswith" placeholder="Jo..." autocomplete="off">
+              <input
+                type="search"
+                name="fstartswith"
+                id="fstartswith"
+                placeholder="Jo..."
+                autocomplete="off"
+              />
             </div>
           </fieldset>
           <fieldset>
@@ -194,7 +224,7 @@
                 <option value="pcthispanic">Hispanic</option>
                 <option value="pctasian">Asian</option>
                 <option value="pctblack">Black</option>
-                <option value="pctnative">Native</option>
+                <option value="pctaian">Native</option>
               </select>
             </div>
             <div class="selector">
@@ -204,37 +234,60 @@
                 <option value="high" selected>High</option>
                 <option value="medium">Medium</option>
                 <option value="low">Low</option>
-              </select>  
+              </select>
             </div>
             <div class="startsWith">
               <label for="sstartswith">Starts With:</label>
-              <input type="search" name="sstartswith" id="sstartswith" placeholder="Smi..." autocomplete="off">
+              <input
+                type="search"
+                name="sstartswith"
+                id="sstartswith"
+                placeholder="Smi..."
+                autocomplete="off"
+              />
             </div>
           </fieldset>
         </form>
-    </div>
-    <header>
-      <div class="title"><a href="#" class="settingsBtn">R!</a></div>
-      <div class="settings">
-        <a href="#" class="settingsBtn"><i class="fa fa-chevron-down"></i></a>
       </div>
-    </header>
-  </div>
-  <div id="ranndy">
-    <div id="nameTable"></div>
-  </div>
-  <div id="sg_link">
-    <a href="http://simonganz.com/2014/06/ranndy-random-name-generator/">SG</a>
-  </div>
-  <!-- /container -->
-  <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      <header>
+        <div class="title"><a href="#" class="settingsBtn">R!</a></div>
+        <div class="settings">
+          <a href="#" class="settingsBtn"><i class="fa fa-chevron-down"></i></a>
+        </div>
+      </header>
+    </div>
+    <div id="ranndy">
+      <div id="nameTable"></div>
+    </div>
+    <div id="sg_link">
+      <a href="http://simonganz.com/2014/06/ranndy-random-name-generator/"
+        >SG</a
+      >
+    </div>
+    <!-- /container -->
+    <script>
+      (function (i, s, o, g, r, a, m) {
+        i["GoogleAnalyticsObject"] = r;
+        (i[r] =
+          i[r] ||
+          function () {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(
+        window,
+        document,
+        "script",
+        "//www.google-analytics.com/analytics.js",
+        "ga",
+      );
 
-    ga('create', 'UA-41213917-2', 'ranndy.com');
-    ga('send', 'pageview');
-  </script>
-</body>
+      ga("create", "UA-41213917-2", "ranndy.com");
+      ga("send", "pageview");
+    </script>
+  </body>
 </html>

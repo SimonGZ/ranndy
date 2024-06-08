@@ -152,12 +152,12 @@ describe("API", function () {
           });
       });
 
-      it("returns names with pctnative above 60 when sent pctnative, 60", function (done) {
+      it("returns names with pctaian above 60 when sent pctaian, 60", function (done) {
         request
-          .get("localhost:3000/api/surnames?race=pctnative&race=60")
+          .get("localhost:3000/api/surnames?race=pctaian&race=60")
           .end(function (err, res) {
             async.each(res.body.surnames, (name) =>
-              expect(name.pctnative).to.be.greaterThan(60),
+              expect(name.pctaian).to.be.greaterThan(60),
             );
             done();
           });
@@ -680,7 +680,7 @@ describe("API", function () {
     it("provides warning if fewer than the requested number of names are available", function (done) {
       request
         .get(
-          "localhost:3000/api/names?limit=100&rank=high&frequency=high&gender=female&year=1880&race=pctnative&race=50",
+          "localhost:3000/api/names?limit=100&rank=high&frequency=high&gender=female&year=1880&race=pctaian&race=50",
         )
         .end(function (err, res) {
           expect(res.body).to.have.key("warnings");

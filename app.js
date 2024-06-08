@@ -4,7 +4,7 @@ const _ = require("lodash");
 const knex = require("knex")({
   client: "pg",
   connection: {
-    localhost: process.env.DB_HOST,
+    host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
@@ -74,7 +74,7 @@ app.get("/api/names", (req, res) =>
       });
 
       if (errors.length > 0) {
-        res.json(400, { errors });
+        res.status(400).json({ errors });
       } else {
         const cleanedResults = {};
 
@@ -147,7 +147,7 @@ var getSurnames = function (req, resultsCallback) {
           queries.isUndefined,
         )
       ) {
-        queries.fast(this, knex);
+        return queries.fast(this, knex);
       } else {
         this.where(function () {
           queries.startsWithQuery(this, req.query.sstartswith, errorHandler);
@@ -171,7 +171,7 @@ var getSurnames = function (req, resultsCallback) {
       }
     })
     .catch(function (e) {
-      // console.log "Caught Surnames Error: #{e}"
+      console.error(`Caught Surnames Error: ${e}`);
       resultsCallback({ errors: errorHandler.listErrors() }, true);
       errorHandler.clearErrors();
       errorHandler.clearWarnings();
@@ -184,7 +184,7 @@ var getFirstnames = (req, resultsCallback) =>
       function (callback) {
         // Only run this code if both req.query.rank and req.query.gender exist
         if (req.query.rank !== undefined && req.query.gender !== undefined) {
-          knex("firstnames_annual")
+          knex("firstnames")
             .max("rank")
             .where(function () {
               queries.yearQuery(this, req.query.year);
@@ -203,7 +203,7 @@ var getFirstnames = (req, resultsCallback) =>
       },
     ],
     (err, results) =>
-      knex("firstnames_annual")
+      knex("firstnames")
         .where(function () {
           // Year query
           queries.yearQuery(this, req.query.year, errorHandler);
@@ -228,7 +228,7 @@ var getFirstnames = (req, resultsCallback) =>
           }
         })
         .catch(function (e) {
-          // console.log "Caught Firstnames Error: #{e}"
+          console.error("Caught Firstnames Error: #{e}");
           // NOTE: The following line can cause crashes from double resultsCallbacks when there's an unexpected error. Not sure how to fix.
           resultsCallback({ errors: errorHandler.listErrors() }, true);
           errorHandler.clearErrors();
