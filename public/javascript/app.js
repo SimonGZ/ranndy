@@ -184,7 +184,7 @@ $(function () {
   $("#race").on("change", function () {
     const newQuery = {};
     newQuery["race"] = [$(this).val(), 50];
-    if ($(this).val() === "pctaian") {
+    if ($(this).val() === "pctnative") {
       $("#frequency").val("any").attr("disabled", "disabled");
       newQuery["frequency"] = "any";
     } else {

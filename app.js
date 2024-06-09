@@ -171,7 +171,6 @@ var getSurnames = function (req, resultsCallback) {
       }
     })
     .catch(function (e) {
-      console.error(`Caught Surnames Error: ${e}`);
       resultsCallback({ errors: errorHandler.listErrors() }, true);
       errorHandler.clearErrors();
       errorHandler.clearWarnings();
@@ -228,7 +227,6 @@ var getFirstnames = (req, resultsCallback) =>
           }
         })
         .catch(function (e) {
-          console.error("Caught Firstnames Error: #{e}");
           // NOTE: The following line can cause crashes from double resultsCallbacks when there's an unexpected error. Not sure how to fix.
           resultsCallback({ errors: errorHandler.listErrors() }, true);
           errorHandler.clearErrors();
