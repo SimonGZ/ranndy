@@ -5,7 +5,7 @@ const _ = require("lodash");
 
 describe("Server", () =>
   it("responds to basic requests", function (done) {
-    request.get("localhost:3000/").end(function (err, res) {
+    request.get("localhost:" + process.env.port + "/").end(function (err, res) {
       expect(res).to.exist;
       expect(res.status).to.equal(200);
       done();
@@ -15,28 +15,32 @@ describe("Server", () =>
 describe("API", function () {
   describe("surnames", function () {
     it("responds to /api/surnames", function (done) {
-      request.get("localhost:3000/api/surnames").end(function (err, res) {
-        expect(res).to.exist;
-        expect(res.status).to.equal(200);
-        done();
-      });
+      request
+        .get("localhost:" + process.env.port + "/api/surnames")
+        .end(function (err, res) {
+          expect(res).to.exist;
+          expect(res.status).to.equal(200);
+          done();
+        });
     });
 
     it("returns a JSON array of 10 names by default", function (done) {
-      request.get("localhost:3000/api/surnames").end(function (err, res) {
-        expect(res.body).to.exist;
-        expect(res.body).to.not.be.empty();
-        expect(res.body).to.have.key("surnames");
-        expect(res.body.surnames).to.be.an(Array);
-        expect(res.body.surnames).to.have.length(10);
-        done();
-      });
+      request
+        .get("localhost:" + process.env.port + "/api/surnames")
+        .end(function (err, res) {
+          expect(res.body).to.exist;
+          expect(res.body).to.not.be.empty();
+          expect(res.body).to.have.key("surnames");
+          expect(res.body.surnames).to.be.an(Array);
+          expect(res.body.surnames).to.have.length(10);
+          done();
+        });
     });
 
     describe("the limit query", function () {
       it("changes the number of results", function (done) {
         request
-          .get("localhost:3000/api/surnames?limit=23")
+          .get("localhost:" + process.env.port + "/api/surnames?limit=23")
           .end(function (err, res) {
             expect(res.body).to.exist;
             expect(res.body.surnames).to.have.length(23);
@@ -46,7 +50,7 @@ describe("API", function () {
 
       it("returns an error if the limit is over 100", function (done) {
         request
-          .get("localhost:3000/api/surnames?limit=130")
+          .get("localhost:" + process.env.port + "/api/surnames?limit=130")
           .end(function (err, res) {
             expect(res.status).to.equal(400);
             expect(res.body).to.have.key("errors");
@@ -63,7 +67,7 @@ describe("API", function () {
     describe("the frequency query", function () {
       it("returns results when sent any", function (done) {
         request
-          .get("localhost:3000/api/surnames?frequency=any")
+          .get("localhost:" + process.env.port + "/api/surnames?frequency=any")
           .end(function (err, res) {
             expect(res.body.surnames).to.have.length(10);
             done();
@@ -72,7 +76,7 @@ describe("API", function () {
 
       it("low returns names with frequencies below 0.1", function (done) {
         request
-          .get("localhost:3000/api/surnames?frequency=low")
+          .get("localhost:" + process.env.port + "/api/surnames?frequency=low")
           .end(function (err, res) {
             async.each(res.body.surnames, (name) =>
               expect(name.frequency).to.be.lessThan(0.1),
@@ -83,7 +87,9 @@ describe("API", function () {
 
       it("medium returns names with frequencies >= 0.06 and < 1", function (done) {
         request
-          .get("localhost:3000/api/surnames?frequency=medium")
+          .get(
+            "localhost:" + process.env.port + "/api/surnames?frequency=medium",
+          )
           .end(function (err, res) {
             async.each(res.body.surnames, function (name) {
               expect(name.frequency).to.be.greaterThan(0.059);
@@ -95,7 +101,7 @@ describe("API", function () {
 
       it("high returns names with frequencies >=1", function (done) {
         request
-          .get("localhost:3000/api/surnames?frequency=high")
+          .get("localhost:" + process.env.port + "/api/surnames?frequency=high")
           .end(function (err, res) {
             async.each(res.body.surnames, (name) =>
               expect(name.frequency).to.be.greaterThan(0.99),
@@ -106,7 +112,7 @@ describe("API", function () {
 
       it("returns an error when sent gibberish", function (done) {
         request
-          .get("localhost:3000/api/surnames?frequency=38be")
+          .get("localhost:" + process.env.port + "/api/surnames?frequency=38be")
           .end(function (err, res) {
             expect(res.status).to.equal(400);
             expect(res.body).to.have.key("errors");
@@ -123,7 +129,9 @@ describe("API", function () {
     describe("the racial query", function () {
       it("returns results when sent any", function (done) {
         request
-          .get("localhost:3000/api/surnames?race=any&race=50")
+          .get(
+            "localhost:" + process.env.port + "/api/surnames?race=any&race=50",
+          )
           .end(function (err, res) {
             expect(res.body.surnames).to.have.length(10);
             done();
@@ -132,7 +140,11 @@ describe("API", function () {
 
       it("returns names with pctblack above 50 when sent pctblack, 50", function (done) {
         request
-          .get("localhost:3000/api/surnames?race=pctblack&race=50")
+          .get(
+            "localhost:" +
+              process.env.port +
+              "/api/surnames?race=pctblack&race=50",
+          )
           .end(function (err, res) {
             async.each(res.body.surnames, (name) =>
               expect(name.pctblack).to.be.greaterThan(50),
@@ -143,7 +155,11 @@ describe("API", function () {
 
       it("returns names with pctasian above 20 when sent pctasian, 20", function (done) {
         request
-          .get("localhost:3000/api/surnames?race=pctasian&race=20")
+          .get(
+            "localhost:" +
+              process.env.port +
+              "/api/surnames?race=pctasian&race=20",
+          )
           .end(function (err, res) {
             async.each(res.body.surnames, (name) =>
               expect(name.pctasian).to.be.greaterThan(20),
@@ -154,7 +170,11 @@ describe("API", function () {
 
       it("returns names with pctnative above 60 when sent pctnative, 60", function (done) {
         request
-          .get("localhost:3000/api/surnames?race=pctnative&race=60")
+          .get(
+            "localhost:" +
+              process.env.port +
+              "/api/surnames?race=pctnative&race=60",
+          )
           .end(function (err, res) {
             async.each(res.body.surnames, (name) =>
               expect(name.pctnative).to.be.greaterThan(60),
@@ -165,7 +185,11 @@ describe("API", function () {
 
       it("returns names with pctwhite above 90 when sent pctwhite, 90", function (done) {
         request
-          .get("localhost:3000/api/surnames?race=pctwhite&race=90")
+          .get(
+            "localhost:" +
+              process.env.port +
+              "/api/surnames?race=pctwhite&race=90",
+          )
           .end(function (err, res) {
             async.each(res.body.surnames, (name) =>
               expect(name.pctwhite).to.be.greaterThan(90),
@@ -176,7 +200,11 @@ describe("API", function () {
 
       it("returns names with pcthispanic above 95 when sent pcthispanic, 95", function (done) {
         request
-          .get("localhost:3000/api/surnames?race=pcthispanic&race=95")
+          .get(
+            "localhost:" +
+              process.env.port +
+              "/api/surnames?race=pcthispanic&race=95",
+          )
           .end(function (err, res) {
             async.each(res.body.surnames, (name) =>
               expect(name.pcthispanic).to.be.greaterThan(95),
@@ -187,7 +215,11 @@ describe("API", function () {
 
       it("returns an error when sent a non-existent race", function (done) {
         request
-          .get("localhost:3000/api/surnames?race=pctdog&race=95")
+          .get(
+            "localhost:" +
+              process.env.port +
+              "/api/surnames?race=pctdog&race=95",
+          )
           .end(function (err, res) {
             expect(res.status).to.equal(400);
             expect(res.body).to.have.key("errors");
@@ -202,7 +234,11 @@ describe("API", function () {
 
       it("returns an error when sent a wrong race number", function (done) {
         request
-          .get("localhost:3000/api/surnames?race=pctwhite&race=dog")
+          .get(
+            "localhost:" +
+              process.env.port +
+              "/api/surnames?race=pctwhite&race=dog",
+          )
           .end(function (err, res) {
             expect(res.status).to.equal(400);
             expect(res.body).to.have.key("errors");
@@ -217,7 +253,11 @@ describe("API", function () {
 
       it("returns an error when sent a race percent over 99", function (done) {
         request
-          .get("localhost:3000/api/surnames?race=pctwhite&race=102")
+          .get(
+            "localhost:" +
+              process.env.port +
+              "/api/surnames?race=pctwhite&race=102",
+          )
           .end(function (err, res) {
             expect(res.status).to.equal(400);
             expect(res.body).to.have.key("errors");
@@ -234,7 +274,7 @@ describe("API", function () {
     describe("the starts with query", function () {
       it("returns names starting with j if sent sstartswith=j", function (done) {
         request
-          .get("localhost:3000/api/surnames?sstartswith=j")
+          .get("localhost:" + process.env.port + "/api/surnames?sstartswith=j")
           .end(function (err, res) {
             expect(res.body.surnames).to.not.be.empty();
             async.each(res.body.surnames, (name) =>
@@ -246,7 +286,7 @@ describe("API", function () {
 
       it("returns names starting with ka if sent sstartswith=ka", function (done) {
         request
-          .get("localhost:3000/api/surnames?sstartswith=ka")
+          .get("localhost:" + process.env.port + "/api/surnames?sstartswith=ka")
           .end(function (err, res) {
             expect(res.body.surnames).to.not.be.empty();
             async.each(res.body.surnames, function (name) {
@@ -259,7 +299,11 @@ describe("API", function () {
 
       it("returns an error when sent non-letters", function (done) {
         request
-          .get("localhost:3000/api/surnames?sstartswith=D7*,;3a")
+          .get(
+            "localhost:" +
+              process.env.port +
+              "/api/surnames?sstartswith=D7*,;3a",
+          )
           .end(function (err, res) {
             expect(res.status).to.equal(400);
             expect(res.body).to.have.key("errors");
@@ -275,7 +319,11 @@ describe("API", function () {
       describe("starts with special features", function () {
         it("returns names NOT starting with C when sent sstartswith=c*", function (done) {
           request
-            .get("localhost:3000/api/surnames?sstartswith=c*&limit=50")
+            .get(
+              "localhost:" +
+                process.env.port +
+                "/api/surnames?sstartswith=c*&limit=50",
+            )
             .end(function (err, res) {
               expect(res.body.surnames).to.not.be.empty();
               async.each(res.body.surnames, (name) =>
@@ -287,7 +335,11 @@ describe("API", function () {
 
         it("returns names NOT starting with P and S when sent sstartswith=p*,s*", function (done) {
           request
-            .get("localhost:3000/api/surnames?sstartswith=p*,s*&limit=50")
+            .get(
+              "localhost:" +
+                process.env.port +
+                "/api/surnames?sstartswith=p*,s*&limit=50",
+            )
             .end(function (err, res) {
               expect(res.body.surnames).to.not.be.empty();
               async.each(res.body.surnames, function (name) {
@@ -300,7 +352,11 @@ describe("API", function () {
 
         it("returns Ganz if set sstartswith=ganz^", function (done) {
           request
-            .get("localhost:3000/api/surnames?sstartswith=ganz^")
+            .get(
+              "localhost:" +
+                process.env.port +
+                "/api/surnames?sstartswith=ganz^",
+            )
             .end(function (err, res) {
               expect(res.body.surnames).to.not.be.empty();
               async.each(res.body.surnames, (name) =>
@@ -315,28 +371,32 @@ describe("API", function () {
 
   describe("firstnames", function () {
     it("responds to /api/firstnames", function (done) {
-      request.get("localhost:3000/api/firstnames").end(function (err, res) {
-        expect(res).to.exist;
-        expect(res.status).to.equal(200);
-        done();
-      });
+      request
+        .get("localhost:" + process.env.port + "/api/firstnames")
+        .end(function (err, res) {
+          expect(res).to.exist;
+          expect(res.status).to.equal(200);
+          done();
+        });
     });
 
     it("returns a JSON array of 10 names by default", function (done) {
-      request.get("localhost:3000/api/firstnames").end(function (err, res) {
-        expect(res.body).to.exist;
-        expect(res.body).to.not.be.empty();
-        expect(res.body).to.have.key("firstnames");
-        expect(res.body.firstnames).to.be.an(Array);
-        expect(res.body.firstnames).to.have.length(10);
-        done();
-      });
+      request
+        .get("localhost:" + process.env.port + "/api/firstnames")
+        .end(function (err, res) {
+          expect(res.body).to.exist;
+          expect(res.body).to.not.be.empty();
+          expect(res.body).to.have.key("firstnames");
+          expect(res.body.firstnames).to.be.an(Array);
+          expect(res.body.firstnames).to.have.length(10);
+          done();
+        });
     });
 
     describe("the year query", function () {
       it("returns names from 1985 if set year=1985", function (done) {
         request
-          .get("localhost:3000/api/firstnames?year=1985")
+          .get("localhost:" + process.env.port + "/api/firstnames?year=1985")
           .end(function (err, res) {
             async.each(res.body.firstnames, (name) =>
               expect(name.year).to.eql(1985),
@@ -347,7 +407,7 @@ describe("API", function () {
 
       it("returns an error if year is gibberish", function (done) {
         request
-          .get("localhost:3000/api/firstnames?year=boogie")
+          .get("localhost:" + process.env.port + "/api/firstnames?year=boogie")
           .end(function (err, res) {
             expect(res.status).to.equal(400);
             expect(res.body).to.have.key("errors");
@@ -364,7 +424,7 @@ describe("API", function () {
     describe("the limit query", function () {
       it("changes the number of results", function (done) {
         request
-          .get("localhost:3000/api/firstnames?limit=33")
+          .get("localhost:" + process.env.port + "/api/firstnames?limit=33")
           .end(function (err, res) {
             expect(res.body).to.exist;
             expect(res.body.firstnames).to.have.length(33);
@@ -374,7 +434,7 @@ describe("API", function () {
 
       it("returns an error if the limit is under 0", function (done) {
         request
-          .get("localhost:3000/api/firstnames?limit=-5")
+          .get("localhost:" + process.env.port + "/api/firstnames?limit=-5")
           .end(function (err, res) {
             expect(res.status).to.equal(400);
             expect(res.body).to.have.key("errors");
@@ -391,7 +451,7 @@ describe("API", function () {
     describe("the gender query", function () {
       it("returns a mix of male and female names when left blank", function (done) {
         request
-          .get("localhost:3000/api/firstnames?limit=20")
+          .get("localhost:" + process.env.port + "/api/firstnames?limit=20")
           .end(function (err, res) {
             let genders = [];
             _(res.body.firstnames).forEach((name) => genders.push(name.gender));
@@ -404,7 +464,11 @@ describe("API", function () {
 
       it("returns a mix of male and female names when sent any", function (done) {
         request
-          .get("localhost:3000/api/firstnames?limit=20&gender=any")
+          .get(
+            "localhost:" +
+              process.env.port +
+              "/api/firstnames?limit=20&gender=any",
+          )
           .end(function (err, res) {
             let genders = [];
             _(res.body.firstnames).forEach((name) => genders.push(name.gender));
@@ -417,7 +481,7 @@ describe("API", function () {
 
       it("returns only male names when sent gender=male", function (done) {
         request
-          .get("localhost:3000/api/firstnames?gender=male")
+          .get("localhost:" + process.env.port + "/api/firstnames?gender=male")
           .end(function (err, res) {
             async.each(res.body.firstnames, (name) =>
               expect(name.gender).to.eql("M"),
@@ -428,7 +492,9 @@ describe("API", function () {
 
       it("returns only female names when sent gender=female", function (done) {
         request
-          .get("localhost:3000/api/firstnames?gender=female")
+          .get(
+            "localhost:" + process.env.port + "/api/firstnames?gender=female",
+          )
           .end(function (err, res) {
             async.each(res.body.firstnames, (name) =>
               expect(name.gender).to.eql("F"),
@@ -439,7 +505,7 @@ describe("API", function () {
 
       it("returns an error when gender is set to gibberish", function (done) {
         request
-          .get("localhost:3000/api/firstnames?gender=doggy")
+          .get("localhost:" + process.env.port + "/api/firstnames?gender=doggy")
           .end(function (err, res) {
             expect(res.status).to.equal(400);
             expect(res.body).to.have.key("errors");
@@ -456,7 +522,11 @@ describe("API", function () {
     describe("the rank query", function () {
       it("returns results when sent any", function (done) {
         request
-          .get("localhost:3000/api/firstnames?rank=any&gender=male&year=1880")
+          .get(
+            "localhost:" +
+              process.env.port +
+              "/api/firstnames?rank=any&gender=male&year=1880",
+          )
           .end(function (err, res) {
             expect(res.body.firstnames).to.have.length(10);
             done();
@@ -467,7 +537,9 @@ describe("API", function () {
         it("high returns names from the top 125", function (done) {
           request
             .get(
-              "localhost:3000/api/firstnames?rank=high&gender=male&year=1880",
+              "localhost:" +
+                process.env.port +
+                "/api/firstnames?rank=high&gender=male&year=1880",
             )
             .end(function (err, res) {
               async.each(res.body.firstnames, (name) =>
@@ -479,7 +551,11 @@ describe("API", function () {
 
         it("low returns names ranked greater than 125", function (done) {
           request
-            .get("localhost:3000/api/firstnames?rank=low&gender=male&year=1902")
+            .get(
+              "localhost:" +
+                process.env.port +
+                "/api/firstnames?rank=low&gender=male&year=1902",
+            )
             .end(function (err, res) {
               async.each(res.body.firstnames, (name) =>
                 expect(name.rank).to.be.greaterThan(125),
@@ -491,7 +567,9 @@ describe("API", function () {
         it("returns an error when sent gibberish", function (done) {
           request
             .get(
-              "localhost:3000/api/firstnames?rank=dkd8&gender=female&year=1900",
+              "localhost:" +
+                process.env.port +
+                "/api/firstnames?rank=dkd8&gender=female&year=1900",
             )
             .end(function (err, res) {
               expect(res.status).to.equal(400);
@@ -510,7 +588,9 @@ describe("API", function () {
         it("high returns names from the top 300", function (done) {
           request
             .get(
-              "localhost:3000/api/firstnames?rank=high&gender=female&year=1980",
+              "localhost:" +
+                process.env.port +
+                "/api/firstnames?rank=high&gender=female&year=1980",
             )
             .end(function (err, res) {
               async.each(res.body.firstnames, (name) =>
@@ -523,7 +603,9 @@ describe("API", function () {
         it("low returns names ranked greater than 300", function (done) {
           request
             .get(
-              "localhost:3000/api/firstnames?rank=low&gender=female&year=2002",
+              "localhost:" +
+                process.env.port +
+                "/api/firstnames?rank=low&gender=female&year=2002",
             )
             .end(function (err, res) {
               async.each(res.body.firstnames, (name) =>
@@ -536,7 +618,9 @@ describe("API", function () {
         it("returns an error when sent gibberish", function (done) {
           request
             .get(
-              "localhost:3000/api/firstnames?rank=dkd8&gender=female&year=2002",
+              "localhost:" +
+                process.env.port +
+                "/api/firstnames?rank=dkd8&gender=female&year=2002",
             )
             .end(function (err, res) {
               expect(res.status).to.equal(400);
@@ -554,7 +638,11 @@ describe("API", function () {
       describe("when in year zero", function () {
         it("high returns names from the top 800", function (done) {
           request
-            .get("localhost:3000/api/firstnames?rank=high&gender=female&year=0")
+            .get(
+              "localhost:" +
+                process.env.port +
+                "/api/firstnames?rank=high&gender=female&year=0",
+            )
             .end(function (err, res) {
               async.each(res.body.firstnames, (name) =>
                 expect(name.rank).to.be.lessThan(801),
@@ -566,7 +654,9 @@ describe("API", function () {
         it("low returns names ranked greater than 800", function (done) {
           request
             .get(
-              "localhost:3000/api/firstnames?rank=low&gender=female&year=0&limit=100",
+              "localhost:" +
+                process.env.port +
+                "/api/firstnames?rank=low&gender=female&year=0&limit=100",
             )
             .end(function (err, res) {
               async.each(res.body.firstnames, (name) =>
@@ -581,7 +671,9 @@ describe("API", function () {
     describe("the starts with query", function () {
       it("returns names starting with s if set fstartswith=s", function (done) {
         request
-          .get("localhost:3000/api/firstnames?fstartswith=s")
+          .get(
+            "localhost:" + process.env.port + "/api/firstnames?fstartswith=s",
+          )
           .end(function (err, res) {
             expect(res.body.firstnames).to.not.be.empty();
             async.each(res.body.firstnames, (name) =>
@@ -593,7 +685,9 @@ describe("API", function () {
 
       it("returns names starting with da if set fstartswith=da", function (done) {
         request
-          .get("localhost:3000/api/firstnames?fstartswith=da")
+          .get(
+            "localhost:" + process.env.port + "/api/firstnames?fstartswith=da",
+          )
           .end(function (err, res) {
             expect(res.body.firstnames).to.not.be.empty();
             async.each(res.body.firstnames, function (name) {
@@ -606,7 +700,11 @@ describe("API", function () {
 
       it("returns Jason if set fstartswith=jason^", function (done) {
         request
-          .get("localhost:3000/api/firstnames?fstartswith=jason^&gender=male")
+          .get(
+            "localhost:" +
+              process.env.port +
+              "/api/firstnames?fstartswith=jason^&gender=male",
+          )
           .end(function (err, res) {
             expect(res.body.firstnames).to.not.be.empty();
             async.each(res.body.firstnames, (name) =>
@@ -618,7 +716,9 @@ describe("API", function () {
 
       it("returns an error when sent non-letters", function (done) {
         request
-          .get("localhost:3000/api/firstnames?fstartswith=D4a")
+          .get(
+            "localhost:" + process.env.port + "/api/firstnames?fstartswith=D4a",
+          )
           .end(function (err, res) {
             expect(res.status).to.equal(400);
             expect(res.body).to.have.key("errors");
@@ -634,7 +734,11 @@ describe("API", function () {
       describe("starts with special features", function () {
         it("returns names NOT starting with C when sent fstartswith=c*", function (done) {
           request
-            .get("localhost:3000/api/firstnames?fstartswith=c*&limit=50")
+            .get(
+              "localhost:" +
+                process.env.port +
+                "/api/firstnames?fstartswith=c*&limit=50",
+            )
             .end(function (err, res) {
               expect(res.body.firstnames).to.not.be.empty();
               async.each(res.body.firstnames, (name) =>
@@ -646,7 +750,11 @@ describe("API", function () {
 
         it("returns names NOT starting with P and S when sent fstartswith=p*,s*", function (done) {
           request
-            .get("localhost:3000/api/firstnames?fstartswith=p*,s*&limit=50")
+            .get(
+              "localhost:" +
+                process.env.port +
+                "/api/firstnames?fstartswith=p*,s*&limit=50",
+            )
             .end(function (err, res) {
               expect(res.body.firstnames).to.not.be.empty();
               async.each(res.body.firstnames, function (name) {
@@ -662,25 +770,31 @@ describe("API", function () {
 
   describe("names", function () {
     it("responds to /api/names", function (done) {
-      request.get("localhost:3000/api/names").end(function (err, res) {
-        expect(res).to.exist;
-        expect(res.status).to.equal(200);
-        done();
-      });
+      request
+        .get("localhost:" + process.env.port + "/api/names")
+        .end(function (err, res) {
+          expect(res).to.exist;
+          expect(res.status).to.equal(200);
+          done();
+        });
     });
 
     it("should not have any warnings when accessed with default settings", function (done) {
-      request.get("localhost:3000/api/names").end(function (err, res) {
-        expect(res).to.exist;
-        expect(res.body).not.to.have.key("warnings");
-        done();
-      });
+      request
+        .get("localhost:" + process.env.port + "/api/names")
+        .end(function (err, res) {
+          expect(res).to.exist;
+          expect(res.body).not.to.have.key("warnings");
+          done();
+        });
     });
 
     it("provides warning if fewer than the requested number of names are available", function (done) {
       request
         .get(
-          "localhost:3000/api/names?limit=100&rank=high&frequency=high&gender=female&year=1880&race=pctnative&race=50",
+          "localhost:" +
+            process.env.port +
+            "/api/names?limit=100&rank=high&frequency=high&gender=female&year=1880&race=pctnative&race=50",
         )
         .end(function (err, res) {
           expect(res.body).to.have.key("warnings");

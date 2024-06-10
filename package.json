@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "start": "supervisor -- --env-file=config.env app.js",
-    "test": "npx mocha -R spec"
+    "test": "node --env-file=config.env ./node_modules/mocha/bin/mocha -R spec"
   },
   "dependencies": {
     "async": "3.2.x",
@@ -23,5 +23,8 @@
     "mocha": "^10.4.0",
     "prettier": "^3.3.0",
     "superagent": "^9.0.2"
+  },
+  "mocha": {
+    "env": "dotenv_config_path=config.env"
   }
 }
