@@ -1,11 +1,11 @@
 {
   "name": "Ranndy",
   "description": "API to generate random names",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "author": "Simon Ganz",
   "private": true,
   "scripts": {
-    "start": "supervisor -- --env-file=config.env app.js",
+    "start": "npx supervisor -- --env-file=config.env app.js",
     "test": "node --env-file=config.env ./node_modules/mocha/bin/mocha -R spec"
   },
   "dependencies": {
@@ -14,17 +14,13 @@
     "global": "^4.4.0",
     "knex": "^3.1.x",
     "lodash": "4.17.x",
-    "pg": "^8.11.x",
-    "supervisor": "^0.12.0"
+    "pg": "^8.11.x"
   },
   "devDependencies": {
-    "coffeescript": "^2.7.0",
     "expect.js": "x",
     "mocha": "^10.4.0",
     "prettier": "^3.3.0",
-    "superagent": "^9.0.2"
-  },
-  "mocha": {
-    "env": "dotenv_config_path=config.env"
+    "superagent": "^9.0.2",
+    "supervisor": "^0.12.0"
   }
 }
