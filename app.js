@@ -234,6 +234,6 @@ var getFirstnames = (req, resultsCallback) =>
         }),
   );
 
-var server = app.listen(process.env.port || 3000, () =>
+var server = app.listen(process.env.PORT || 3000, () =>
   console.log("Listening on port %d", server.address().port),
 );
