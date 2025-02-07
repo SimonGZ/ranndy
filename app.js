@@ -233,20 +233,24 @@ var getFirstnames = (req, resultsCallback) =>
             .andWhere(function () {
               queries.genderQuery(this, req.query.gender, errorHandler);
             })
-            .then(
-              (
-                result, // Send the max(rank) to the callback function
-              ) => callback(null, result[0].max),
-            );
+            .then((result) => callback(null, result[0].max))
+            .catch((err) => callback(err)); // Add error handling here
         } else {
           callback(null);
         }
       },
     ],
-    (err, results) =>
+    (err, results) => {
+      // Handle error from async.series
+      if (err) {
+        resultsCallback({ errors: errorHandler.listErrors() }, true);
+        errorHandler.clearErrors();
+        errorHandler.clearWarnings();
+        return; // Add return to prevent further execution
+      }
+
       knex("firstnames")
         .where(function () {
-          // Year query
           queries.yearQuery(this, req.query.year, errorHandler);
         })
         .andWhere(function () {
@@ -264,16 +268,16 @@ var getFirstnames = (req, resultsCallback) =>
           if (errorHandler.errorsFound() > 0) {
             throw new Error("Errors detected in errorHandler");
           } else {
-            results = { firstnames: query_results };
-            resultsCallback(results);
+            resultsCallback({ firstnames: query_results });
           }
         })
         .catch(function (e) {
-          // NOTE: The following line can cause crashes from double resultsCallbacks when there's an unexpected error. Not sure how to fix.
+          // Only call resultsCallback if it hasn't been called already
           resultsCallback({ errors: errorHandler.listErrors() }, true);
           errorHandler.clearErrors();
           errorHandler.clearWarnings();
-        }),
+        });
+    },
   );
 
 var server = app.listen(process.env.PORT || 3000, () =>
