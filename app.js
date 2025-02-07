@@ -14,6 +14,8 @@ const knex = require("knex")({
   },
 });
 
+const DEV_ENVIRONMENT = process.env.DEV;
+
 // Loading Express
 const express = require("express");
 const app = express();
@@ -52,7 +54,7 @@ app.use(express.static(__dirname + "/public"));
 knex
   .raw("SELECT 1") // A simple query that should always succeed
   .then(() => {
-    console.log("Database connection successful!");
+    if (DEV_ENVIRONMENT) console.log("Database connection successful!");
   })
   .catch((err) => {
     console.error("Database connection failed:", err);
@@ -65,6 +67,9 @@ const randomIntFromInterval = (min, max) =>
 
 app.get("/api/surnames", (req, res) =>
   getSurnames(req, function (json, error) {
+    if (DEV_ENVIRONMENT) {
+      console.log(req.query);
+    }
     if (error == null) {
       error = false;
     }
@@ -80,6 +85,9 @@ app.get("/api/surnames", (req, res) =>
 
 app.get("/api/firstnames", (req, res) =>
   getFirstnames(req, function (json, error) {
+    if (DEV_ENVIRONMENT) {
+      console.log(req.query);
+    }
     if (error == null) {
       error = false;
     }
