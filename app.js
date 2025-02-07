@@ -1,4 +1,6 @@
 // Loading libraries
+//
+//
 const async = require("async");
 const _ = require("lodash");
 const knex = require("knex")({
@@ -8,12 +10,34 @@ const knex = require("knex")({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
+    port: process.env.DB_PORT || 3000, // Add port here
   },
 });
 
 // Loading Express
 const express = require("express");
 const app = express();
+
+// Setting up Cors
+
+const cors = require("cors");
+const allowedOrigins = ["http://localhost:5173", "http://localhost:4173"]; // Add your domain(s)
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.indexOf(origin) === -1) {
+        const msg =
+          "The CORS policy for this site does not allow access from the specified Origin.";
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
+  }),
+);
 
 // Loading query functions
 const queries = require("./lib/queries");
@@ -23,6 +47,17 @@ const errorHandler = require("./lib/errorHandler");
 
 // Setting up public directory
 app.use(express.static(__dirname + "/public"));
+
+// Database connection test
+knex
+  .raw("SELECT 1") // A simple query that should always succeed
+  .then(() => {
+    console.log("Database connection successful!");
+  })
+  .catch((err) => {
+    console.error("Database connection failed:", err);
+    process.exit(1); // Exit the application if the connection fails
+  });
 
 //Convenience Functions
 const randomIntFromInterval = (min, max) =>
