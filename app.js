@@ -143,12 +143,20 @@ app.get("/api/names", (req, res) =>
         }
 
         // If the first element of the array is null, replace it with the requested name
-        if (_.isUndefined(results[0].firstnames[0])) {
+        // But only if startswith actually exists
+        if (
+          _.isUndefined(results[0].firstnames[0]) &&
+          !_.isUndefined(req.query.fstartswith)
+        ) {
           results[0].firstnames[0] = {
             name: queries.properCase(req.query.fstartswith.replace("^", "")),
           };
         }
-        if (_.isUndefined(results[1].surnames[0])) {
+        if (
+          _.isUndefined(results[1].surnames[0]) &&
+          !_.isUndefined(req.query.sstartswith)
+        ) {
+          console.log(results);
           results[1].surnames[0] = {
             name: queries.properCase(req.query.sstartswith.replace("^", "")),
           };
@@ -272,6 +280,7 @@ var getFirstnames = (req, resultsCallback) =>
           }
         })
         .catch(function (e) {
+          console.error(e);
           // Only call resultsCallback if it hasn't been called already
           resultsCallback({ errors: errorHandler.listErrors() }, true);
           errorHandler.clearErrors();
