@@ -216,8 +216,7 @@ var getFirstnames = (req, resultsCallback) =>
   async.series(
     [
       function (callback) {
-        // Only run this code if both req.query.rank and req.query.gender exist
-        if (req.query.rank !== undefined && req.query.gender !== undefined) {
+        if (req.query.rank !== undefined) {
           knex("firstnames")
             .max("rank")
             .where(function () {
