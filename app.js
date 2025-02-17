@@ -21,9 +21,13 @@ const express = require("express");
 const app = express();
 
 // Setting up Cors
-
 const cors = require("cors");
-const allowedOrigins = ["http://localhost:5173", "http://localhost:4173"]; // Add your domain(s)
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:4173",
+  "https://ranndy.com",
+  "https://beta.ranndy.com",
+];
 
 app.use(
   cors({
