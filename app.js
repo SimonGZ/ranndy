@@ -112,6 +112,10 @@ app.get("/api/names", (req, res) =>
       (callback) => getSurnames(req, (json) => callback(null, json)),
     ],
     function (err, results) {
+      if (DEV_ENVIRONMENT) {
+        console.log(req.query);
+      }
+
       let errors = [];
 
       _.each(results, function (result) {
