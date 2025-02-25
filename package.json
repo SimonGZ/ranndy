@@ -1,12 +1,13 @@
 {
   "name": "Ranndy",
   "description": "API to generate random names",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "author": "Simon Ganz",
   "private": true,
   "scripts": {
     "start": "npx supervisor -- --env-file=config.env app.js",
-    "test": "node --env-file=config.env ./node_modules/mocha/bin/mocha -R spec"
+    "test": "node --env-file=config.env ./node_modules/mocha/bin/mocha -R spec",
+    "dev": "npx supervisor -- --env-file=dev.config.env app.js"
   },
   "dependencies": {
     "async": "3.2.x",

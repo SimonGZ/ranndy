@@ -297,6 +297,65 @@ var getFirstnames = (req, resultsCallback) =>
     },
   );
 
+app.get("/api/firstnames/history", (req, res) => {
+  if (DEV_ENVIRONMENT) {
+    console.log(req.query);
+  }
+
+  // Validate required name parameter
+  if (!req.query.name) {
+    return res.status(400).json({
+      errors: [errorHandler.errorCodes.name_required],
+    });
+  }
+
+  // Process the name parameter - ensure proper case
+  const name = queries.properCase(req.query.name);
+
+  // Build the query
+  let query = knex("firstnames")
+    .where({ name })
+    .andWhere("year", "!=", 0)
+    .orderBy("year", "asc");
+
+  // Add gender filter if provided
+  if (req.query.gender) {
+    const gender = queries.sanitizeGender(req.query.gender);
+    if (gender) {
+      query = query.where({ gender });
+    } else if (req.query.gender !== "any") {
+      return res.status(400).json({
+        errors: [errorHandler.errorCodes.invalid_gender],
+      });
+    }
+  }
+
+  // Execute the query
+  query
+    .then((history) => {
+      // Check if any results were found
+      if (history.length === 0) {
+        return res.status(404).json({
+          errors: [errorHandler.errorCodes.name_not_found],
+        });
+      }
+
+      res.json({ history: history });
+    })
+    .catch((err) => {
+      console.error("Error retrieving name history:", err);
+      res.status(500).json({
+        errors: [
+          {
+            message: "Database error",
+            description: "An error occurred while retrieving the name history.",
+            code: 10,
+          },
+        ],
+      });
+    });
+});
+
 var server = app.listen(process.env.PORT || 3000, () =>
   console.log("Listening on port %d", server.address().port),
 );
