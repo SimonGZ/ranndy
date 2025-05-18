@@ -1,6 +1,3 @@
-// Loading libraries
-//
-//
 const async = require("async");
 const _ = require("lodash");
 const knex = require("knex")({
@@ -10,7 +7,7 @@ const knex = require("knex")({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    port: process.env.DB_PORT || 3000, // Add port here
+    port: process.env.DB_PORT || 3000,
   },
 });
 
@@ -45,24 +42,21 @@ app.use(
   }),
 );
 
-// Loading query functions
 const queries = require("./lib/queries");
 
-// Loading error handler
 const errorHandler = require("./lib/errorHandler");
 
-// Setting up public directory
 app.use(express.static(__dirname + "/public"));
 
 // Database connection test
 knex
-  .raw("SELECT 1") // A simple query that should always succeed
+  .raw("SELECT 1")
   .then(() => {
     if (DEV_ENVIRONMENT) console.log("Database connection successful!");
   })
   .catch((err) => {
     console.error("Database connection failed:", err);
-    process.exit(1); // Exit the application if the connection fails
+    process.exit(1);
   });
 
 //Convenience Functions
@@ -128,11 +122,6 @@ app.get("/api/names", (req, res) =>
         res.status(400).json({ errors });
       } else {
         const cleanedResults = {};
-
-        // Old method that cut down the array so that no entries were null
-        // cleanedResults['names'] = _.filter(_.zip(results[0].firstnames, results[1].surnames), (nameArray) ->
-        // return !_.some(nameArray, _.isUndefined)
-        // )
 
         // Send a warning if the number of results is below the limit
         if (
