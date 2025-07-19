@@ -15,7 +15,7 @@ It's available at [Ranndy.com](https://ranndy.com).
 
 ## Technologies Used
 
-- **Frontend:** Backbone.js
+- **Frontend:** React
 - **Backend:** Node.js with Express
 - **Database:** PostgreSQL
 
