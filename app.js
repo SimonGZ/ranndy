@@ -7,7 +7,7 @@ const knex = require("knex")({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    port: process.env.DB_PORT || 3000,
+    port: process.env.DB_PORT || 5432,
   },
 });
 
@@ -22,6 +22,7 @@ const cors = require("cors");
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:4173",
+  "http://localhost",
   "https://ranndy.com",
   "https://beta.ranndy.com",
 ];
