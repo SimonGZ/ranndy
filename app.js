@@ -20,7 +20,7 @@ const app = express();
 // Setting up Cors
 const cors = require("cors");
 const allowedOrigins = [
-  `http://localhost:${process.env.FRONTEND_PORT}`,
+  process.env.FRONTEND_CORS_URL,
   "http://localhost:5173",
   "http://localhost:4173",
   "http://localhost",
