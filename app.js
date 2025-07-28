@@ -26,6 +26,7 @@ const allowedOrigins = [
   "http://localhost",
   "https://ranndy.com",
   "https://beta.ranndy.com",
+  "https://ranndy.netlify.app",
 ];
 
 app.use(
